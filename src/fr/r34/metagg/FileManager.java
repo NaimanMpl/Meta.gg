@@ -31,7 +31,9 @@ public class FileManager {
         File f = new File(filePath);
         this.readMetaData(f);
     }
-
+    /* Récupère et affiche (terminal) les métadonnées du fichier (unzip) passé en paramètre selon un panel prédéfinis de métadonnées souhaitées
+     * @param file Fichier dont on veut extraire les métadonnées
+     */
 
     public void readMetaData(File file) {
         ArrayList<File> metaFiles = this.unzip(file);
@@ -67,8 +69,9 @@ public class FileManager {
             e.printStackTrace();
         }
     }
-    /*
+    /* Extrait les fichiers et répertoires du fichier (zip) passé en paramètre
      * @param file Le fichier (zip) que l'on souhaite extraire
+     * @return metaFiles La liste des fichiers extraits
      */
     private ArrayList<File> unzip(File file) {
         ArrayList<File> metaFiles = new ArrayList<>();
