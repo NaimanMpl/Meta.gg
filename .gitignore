@@ -1,8 +1,8 @@
 # Default ignored files
 /shelf/
-/.idea/
-discord.xml
+/.idea/discord.xml
 *.odt
 out/
 *.zip
-*.xml
+meta.xml
+./*.xml
