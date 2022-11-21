@@ -9,14 +9,13 @@ public class Main {
     public static void main(String[] args) {
 
     	DirectoryManager dirM = new DirectoryManager();
-    	File folder = new File("C:\\Users\\Utilisateur\\OneDrive\\Documents\\Devoir\\L2_informatique\\POO java\\ProjetJava\\ParcoursODT");
-    	ArrayList<File> odtInFolder = new ArrayList<>();
-    	odtInFolder = dirM.directoryContent(folder);
-    	
+    	File folder = new File("./");
+    	ArrayList<File> odtInFolder = dirM.directoryContent(folder);
+
         FileManager fileM = new FileManager();
-        File file = new File("expose.odt");
-        File newFile = fileM.changeExtension(file, ".zip");
-        fileM.readMetaData(newFile);
-      
+        for (File file : odtInFolder) {
+            File newFile = fileM.changeExtension(file, ".zip");
+            fileM.readMetaData(newFile);
+        }
     }
 }

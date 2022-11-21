@@ -35,6 +35,12 @@ public class FileManager {
      * @param file Fichier dont on veut extraire les métadonnées
      */
 
+    /* Extrait les métadonnées d'un fichier zip passé en paramètres pour en lire le contenu et l'afficher à l'écran
+     * @param file Fichier dont on veut lire les métadonnées
+     * @throws ParserConfigurationException
+     * @throws IOException
+     * @throws SAXEception
+     */
     public void readMetaData(File file) {
         ArrayList<File> metaFiles = this.unzip(file);
         try {
@@ -45,6 +51,13 @@ public class FileManager {
             tagsMap.put("dc:title", "Titre");
             tagsMap.put("dc:subject", "Sujet");
             tagsMap.put("meta:creation-date", "Date de création");
+            tagsMap.put("meta:document-statistic", "Donées diverses :");
+            HashMap<String, String> metaStatsAttrMap = new HashMap<>();
+
+            metaStatsAttrMap.put("meta:page-count", "Nombre de pages : ");
+            metaStatsAttrMap.put("meta:paragraph-count", "Nombre de paragraphes : ");
+            metaStatsAttrMap.put("meta:word-count", "Nombre de mots : ");
+            metaStatsAttrMap.put("meta:character-count", "Nombre de caractères : ");
             for (File f : metaFiles) {
                 if (f.getName().endsWith(".xml") && f.getName().equalsIgnoreCase("meta.xml")) {
                     doc = builder.parse(f);
@@ -53,18 +66,29 @@ public class FileManager {
                     for (int i = 0; i < metaDatasList.getLength(); i++) {
                         Node node = metaDatasList.item(i);
                         if (node.getNodeType() == Node.ELEMENT_NODE) {
-                            Element el = (Element) node;
+                            Element metaElement = (Element) node;
                             for (Map.Entry<String, String> set : tagsMap.entrySet()) {
                                 String tag = set.getKey();
                                 String tagTitle = set.getValue();
-                                if (el.getElementsByTagName(tag).item(0) == null) continue;
-                                String metaData = el.getElementsByTagName(tag).item(0).getTextContent();
-                                System.out.println(tagTitle + " : " + metaData);
+                                Node metaItem = metaElement.getElementsByTagName(tag).item(0);
+                                if (metaItem == null) continue;
+                                String metaData = metaItem.getTextContent();
+                                System.out.println(tagTitle + " " + metaData);
+                                if (tag.equalsIgnoreCase("meta:document-statistic")) {
+                                    if (metaItem.getAttributes().getLength() == 0) continue;
+                                    if (metaItem.getNodeType() == Node.ELEMENT_NODE) {
+                                        Element metaItemElement = (Element) metaItem;
+                                        for (Map.Entry<String, String> metaSet : metaStatsAttrMap.entrySet()) {
+                                            System.out.println("\t" + metaSet.getValue() + metaItemElement.getAttribute(metaSet.getKey()));
+                                        }
+                                    }
+                                }
                             }
                         }
                     }
                 }
             }
+            changeExtension(file, ".odt");
         } catch (ParserConfigurationException | IOException | SAXException e) {
             e.printStackTrace();
         }
