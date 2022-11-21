@@ -10,8 +10,13 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
@@ -93,6 +98,49 @@ public class FileManager {
             e.printStackTrace();
         }
     }
+
+
+    public void readPictureMetaData(File file) {
+        HashMap<String, String> imageExt = new HashMap<>();
+        imageExt.put(".avif", "AVIF");
+        imageExt.put(".bmp", "BMP");
+        imageExt.put(".gif", "GIF");
+        imageExt.put(".jpeg", "JPEG");
+        imageExt.put(".jpg", "JPG");
+        imageExt.put(".png", "PNG");
+        imageExt.put(".tif", "TIF");
+        imageExt.put(".tiff", "TIFF");
+        imageExt.put(".webp", "WEBP");
+
+        HashMap<String, ArrayList<String>> imageMap = new HashMap<>();
+        try {
+            if (file.getName().equals("media") && file.isDirectory()) {
+                System.out.println("ici");
+                for(File picture : file.listFiles()) {
+                    ArrayList<String> pictureData = new ArrayList<>();
+
+                    for(Map.Entry<String, String> m : imageExt.entrySet()){
+                        int i = picture.getName().lastIndexOf(".");
+                        String extension = picture.getName().substring(i);
+                        if(m.getKey().equals(extension)){
+                            pictureData.add(m.getValue());
+                        }
+                    }
+                    DecimalFormat df = new DecimalFormat("0.0");
+                    float bytes = (float) picture.length() / 1024;
+                    pictureData.add(String.valueOf(df.format(bytes)) + "Ko");
+                    imageMap.put(picture.getName(), pictureData);
+                }
+                int nombreImage = imageMap.size();
+                System.out.println("Nombre d'image : " + nombreImage);
+                for(Map.Entry mapentry: imageMap.entrySet()) {
+                    System.out.println("File : " + mapentry.getKey() + " data : " + mapentry.getValue());
+                }
+            }
+        } catch (Exception e) {
+            // TODO: handle exception
+        }
+    }
     /* Extrait les fichiers et répertoires du fichier (zip) passé en paramètre
      * @param file Le fichier (zip) que l'on souhaite extraire
      * @return metaFiles La liste des fichiers extraits
@@ -134,11 +182,11 @@ public class FileManager {
      * @param newExtension L'extension que l'on souhaite utiliser
      * @return Le nouveau fichier dont l'extension a été modifié
      */
-    public File changeExtension(File file, String newExtension) {
+    public File changeExtension(File file, String newExtension) throws IOException {
         int i = file.getName().lastIndexOf('.');
         String name = file.getName().substring(0, i);
         File newFile = new File(file.getParent(), name + newExtension);
-        file.renameTo(newFile);
+        Files.move(file.toPath(), newFile.toPath().resolve(file.getName()), StandardCopyOption.REPLACE_EXISTING);
         return newFile;
     }
 

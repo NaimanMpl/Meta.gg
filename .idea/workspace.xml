@@ -1,8 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
   <component name="ChangeListManager">
     <list default="true" id="c4ba0cc6-8460-4b93-b92b-a8430306cb06" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/image1.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/media/image1.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/media/image2.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/media/image3.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/fr/r34/metagg/DirectoryManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/fr/r34/metagg/DirectoryManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/fr/r34/metagg/FileManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/fr/r34/metagg/FileManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/fr/r34/metagg/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/fr/r34/metagg/Main.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -55,6 +65,17 @@
     <configuration name="Main" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="fr.r34.metagg.Main" />
       <module name="Meta.gg" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="JetRunConfigurationType">
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="KotlinStandaloneScriptRunConfigurationType">
+      <option name="filePath" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>

@@ -23,12 +23,11 @@ public class DirectoryManager {
 	 * @throws IOException 
 	 * @throws MalformedURLException 
 	 */
-	public ArrayList<File> directoryContent(File folder){
+	public ArrayList<File> directoryContent(File folder, ArrayList<File> odtInFolder){
 		try {
-			ArrayList<File> odtInFolder = new ArrayList<>();
 			for(File element : folder.listFiles()) {
 				if(element.isDirectory())
-					directoryContent(element);
+					directoryContent(element, odtInFolder);
 				else {
 					String mimetype = element.toURL().openConnection().getContentType();
 					if (Objects.equals(mimetype, "application/vnd.oasis.opendocument.text")) {
@@ -37,9 +36,6 @@ public class DirectoryManager {
 				
 					}
 				}
-			}
-			for(File o : odtInFolder) {
-				System.out.println(o.getName());
 			}
 			return odtInFolder;
 		} catch (IOException e) {
