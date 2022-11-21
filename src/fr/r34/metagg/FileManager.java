@@ -9,7 +9,14 @@ import org.xml.sax.SAXException;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+import javax.xml.*;
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -28,8 +35,7 @@ public class FileManager {
      * @param filePath Le chemin vers le fichier dont on veut extraire les métadonnées
      */
     public void readMetaData(String filePath) {
-        File f = new File(filePath);
-        this.readMetaData(f);
+        this.readMetaData(new File(filePath));
     }
     /* Récupère et affiche (terminal) les métadonnées du fichier (unzip) passé en paramètre selon un panel prédéfinis de métadonnées souhaitées
      * @param file Fichier dont on veut extraire les métadonnées
@@ -88,16 +94,52 @@ public class FileManager {
                     }
                 }
             }
-            changeExtension(file, ".odt");
+            this.changeExtension(file, ".odt");
         } catch (ParserConfigurationException | IOException | SAXException e) {
             e.printStackTrace();
         }
     }
+
+    public void modifyMetaData(File file, String attribute, String content) {
+        HashMap<String, String> attributeMap = new HashMap<>();
+        attributeMap.put("title", "dc:title");
+        attributeMap.put("subject", "dc:subject");
+        attributeMap.put("keyword", "meta:keyword");
+        try {
+            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder builder = factory.newDocumentBuilder();
+            Document doc = builder.parse(file);
+            doc.getDocumentElement().normalize();
+            NodeList metaDataList = doc.getElementsByTagName("office:meta");
+            Node metaNode = metaDataList.item(0);
+            if (metaNode.getNodeType() == Node.ELEMENT_NODE) {
+                Element metaElement = (Element) metaNode;
+                Node metaData = metaElement.getElementsByTagName(attributeMap.get(attribute)).item(0);
+                metaData.setTextContent(content);
+                System.out.println(metaData.getTextContent());
+                System.out.println("Modification de la métadonnée effectuée ✨");
+            }
+        } catch (ParserConfigurationException | SAXException | IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static void writeXml(Document doc, OutputStream output) throws TransformerException, UnsupportedEncodingException {
+
+        TransformerFactory transformerFactory = TransformerFactory.newInstance();
+
+
+        DOMSource source = new DOMSource(doc);
+        StreamResult result = new StreamResult(output);
+
+
+    }
+
     /* Extrait les fichiers et répertoires du fichier (zip) passé en paramètre
      * @param file Le fichier (zip) que l'on souhaite extraire
      * @return metaFiles La liste des fichiers extraits
      */
-    private ArrayList<File> unzip(File file) {
+    public ArrayList<File> unzip(File file) {
         ArrayList<File> metaFiles = new ArrayList<>();
         try {
             FileInputStream fis = new FileInputStream(file.getName());
@@ -138,7 +180,11 @@ public class FileManager {
         int i = file.getName().lastIndexOf('.');
         String name = file.getName().substring(0, i);
         File newFile = new File(file.getParent(), name + newExtension);
-        file.renameTo(newFile);
+        try {
+            Files.move(file.toPath(), newFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         return newFile;
     }
 
