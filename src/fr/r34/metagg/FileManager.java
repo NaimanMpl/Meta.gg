@@ -9,19 +9,22 @@ import org.xml.sax.SAXException;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.*;
+import javax.xml.transform.stream.StreamSource;
 import java.io.*;
-import java.nio.file.Files;
-import java.nio.file.StandardCopyOption;
+import java.nio.file.*;
+import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
+import java.util.zip.ZipOutputStream;
 
 public class FileManager {
 
@@ -48,7 +51,7 @@ public class FileManager {
      * @throws SAXEception
      */
     public void readMetaData(File file) {
-        ArrayList<File> metaFiles = this.unzip(file);
+        ArrayList<File> metaFiles = this.unzip(file, new File("./" + file.getName().substring(0, file.getName().lastIndexOf("."))));
         try {
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             DocumentBuilder builder = factory.newDocumentBuilder();
@@ -100,7 +103,14 @@ public class FileManager {
         }
     }
 
-    public void modifyMetaData(File file, String attribute, String content) {
+    /*
+     * Modifie les métadonnées d'un fichier xml existant.
+     * @param xmlFile le fichier xml dont on souhaite modifier les métadonnées
+     * @param destDirPath Le chemin vers le dossier ou l'on souhaite sauvegarder notre fichier xml modifié
+     * @param attribute L'attribut que l'on souhaite modifier
+     * @param content Le contenu de l'attribut que l'on souhaite modifier
+     */
+    public void modifyMetaData(File xmlFile, String destDirPath, String attribute, String content) {
         HashMap<String, String> attributeMap = new HashMap<>();
         attributeMap.put("title", "dc:title");
         attributeMap.put("subject", "dc:subject");
@@ -108,7 +118,7 @@ public class FileManager {
         try {
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             DocumentBuilder builder = factory.newDocumentBuilder();
-            Document doc = builder.parse(file);
+            Document doc = builder.parse(xmlFile);
             doc.getDocumentElement().normalize();
             NodeList metaDataList = doc.getElementsByTagName("office:meta");
             Node metaNode = metaDataList.item(0);
@@ -119,47 +129,62 @@ public class FileManager {
                 System.out.println(metaData.getTextContent());
                 System.out.println("Modification de la métadonnée effectuée ✨");
             }
+            try (FileOutputStream fos = new FileOutputStream(destDirPath + "/meta.xml")) {
+                writeXml(doc, fos);
+            } catch (TransformerException e) {
+                e.printStackTrace();
+            }
         } catch (ParserConfigurationException | SAXException | IOException e) {
             e.printStackTrace();
         }
     }
 
-    private static void writeXml(Document doc, OutputStream output) throws TransformerException, UnsupportedEncodingException {
+    /*
+     * Créer (ou écrase si le fichier xml est déjà existant) un fichier xml
+     * @param doc
+     * @param output
+     */
+    private void writeXml(Document doc, OutputStream output) throws TransformerException {
 
         TransformerFactory transformerFactory = TransformerFactory.newInstance();
 
+        Transformer transformer = transformerFactory.newTransformer();
 
         DOMSource source = new DOMSource(doc);
         StreamResult result = new StreamResult(output);
 
-
+        transformer.transform(source, result);
     }
 
     /* Extrait les fichiers et répertoires du fichier (zip) passé en paramètre
      * @param file Le fichier (zip) que l'on souhaite extraire
-     * @return metaFiles La liste des fichiers extraits
+     * @return metaFiles La liste des fichiers extraits (xml)
      */
-    public ArrayList<File> unzip(File file) {
+    public ArrayList<File> unzip(File file, File destDir) {
         ArrayList<File> metaFiles = new ArrayList<>();
         try {
-            FileInputStream fis = new FileInputStream(file.getName());
-            BufferedInputStream bis = new BufferedInputStream(fis);
-            ZipInputStream zis = new ZipInputStream(bis);
-            ZipEntry ze = zis.getNextEntry();
             byte[] buffer = new byte[1024];
+            ZipInputStream zis = new ZipInputStream(new FileInputStream(file.getAbsolutePath()));
+            ZipEntry ze = zis.getNextEntry();
             while (ze != null) {
-                if (!ze.isDirectory()) {
-                    if (ze.getName().equalsIgnoreCase("meta.xml")) {
-                        File metaFile = new File(ze.getName());
-                        FileOutputStream fos = new FileOutputStream(metaFile);
-                        int len = zis.read(buffer);
-                        while (len > 0) {
-                            fos.write(buffer, 0, len);
-                            len = zis.read(buffer);
-                        }
-                        metaFiles.add(metaFile);
-                        fos.close();
+                File newFile = new File(destDir.getAbsolutePath(), ze.getName());
+                if (ze.isDirectory()) {
+                    if (!newFile.isDirectory() && !newFile.mkdirs()) {
+                        throw new IOException("Impossible de créer un dossier " + newFile);
                     }
+                } else {
+                    File parent = newFile.getParentFile();
+                    if (!parent.isDirectory() && !parent.mkdirs()) {
+                        throw new IOException("Impossible de créer un dossier " + newFile);
+                    }
+                    FileOutputStream fos = new FileOutputStream(newFile);
+                    int length = zis.read(buffer);
+                    while (length > 0) {
+                        fos.write(buffer, 0, length);
+                        length = zis.read(buffer);
+                    }
+                    if (ze.getName().equalsIgnoreCase("meta.xml")) metaFiles.add(newFile);
+                    fos.close();
                 }
                 ze = zis.getNextEntry();
             }
@@ -169,6 +194,25 @@ public class FileManager {
             e.printStackTrace();
         }
         return metaFiles;
+    }
+
+    /*
+     * Compresse complètement un dossier en un fichier zip
+     * @param sourceDirPath Le chemin vers le dossier que l'on souhaite compresser
+     * @param zipPath Le chemin ou l'on souhaite sauvegarder notre dossier compressé
+     * @throws IOException
+     */
+    public void zip(Path sourceDirPath, Path zipPath) throws IOException {
+       ZipOutputStream zos = new ZipOutputStream(new FileOutputStream(zipPath.toFile()));
+       Files.walkFileTree(sourceDirPath, new SimpleFileVisitor<Path>() {
+           public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
+               zos.putNextEntry(new ZipEntry(sourceDirPath.relativize(file).toString()));
+               Files.copy(file, zos);
+               zos.closeEntry();
+               return FileVisitResult.CONTINUE;
+           }
+       });
+       zos.close();
     }
 
     /*

@@ -3,6 +3,7 @@ package fr.r34.metagg;
 import java.io.*;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
+import java.util.zip.ZipOutputStream;
 
 public class Main {
 
@@ -32,8 +33,16 @@ public class Main {
         }
         File file = new File("sujet.odt");
         File newFile = fileM.changeExtension(file, ".zip");
-        fileM.unzip(newFile);
-        fileM.modifyMetaData(new File("meta.xml"), "title", "Mon super projet !!");
-        file = fileM.changeExtension(newFile, ".odt");
+        File destDir = new File(file.getName().substring(0, file.getName().lastIndexOf(".")));
+        fileM.readMetaData(newFile);
+        fileM.modifyMetaData(new File(destDir.getPath() + "/meta.xml"), destDir.getPath(), "title", "Mon nouveau super titre !!");
+        File fileToZip = new File("./" + destDir.getName());
+        File zipFile = new File(destDir.getName() + ".zip");
+        try {
+            fileM.zip(fileToZip.toPath(), zipFile.toPath());
+            fileM.changeExtension(zipFile, ".odt");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
