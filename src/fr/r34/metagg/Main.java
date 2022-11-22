@@ -3,34 +3,46 @@ package fr.r34.metagg;
 import java.io.*;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.zip.ZipOutputStream;
 
 public class Main {
 
-    public static void main(String[] args) throws IOException {
-
-        DirectoryManager dirM = new DirectoryManager();
-        File folder = new File("./");
-        ArrayList<File> odtInFolder = dirM.directoryContent(folder, new ArrayList<File>());
-        System.out.println(odtInFolder);
-
+    public static void main(String[] args) {
         FileManager fileM = new FileManager();
-
-        File media = new File("C:\\Users\\andre\\OneDrive\\Documents\\Devoir\\L2_informatique\\POO java\\ProjetJava\\Meta\\Meta.gg\\media");
-        fileM.readPictureMetaData(media);
-
-        
-        File thumbnailFolder = new File("C:\\Users\\andre\\OneDrive\\Documents\\Devoir\\L2_informatique\\POO java\\ProjetJava\\Thumbnails");
-        File thumbnal = fileM.getThumbnail(thumbnailFolder);
-        
-        
-        
-        //for (File file : odtInFolder) {
-        //    System.out.println(file.exists());
-        //    File newFile = fileM.changeExtension(file, ".zip");
-        //    System.out.println(newFile.getAbsolutePath());
-        //    System.out.println(newFile.exists());
-        //    fileM.readMetaData(newFile);
-        //}
+        DirectoryManager directoryM = new DirectoryManager();
+        if (args.length == 2) {
+            if (args[0].equalsIgnoreCase("-f")) {
+                File file = new File(args[1]);
+                File newFile = fileM.changeExtension(file, ".zip");
+                fileM.readMetaData(newFile);
+            } else if (args[0].equalsIgnoreCase("-d")) {
+                File folder = new File("./");
+                ArrayList<File> odtInFolder = directoryM.directoryContent(folder);
+                for (File f : odtInFolder) {
+                    File newFile = fileM.changeExtension(f, ".zip");
+                    fileM.readMetaData(newFile);
+                }
+                fileM.readMetaData(fileM.changeExtension(new File(args[1]), ".zip"));
+            }
+        } else if (args.length == 4) {
+            if (args[0].equalsIgnoreCase("-f")) {
+                File file = new File(args[1]);
+                String attribute = args[2];
+                String content = args[3];
+            }
+        }
+        File file = new File("sujet.odt");
+        File newFile = fileM.changeExtension(file, ".zip");
+        File destDir = new File(file.getName().substring(0, file.getName().lastIndexOf(".")));
+        fileM.readMetaData(newFile);
+        fileM.modifyMetaData(new File(destDir.getPath() + "/meta.xml"), destDir.getPath(), "title", "Mon nouveau super titre !!");
+        File fileToZip = new File("./" + destDir.getName());
+        File zipFile = new File(destDir.getName() + ".zip");
+        try {
+            fileM.zip(fileToZip.toPath(), zipFile.toPath());
+            fileM.changeExtension(zipFile, ".odt");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
