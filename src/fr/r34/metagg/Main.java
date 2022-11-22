@@ -1,9 +1,9 @@
 package fr.r34.metagg;
 
-        import java.io.*;
-        import java.net.MalformedURLException;
-        import java.util.ArrayList;
-        import java.util.HashMap;
+import java.io.*;
+import java.net.MalformedURLException;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Main {
 
@@ -16,9 +16,15 @@ public class Main {
 
         FileManager fileM = new FileManager();
 
-        File media = new File("C:\\Users\\Utilisateur\\OneDrive\\Documents\\Devoir\\L2_informatique\\POO java\\ProjetJava\\Meta\\Meta.gg\\media");
+        File media = new File("C:\\Users\\andre\\OneDrive\\Documents\\Devoir\\L2_informatique\\POO java\\ProjetJava\\Meta\\Meta.gg\\media");
         fileM.readPictureMetaData(media);
 
+        
+        File thumbnailFolder = new File("C:\\Users\\andre\\OneDrive\\Documents\\Devoir\\L2_informatique\\POO java\\ProjetJava\\Thumbnails");
+        File thumbnal = fileM.getThumbnail(thumbnailFolder);
+        
+        
+        
         //for (File file : odtInFolder) {
         //    System.out.println(file.exists());
         //    File newFile = fileM.changeExtension(file, ".zip");

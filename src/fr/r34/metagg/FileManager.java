@@ -6,9 +6,13 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+
+import java.awt.Frame;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -92,6 +96,19 @@ public class FileManager {
                         }
                     }
                 }
+                if(f.getName().endsWith(".xml") && f.getName().equalsIgnoreCase("content.xml")) {
+                	doc = builder.parse(f);
+                	doc.getDocumentElement().normalize();
+                	NodeList metaDataList = doc.getElementsByTagName("office:text");
+                	for(int i = 0; i < metaDataList.getLength(); i++) {
+                		Node node = metaDataList.item(i);
+                		if(node.getNodeType() == Node.ELEMENT_NODE) {
+                			Element metaElement = (Element) node;
+                		}
+                	}
+                	
+                	
+                }
             }
             changeExtension(file, ".odt");
         } catch (ParserConfigurationException | IOException | SAXException e) {
@@ -99,6 +116,30 @@ public class FileManager {
         }
     }
 
+    /*
+    * Récupère la miniature du fichier ODT et l'affiche sous forme de frame
+    * @param file Le dossier dans lequel est stockée la miniature
+    * @return thumbnail Le fichier de la miniature du fichier ODT
+    *
+     */
+    public File getThumbnail(File file) {
+    	File thumbnail = null;
+    	if(file.getName().equalsIgnoreCase("thumbnails")) {
+    		for(File fileOfThumbnails : file.listFiles()) {
+    			System.out.println(fileOfThumbnails.getName());
+    			if(fileOfThumbnails.getName().equalsIgnoreCase("thumbnail.png")){
+    				thumbnail = fileOfThumbnails;
+    			}
+    		}
+            Frame frame = new Frame();
+            ImageIcon thumbnailAffiche = new ImageIcon(thumbnail.getAbsolutePath());
+            frame.add(new JLabel(thumbnailAffiche));
+            frame.pack();
+            frame.setVisible(true);
+            return thumbnail;
+    	}
+        return null;
+    }
 
     public void readPictureMetaData(File file) {
         HashMap<String, String> imageExt = new HashMap<>();
