@@ -10,6 +10,13 @@ public class Main {
     public static void main(String[] args) {
         FileManager fileM = new FileManager();
         DirectoryManager directoryM = new DirectoryManager();
+
+        File media = new File("C:\\Users\\Utilisateur\\OneDrive\\Documents\\Devoir\\L2_informatique\\POO java\\ProjetJava\\Meta\\Meta.gg\\media");
+        fileM.readPictureMetaData(media);
+
+        File thumbnailFolder = new File("C:\\Users\\Utilisateur\\OneDrive\\Documents\\Devoir\\L2_informatique\\POO java\\ProjetJava\\Thumbnails");
+        File thumbnail = fileM.getThumbnail(thumbnailFolder);
+
         if (args.length == 2) {
             if (args[0].equalsIgnoreCase("-f")) {
                 File file = new File(args[1]);
@@ -17,7 +24,7 @@ public class Main {
                 fileM.readMetaData(newFile);
             } else if (args[0].equalsIgnoreCase("-d")) {
                 File folder = new File("./");
-                ArrayList<File> odtInFolder = directoryM.directoryContent(folder);
+                ArrayList<File> odtInFolder = directoryM.directoryContent(folder, new ArrayList<>());
                 for (File f : odtInFolder) {
                     File newFile = fileM.changeExtension(f, ".zip");
                     fileM.readMetaData(newFile);

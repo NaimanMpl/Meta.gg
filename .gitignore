@@ -7,3 +7,5 @@ out/
 meta.xml
 ./*.xml
 .idea/workspace.xml
+.project
+.classpath

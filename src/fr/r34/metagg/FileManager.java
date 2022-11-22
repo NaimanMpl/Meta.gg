@@ -253,6 +253,7 @@ public class FileManager {
         ArrayList<File> metaFiles = new ArrayList<>();
         try {
             byte[] buffer = new byte[1024];
+            System.out.println(file.getAbsolutePath());
             ZipInputStream zis = new ZipInputStream(new FileInputStream(file.getAbsolutePath()));
             ZipEntry ze = zis.getNextEntry();
             while (ze != null) {
@@ -314,7 +315,7 @@ public class FileManager {
         String name = file.getName().substring(0, i);
         File newFile = new File(file.getParent(), name + newExtension);
         try {
-            Files.move(file.toPath(), newFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+            Files.move(file.toPath(), newFile.toPath().resolveSibling(newFile.getName()), StandardCopyOption.REPLACE_EXISTING);
         } catch (IOException e) {
             e.printStackTrace();
         }
