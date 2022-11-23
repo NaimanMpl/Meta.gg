@@ -214,6 +214,7 @@ public class FileManager {
             if (metaNode.getNodeType() == Node.ELEMENT_NODE) {
                 Element metaElement = (Element) metaNode;
                 Node metaData = metaElement.getElementsByTagName(attributeMap.get(attribute)).item(0);
+                if (metaData == null) return;
                 metaData.setTextContent(content);
                 System.out.println(metaData.getTextContent());
                 System.out.println("Modification de la métadonnée effectuée ✨");

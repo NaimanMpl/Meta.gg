@@ -11,25 +11,38 @@ public class Main {
         FileManager fileM = new FileManager();
         DirectoryManager directoryM = new DirectoryManager();
 
-        File media = new File("C:\\Users\\Utilisateur\\OneDrive\\Documents\\Devoir\\L2_informatique\\POO java\\ProjetJava\\Meta\\Meta.gg\\media");
-        fileM.readPictureMetaData(media);
-
-        File thumbnailFolder = new File("C:\\Users\\Utilisateur\\OneDrive\\Documents\\Devoir\\L2_informatique\\POO java\\ProjetJava\\Thumbnails");
-        File thumbnail = fileM.getThumbnail(thumbnailFolder);
-
         if (args.length == 2) {
             if (args[0].equalsIgnoreCase("-f")) {
                 File file = new File(args[1]);
                 File newFile = fileM.changeExtension(file, ".zip");
+                File destDir = new File(file.getName().substring(0, file.getName().lastIndexOf(".")));
                 fileM.readMetaData(newFile);
+                fileM.modifyMetaData(new File(destDir.getPath() + "/meta.xml"), destDir.getPath(), "title", "Mon nouveau super titre !!");
+                File fileToZip = new File("./" + destDir.getName());
+                File zipFile = new File(destDir.getName() + ".zip");
+                try {
+                    fileM.zip(fileToZip.toPath(), zipFile.toPath());
+                    fileM.changeExtension(zipFile, ".odt");
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             } else if (args[0].equalsIgnoreCase("-d")) {
-                File folder = new File("./");
+                File folder = new File(args[1] + "/");
                 ArrayList<File> odtInFolder = directoryM.directoryContent(folder, new ArrayList<>());
                 for (File f : odtInFolder) {
                     File newFile = fileM.changeExtension(f, ".zip");
+                    File destDir = new File(f.getName().substring(0, f.getName().lastIndexOf(".")));
                     fileM.readMetaData(newFile);
+                    fileM.modifyMetaData(new File(destDir.getPath() + "/meta.xml"), destDir.getPath(), "title", "Mon nouveau super titre !!");
+                    File fileToZip = new File("./" + destDir.getName());
+                    File zipFile = new File(destDir.getName() + ".zip");
+                    try {
+                        fileM.zip(fileToZip.toPath(), zipFile.toPath());
+                        fileM.changeExtension(zipFile, ".odt");
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
-                fileM.readMetaData(fileM.changeExtension(new File(args[1]), ".zip"));
             }
         } else if (args.length == 4) {
             if (args[0].equalsIgnoreCase("-f")) {
@@ -37,19 +50,6 @@ public class Main {
                 String attribute = args[2];
                 String content = args[3];
             }
-        }
-        File file = new File("sujet.odt");
-        File newFile = fileM.changeExtension(file, ".zip");
-        File destDir = new File(file.getName().substring(0, file.getName().lastIndexOf(".")));
-        fileM.readMetaData(newFile);
-        fileM.modifyMetaData(new File(destDir.getPath() + "/meta.xml"), destDir.getPath(), "title", "Mon nouveau super titre !!");
-        File fileToZip = new File("./" + destDir.getName());
-        File zipFile = new File(destDir.getName() + ".zip");
-        try {
-            fileM.zip(fileToZip.toPath(), zipFile.toPath());
-            fileM.changeExtension(zipFile, ".odt");
-        } catch (IOException e) {
-            e.printStackTrace();
         }
     }
 }
