@@ -106,7 +106,7 @@ public class FileManager {
                         }
                     }
                 }
-                if(f.getName().endsWith(".xml") && f.getName().equalsIgnoreCase("content.xml")) {
+                if (f.getName().endsWith(".xml") && f.getName().equalsIgnoreCase("content.xml")) {
                 	doc = builder.parse(f);
                 	doc.getDocumentElement().normalize();
                 	NodeList metaDataList = doc.getElementsByTagName("office:text");
@@ -120,17 +120,15 @@ public class FileManager {
                 	
                 }
             }
-            this.changeExtension(file, ".odt");
         } catch (ParserConfigurationException | IOException | SAXException e) {
             e.printStackTrace();
         }
     }
 
     /*
-    * Récupère la miniature du fichier ODT et l'affiche sous forme de frame
-    * @param file Le dossier dans lequel est stockée la miniature
-    * @return thumbnail Le fichier de la miniature du fichier ODT
-    *
+     * Récupère la miniature du fichier ODT et l'affiche sous forme de frame
+     * @param file Le dossier dans lequel est stockée la miniature
+     * @return thumbnail Le fichier de la miniature du fichier ODT
      */
     public File getThumbnail(File file) {
     	File thumbnail = null;
@@ -321,6 +319,25 @@ public class FileManager {
             e.printStackTrace();
         }
         return newFile;
+    }
+
+    public void delete(File folder) {
+        if (folder.isDirectory()) {
+            if (folder.list().length == 0) {
+                folder.delete();
+            } else {
+                String files[] = folder.list();
+                for (String tmp : files) {
+                    File file = new File(folder, tmp);
+                    delete(file);
+                }
+                if (folder.list().length == 0) {
+                    folder.delete();
+                }
+            }
+        } else {
+            folder.delete();
+        }
     }
 
 }

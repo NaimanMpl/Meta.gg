@@ -33,7 +33,6 @@ public class DirectoryManager {
 					if (Objects.equals(mimetype, "application/vnd.oasis.opendocument.text")) {
 						String fileName = element.getName();
 						odtInFolder.add(element);
-				
 					}
 				}
 			}
