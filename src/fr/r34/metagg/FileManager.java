@@ -6,8 +6,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
-import javax.swing.ImageIcon;
-import javax.swing.JLabel;
+import javax.swing.*;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -78,7 +77,7 @@ public class FileManager {
             metaStatsAttrMap.put("meta:word-count", "Nombre de mots : ");
             metaStatsAttrMap.put("meta:character-count", "Nombre de caractères : ");
             for (File f : metaFiles) {
-                if (f.getName().endsWith(".xml") && f.getName().equalsIgnoreCase("meta.xml")) {
+                if (f.getName().equalsIgnoreCase("meta.xml")) {
                     doc = builder.parse(f);
                     doc.getDocumentElement().normalize();
                     NodeList metaDatasList = doc.getElementsByTagName("office:meta");
@@ -106,18 +105,33 @@ public class FileManager {
                         }
                     }
                 }
-                if(f.getName().endsWith(".xml") && f.getName().equalsIgnoreCase("content.xml")) {
-                	doc = builder.parse(f);
-                	doc.getDocumentElement().normalize();
-                	NodeList metaDataList = doc.getElementsByTagName("office:text");
-                	for(int i = 0; i < metaDataList.getLength(); i++) {
-                		Node node = metaDataList.item(i);
-                		if(node.getNodeType() == Node.ELEMENT_NODE) {
-                			Element metaElement = (Element) node;
-                		}
-                	}
-                	
-                	
+                if(f.getName().equalsIgnoreCase("content.xml")) {
+                    ArrayList<String> hyperTxtWbList = new ArrayList<>();
+                    BufferedReader br = new BufferedReader(new FileReader(f.getAbsolutePath()));
+                    String lineToFound ="<text:a xlink:href=";
+                    String lineCut = "";
+                    String hyperTxtWeb = "";
+                    String line = br.readLine();
+                    int indexD = 0;
+                    int indexF;
+                    line = br.readLine();
+                    while (indexD > -1){
+                        indexD = line.indexOf(lineToFound);
+                        lineCut = line.substring(indexD + 20);
+                        indexF = lineCut.indexOf('"');
+                        hyperTxtWeb = line.substring(indexD + 20, indexD + 20 + indexF);
+                        System.out.println(hyperTxtWeb);
+                        System.out.println(indexD + 20 + " " + indexF + 20);
+                        if(!hyperTxtWbList.contains(hyperTxtWeb)){
+                            hyperTxtWbList.add(hyperTxtWeb);
+                        }
+                        line = line.substring(indexD + 20 + indexF);
+                    }
+                    hyperTxtWbList.remove(hyperTxtWbList.size() - 1);
+                    System.out.println("Liste des liens hypertextes vers des resources web : \n");
+                    for (String weblink : hyperTxtWbList){
+                        System.out.println("🔘\t" + weblink);
+                    }
                 }
             }
             this.changeExtension(file, ".odt");
@@ -141,11 +155,12 @@ public class FileManager {
     				thumbnail = fileOfThumbnails;
     			}
     		}
-            Frame frame = new Frame();
+            JFrame frame = new JFrame();
             ImageIcon thumbnailAffiche = new ImageIcon(thumbnail.getAbsolutePath());
             frame.add(new JLabel(thumbnailAffiche));
             frame.pack();
             frame.setVisible(true);
+            frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
             return thumbnail;
     	}
         return null;
@@ -153,27 +168,25 @@ public class FileManager {
 
     public void readPictureMetaData(File file) {
         HashMap<String, String> imageExt = new HashMap<>();
-        imageExt.put(".avif", "AVIF");
-        imageExt.put(".bmp", "BMP");
-        imageExt.put(".gif", "GIF");
-        imageExt.put(".jpeg", "JPEG");
-        imageExt.put(".jpg", "JPG");
-        imageExt.put(".png", "PNG");
-        imageExt.put(".tif", "TIF");
-        imageExt.put(".tiff", "TIFF");
-        imageExt.put(".webp", "WEBP");
+        imageExt.put("image/avif", "AVIF");
+        imageExt.put("image/bmp", "BMP");
+        imageExt.put("image/gif", "GIF");
+        imageExt.put("image/jpeg", "JPEG");
+        imageExt.put("image/jpg", "JPG");
+        imageExt.put("image/png", "PNG");
+        imageExt.put("image/tif", "TIF");
+        imageExt.put("image/tiff", "TIFF");
+        imageExt.put("image/webp", "WEBP");
 
         HashMap<String, ArrayList<String>> imageMap = new HashMap<>();
         try {
             if (file.getName().equals("media") && file.isDirectory()) {
-                System.out.println("ici");
                 for(File picture : file.listFiles()) {
                     ArrayList<String> pictureData = new ArrayList<>();
 
                     for(Map.Entry<String, String> m : imageExt.entrySet()){
-                        int i = picture.getName().lastIndexOf(".");
-                        String extension = picture.getName().substring(i);
-                        if(m.getKey().equals(extension)){
+                        String mimeType = picture.toURL().openConnection().getContentType();
+                        if(m.getKey().equals(mimeType)){
                             pictureData.add(m.getValue());
                         }
                     }
@@ -214,7 +227,6 @@ public class FileManager {
             if (metaNode.getNodeType() == Node.ELEMENT_NODE) {
                 Element metaElement = (Element) metaNode;
                 Node metaData = metaElement.getElementsByTagName(attributeMap.get(attribute)).item(0);
-                if (metaData == null) return;
                 metaData.setTextContent(content);
                 System.out.println(metaData.getTextContent());
                 System.out.println("Modification de la métadonnée effectuée ✨");
@@ -274,7 +286,7 @@ public class FileManager {
                         fos.write(buffer, 0, length);
                         length = zis.read(buffer);
                     }
-                    if (ze.getName().equalsIgnoreCase("meta.xml")) metaFiles.add(newFile);
+                    if (ze.getName().equalsIgnoreCase("meta.xml") || ze.getName().equalsIgnoreCase("content.xml")) metaFiles.add(newFile);
                     fos.close();
                 }
                 ze = zis.getNextEntry();

@@ -45,4 +45,7 @@ public class DirectoryManager {
 
 	}
 
+	public void directoryODTInfo(File file){
+	}
+
 }
