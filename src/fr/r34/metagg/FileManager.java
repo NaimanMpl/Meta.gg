@@ -58,20 +58,15 @@ public class FileManager {
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             DocumentBuilder builder = factory.newDocumentBuilder();
             Document doc;
-            HashMap<String, String> tagsMap = new HashMap<>();
-            tagsMap.put("dc:title", "Titre");
-            tagsMap.put("dc:subject", "Sujet");
-            tagsMap.put("meta:creation-date", "Date de création");
-            // tagsMap.put("meta:document-statistic", "Donées diverses :");
             for (File f : metaFiles) {
                 if (f.getName().endsWith(".xml") && f.getName().equalsIgnoreCase("meta.xml")) {
-                    this.readAttribute(metaFile, f, "Title");
-                    this.readAttribute(metaFile, f, "Subject");
-                    this.readAttribute(metaFile, f, "Creation Date");
-                    this.readDiverseData(metaFile, f, "Nombre de pages");
-                    this.readDiverseData(metaFile, f, "Nombre de paragraphes");
-                    this.readDiverseData(metaFile, f, "Nombre de mots");
-                    this.readDiverseData(metaFile, f, "Nombre de caractères");
+                    this.readAttribute(metaFile, f, MetaAttributes.TITLE);
+                    this.readAttribute(metaFile, f, MetaAttributes.SUBJECT);
+                    this.readAttribute(metaFile, f, MetaAttributes.CREATION_DATE);
+                    this.readDiverseData(metaFile, f, MetaAttributes.PAGE_COUNT);
+                    this.readDiverseData(metaFile, f, MetaAttributes.CHARACTERS_COUNT);
+                    this.readDiverseData(metaFile, f, MetaAttributes.WORD_COUNT);
+                    this.readDiverseData(metaFile, f, MetaAttributes.PARAGRAPHS_COUNT);
                 } else if (f.getName().endsWith(".xml") && f.getName().equalsIgnoreCase("content.xml")) {
                 	doc = builder.parse(f);
                 	doc.getDocumentElement().normalize();
@@ -89,15 +84,11 @@ public class FileManager {
         }
     }
 
-    public void readAttribute(MetaFile metaFile, File xmlFile, String attribute) {
+    public void readAttribute(MetaFile metaFile, File xmlFile, MetaAttributes attribute) {
         try {
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             DocumentBuilder builder = factory.newDocumentBuilder();
             Document doc;
-            HashMap<String, String> tagsMap = new HashMap<>();
-            tagsMap.put("Title", "dc:title");
-            tagsMap.put("Subject", "dc:subject");
-            tagsMap.put("Creation Date", "meta:creation-date");
             if (xmlFile.getName().equalsIgnoreCase("meta.xml")) {
                 doc = builder.parse(xmlFile);
                 doc.getDocumentElement().normalize();
@@ -106,15 +97,11 @@ public class FileManager {
                     Node node = metaDatasList.item(i);
                     if (node.getNodeType() == Node.ELEMENT_NODE) {
                         Element metaElement = (Element) node;
-                        String tag = tagsMap.get(attribute);
+                        String tag = attribute.getTag();
                         Node metaItem = metaElement.getElementsByTagName(tag).item(0);
                         if (metaItem == null) continue;
                         String metaData = metaItem.getTextContent();
-                        switch (attribute) {
-                            case "Title" -> { metaFile.setTitle(metaData); }
-                            case "Subject" -> { metaFile.setSubject(metaData); }
-                            case "Creation Date" -> { metaFile.setCreationDate(new Date()); }
-                        }
+                        metaFile.updateAttribute(attribute, metaData);
                     }
                 }
             }
@@ -123,18 +110,11 @@ public class FileManager {
         }
     }
 
-    public void readDiverseData(MetaFile metaFile, File xmlFile, String attribute) {
+    public void readDiverseData(MetaFile metaFile, File xmlFile, MetaAttributes attribute) {
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         try {
             DocumentBuilder builder = factory.newDocumentBuilder();
             Document doc;
-            HashMap<String, String> metaStatsAttrMap = new HashMap<>();
-
-            metaStatsAttrMap.put("Nombre de pages", "meta:page-count");
-            metaStatsAttrMap.put("Nombre de paragraphes", "meta:paragraph-count");
-            metaStatsAttrMap.put("Nombre de mots", "meta:word-count");
-            metaStatsAttrMap.put("Nombre de caractères", "meta:character-count");
-
             if (xmlFile.getName().equalsIgnoreCase("meta.xml")) {
                 doc = builder.parse(xmlFile);
                 doc.getDocumentElement().normalize();
@@ -147,13 +127,8 @@ public class FileManager {
                         if (metaItem.getAttributes().getLength() == 0) continue;
                         if (metaItem.getNodeType() == Node.ELEMENT_NODE) {
                             Element metaItemElement = (Element) metaItem;
-                            String metaData = metaItemElement.getAttribute(metaStatsAttrMap.get(attribute));
-                            switch (attribute) {
-                                case "Nombre de pages" -> { metaFile.setPagesAmount(Integer.parseInt(metaData)); }
-                                case "Nombre de paragraphes" -> { metaFile.setParagraphAmount(Integer.parseInt(metaData)); }
-                                case "Nombre de mots" -> { metaFile.setWordAmount(Integer.parseInt(metaData)); }
-                                case "Nombre de caractères" -> { metaFile.setCharacterAmount(Integer.parseInt(metaData)); }
-                            }
+                            String metaData = metaItemElement.getAttribute(attribute.getTag());
+                            metaFile.updateAttribute(attribute , metaData);
                         }
                     }
                 }
@@ -235,11 +210,7 @@ public class FileManager {
      * @param attribute L'attribut que l'on souhaite modifier
      * @param content Le contenu de l'attribut que l'on souhaite modifier
      */
-    public void modifyMetaData(File xmlFile, String destDirPath, String attribute, String content) {
-        HashMap<String, String> attributeMap = new HashMap<>();
-        attributeMap.put("title", "dc:title");
-        attributeMap.put("subject", "dc:subject");
-        attributeMap.put("keyword", "meta:keyword");
+    public void saveMetaDataXML(MetaFile metaFile, File xmlFile) {
         try {
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             DocumentBuilder builder = factory.newDocumentBuilder();
@@ -249,13 +220,23 @@ public class FileManager {
             Node metaNode = metaDataList.item(0);
             if (metaNode.getNodeType() == Node.ELEMENT_NODE) {
                 Element metaElement = (Element) metaNode;
-                Node metaData = metaElement.getElementsByTagName(attributeMap.get(attribute)).item(0);
-                if (metaData == null) return;
-                metaData.setTextContent(content);
-                System.out.println(metaData.getTextContent());
-                System.out.println("Modification de la métadonnée effectuée ✨");
+                for (MetaAttributes attribute : MetaAttributes.values()) {
+                    Node metaData = metaElement.getElementsByTagName(attribute.getTag()).item(0);
+                    if (metaData == null) continue;
+                    switch (attribute) {
+                        case TITLE -> { metaData.setTextContent(metaFile.getTitle()); }
+                        case SUBJECT -> { metaData.setTextContent(metaFile.getSubject()); }
+                        case CREATION_DATE -> { metaData.setTextContent(metaFile.getCreationDate().toString()); }
+                        case KEYWORD -> { metaData.setTextContent("C'est compliqué"); }
+                        case PAGE_COUNT -> { metaData.setTextContent(String.valueOf(metaFile.getPagesAmount())); }
+                        case CHARACTERS_COUNT -> { metaData.setTextContent(String.valueOf(metaFile.getCharacterAmount())); }
+                        case PARAGRAPHS_COUNT -> { metaData.setTextContent(String.valueOf(metaFile.getParagraphAmount())); }
+                        case WORD_COUNT -> { metaData.setTextContent(String.valueOf(metaFile.getWordAmount())); }
+                    }
+                }
+                System.out.println("Sauvegarde des métas données effectuée ! ✨");
             }
-            try (FileOutputStream fos = new FileOutputStream(destDirPath + "/meta.xml")) {
+            try (FileOutputStream fos = new FileOutputStream(metaFile.getDestDir() + "/meta.xml")) {
                 writeXml(doc, fos);
             } catch (TransformerException e) {
                 e.printStackTrace();

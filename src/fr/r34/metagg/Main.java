@@ -15,10 +15,10 @@ public class Main {
             if (args[0].equalsIgnoreCase("-f")) {
                 File file = new File(args[1]);
                 MetaFile metaFile = new MetaFile(file);
-                File destDir = new File(file.getName().substring(0, file.getName().lastIndexOf(".")));
                 metaFile.displayMetaData();
+                metaFile.setTitle("Pipouloupipope");
+                metaFile.save();
                 /*
-                fileM.modifyMetaData(new File(destDir.getPath() + "/meta.xml"), destDir.getPath(), "title", "Mon nouveau super titre !!");
                 File fileToZip = new File("./" + destDir.getName());
                 File zipFile = new File(destDir.getName() + ".zip");
                 try {
@@ -36,7 +36,8 @@ public class Main {
                     MetaFile metaFile = new MetaFile(f);
                     File destDir = new File(f.getName().substring(0, f.getName().lastIndexOf(".")));
                     fileM.readMetaData(metaFile);
-                    fileM.modifyMetaData(new File(destDir.getPath() + "/meta.xml"), destDir.getPath(), "title", "Mon nouveau super titre !!");
+                    metaFile.setTitle("Hello world!");
+                    metaFile.save();
                     File fileToZip = new File("./" + destDir.getName());
                     File zipFile = new File(destDir.getName() + ".zip");
                     try {
@@ -55,7 +56,7 @@ public class Main {
                 String attribute = args[2].replace("--", "");
                 String content = args[3];
                 fileM.unzip(file, destDir);
-                fileM.modifyMetaData(new File(destDir.getPath() + "/meta.xml"), destDir.getPath(), attribute, content);
+                // fileM.modifyMetaData(new File(destDir.getPath() + "/meta.xml"), destDir.getPath(), attribute, content);
                 File fileToZip = new File("./" + destDir.getName());
                 File zipFile = new File(destDir.getName() + ".zip");
                 try {

@@ -7,7 +7,8 @@ import java.util.Date;
 public class MetaFile {
 
     private String title, subject, mime;
-    private final File file;
+    private final File file, destDir;
+    private final FileManager fileM;
     private int pagesAmount, paragraphAmount, wordAmount, characterAmount;
     private Date creationDate;
     private float size;
@@ -24,7 +25,9 @@ public class MetaFile {
         this.creationDate = null;
         this.size = 0;
         this.keywords = new ArrayList<>();
-        new FileManager().readMetaData(this);
+        this.fileM = new FileManager();
+        this.destDir = new File(file.getName().substring(0, file.getName().lastIndexOf(".")));
+        fileM.readMetaData(this);
     }
 
     public File getFile() {
@@ -103,6 +106,10 @@ public class MetaFile {
         return mime;
     }
 
+    public File getDestDir() {
+        return destDir;
+    }
+
     public void displayMetaData() {
         System.out.println("Métadonnées du fichier : " + file.getName());
         System.out.println("Données principales :");
@@ -115,5 +122,23 @@ public class MetaFile {
         System.out.println("\tNombre de paragraphes : " + paragraphAmount);
         System.out.println("\tNombre de mots : " + wordAmount);
         System.out.println("\tNombre de caractères : " + characterAmount);
+    }
+
+    public void save() {
+        File xmlFile = new File(destDir.getPath() + "/meta.xml");
+        fileM.saveMetaDataXML(this, xmlFile);
+    }
+
+    public void updateAttribute(MetaAttributes attribute, String content) {
+        switch (attribute) {
+            case TITLE -> { this.setTitle(content); }
+            case SUBJECT -> { this.setSubject(content); }
+            case CREATION_DATE -> { this.setCreationDate(new Date()); }
+            case KEYWORD -> { this.getKeywords().add(content); }
+            case PAGE_COUNT -> { this.setPagesAmount(Integer.parseInt(content)); }
+            case CHARACTERS_COUNT -> { this.setCharacterAmount(Integer.parseInt(content)); }
+            case PARAGRAPHS_COUNT -> { this.setParagraphAmount(Integer.parseInt(content)); }
+            case WORD_COUNT -> { this.setWordAmount(Integer.parseInt(content)); }
+        }
     }
 }
