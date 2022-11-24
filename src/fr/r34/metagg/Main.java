@@ -14,8 +14,10 @@ public class Main {
         if (args.length == 2) {
             if (args[0].equalsIgnoreCase("-f")) {
                 File file = new File(args[1]);
+                MetaFile metaFile = new MetaFile(file);
                 File destDir = new File(file.getName().substring(0, file.getName().lastIndexOf(".")));
-                fileM.readMetaData(file);
+                metaFile.displayMetaData();
+                /*
                 fileM.modifyMetaData(new File(destDir.getPath() + "/meta.xml"), destDir.getPath(), "title", "Mon nouveau super titre !!");
                 File fileToZip = new File("./" + destDir.getName());
                 File zipFile = new File(destDir.getName() + ".zip");
@@ -26,12 +28,14 @@ public class Main {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
+                 */
             } else if (args[0].equalsIgnoreCase("-d")) {
                 File folder = new File(args[1] + "/");
                 ArrayList<File> odtInFolder = directoryM.directoryContent(folder, new ArrayList<>());
                 for (File f : odtInFolder) {
+                    MetaFile metaFile = new MetaFile(f);
                     File destDir = new File(f.getName().substring(0, f.getName().lastIndexOf(".")));
-                    fileM.readMetaData(f);
+                    fileM.readMetaData(metaFile);
                     fileM.modifyMetaData(new File(destDir.getPath() + "/meta.xml"), destDir.getPath(), "title", "Mon nouveau super titre !!");
                     File fileToZip = new File("./" + destDir.getName());
                     File zipFile = new File(destDir.getName() + ".zip");

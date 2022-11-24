@@ -28,10 +28,7 @@ import javax.xml.transform.stream.StreamSource;
 import java.io.*;
 import java.nio.file.*;
 import java.nio.file.attribute.BasicFileAttributes;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
+import java.util.*;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
@@ -44,12 +41,6 @@ public class FileManager {
      * @author Naiman Mpl, Andrea PL
      */
 
-    /*
-     * @param filePath Le chemin vers le fichier dont on veut extraire les métadonnées
-     */
-    public void readMetaData(String filePath) {
-        this.readMetaData(new File(filePath));
-    }
     /* Récupère et affiche (terminal) les métadonnées du fichier (unzip) passé en paramètre selon un panel prédéfinis de métadonnées souhaitées
      * @param file Fichier dont on veut extraire les métadonnées
      */
@@ -60,7 +51,8 @@ public class FileManager {
      * @throws IOException
      * @throws SAXEception
      */
-    public void readMetaData(File file) {
+    public void readMetaData(MetaFile metaFile) {
+        File file = metaFile.getFile();
         ArrayList<File> metaFiles = this.unzip(file, new File("./" + file.getName().substring(0, file.getName().lastIndexOf("."))));
         try {
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
@@ -70,43 +62,17 @@ public class FileManager {
             tagsMap.put("dc:title", "Titre");
             tagsMap.put("dc:subject", "Sujet");
             tagsMap.put("meta:creation-date", "Date de création");
-            tagsMap.put("meta:document-statistic", "Donées diverses :");
-            HashMap<String, String> metaStatsAttrMap = new HashMap<>();
-
-            metaStatsAttrMap.put("meta:page-count", "Nombre de pages : ");
-            metaStatsAttrMap.put("meta:paragraph-count", "Nombre de paragraphes : ");
-            metaStatsAttrMap.put("meta:word-count", "Nombre de mots : ");
-            metaStatsAttrMap.put("meta:character-count", "Nombre de caractères : ");
+            // tagsMap.put("meta:document-statistic", "Donées diverses :");
             for (File f : metaFiles) {
                 if (f.getName().endsWith(".xml") && f.getName().equalsIgnoreCase("meta.xml")) {
-                    doc = builder.parse(f);
-                    doc.getDocumentElement().normalize();
-                    NodeList metaDatasList = doc.getElementsByTagName("office:meta");
-                    for (int i = 0; i < metaDatasList.getLength(); i++) {
-                        Node node = metaDatasList.item(i);
-                        if (node.getNodeType() == Node.ELEMENT_NODE) {
-                            Element metaElement = (Element) node;
-                            for (Map.Entry<String, String> set : tagsMap.entrySet()) {
-                                String tag = set.getKey();
-                                String tagTitle = set.getValue();
-                                Node metaItem = metaElement.getElementsByTagName(tag).item(0);
-                                if (metaItem == null) continue;
-                                String metaData = metaItem.getTextContent();
-                                System.out.println(tagTitle + " " + metaData);
-                                if (tag.equalsIgnoreCase("meta:document-statistic")) {
-                                    if (metaItem.getAttributes().getLength() == 0) continue;
-                                    if (metaItem.getNodeType() == Node.ELEMENT_NODE) {
-                                        Element metaItemElement = (Element) metaItem;
-                                        for (Map.Entry<String, String> metaSet : metaStatsAttrMap.entrySet()) {
-                                            System.out.println("\t" + metaSet.getValue() + metaItemElement.getAttribute(metaSet.getKey()));
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-                if (f.getName().endsWith(".xml") && f.getName().equalsIgnoreCase("content.xml")) {
+                    this.readAttribute(metaFile, f, "Title");
+                    this.readAttribute(metaFile, f, "Subject");
+                    this.readAttribute(metaFile, f, "Creation Date");
+                    this.readDiverseData(metaFile, f, "Nombre de pages");
+                    this.readDiverseData(metaFile, f, "Nombre de paragraphes");
+                    this.readDiverseData(metaFile, f, "Nombre de mots");
+                    this.readDiverseData(metaFile, f, "Nombre de caractères");
+                } else if (f.getName().endsWith(".xml") && f.getName().equalsIgnoreCase("content.xml")) {
                 	doc = builder.parse(f);
                 	doc.getDocumentElement().normalize();
                 	NodeList metaDataList = doc.getElementsByTagName("office:text");
@@ -116,11 +82,83 @@ public class FileManager {
                 			Element metaElement = (Element) node;
                 		}
                 	}
-                	
-                	
                 }
             }
         } catch (ParserConfigurationException | IOException | SAXException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void readAttribute(MetaFile metaFile, File xmlFile, String attribute) {
+        try {
+            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder builder = factory.newDocumentBuilder();
+            Document doc;
+            HashMap<String, String> tagsMap = new HashMap<>();
+            tagsMap.put("Title", "dc:title");
+            tagsMap.put("Subject", "dc:subject");
+            tagsMap.put("Creation Date", "meta:creation-date");
+            if (xmlFile.getName().equalsIgnoreCase("meta.xml")) {
+                doc = builder.parse(xmlFile);
+                doc.getDocumentElement().normalize();
+                NodeList metaDatasList = doc.getElementsByTagName("office:meta");
+                for (int i = 0; i < metaDatasList.getLength(); i++) {
+                    Node node = metaDatasList.item(i);
+                    if (node.getNodeType() == Node.ELEMENT_NODE) {
+                        Element metaElement = (Element) node;
+                        String tag = tagsMap.get(attribute);
+                        Node metaItem = metaElement.getElementsByTagName(tag).item(0);
+                        if (metaItem == null) continue;
+                        String metaData = metaItem.getTextContent();
+                        switch (attribute) {
+                            case "Title" -> { metaFile.setTitle(metaData); }
+                            case "Subject" -> { metaFile.setSubject(metaData); }
+                            case "Creation Date" -> { metaFile.setCreationDate(new Date()); }
+                        }
+                    }
+                }
+            }
+        } catch (ParserConfigurationException | IOException | SAXException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void readDiverseData(MetaFile metaFile, File xmlFile, String attribute) {
+        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        try {
+            DocumentBuilder builder = factory.newDocumentBuilder();
+            Document doc;
+            HashMap<String, String> metaStatsAttrMap = new HashMap<>();
+
+            metaStatsAttrMap.put("Nombre de pages", "meta:page-count");
+            metaStatsAttrMap.put("Nombre de paragraphes", "meta:paragraph-count");
+            metaStatsAttrMap.put("Nombre de mots", "meta:word-count");
+            metaStatsAttrMap.put("Nombre de caractères", "meta:character-count");
+
+            if (xmlFile.getName().equalsIgnoreCase("meta.xml")) {
+                doc = builder.parse(xmlFile);
+                doc.getDocumentElement().normalize();
+                NodeList metaDatasList = doc.getElementsByTagName("office:meta");
+                for (int i = 0; i < metaDatasList.getLength(); i++) {
+                    Node node = metaDatasList.item(i);
+                    if (node.getNodeType() == Node.ELEMENT_NODE) {
+                        Element metaElement = (Element) node;
+                        Node metaItem = metaElement.getElementsByTagName("meta:document-statistic").item(0);
+                        if (metaItem.getAttributes().getLength() == 0) continue;
+                        if (metaItem.getNodeType() == Node.ELEMENT_NODE) {
+                            Element metaItemElement = (Element) metaItem;
+                            String metaData = metaItemElement.getAttribute(metaStatsAttrMap.get(attribute));
+                            switch (attribute) {
+                                case "Nombre de pages" -> { metaFile.setPagesAmount(Integer.parseInt(metaData)); }
+                                case "Nombre de paragraphes" -> { metaFile.setParagraphAmount(Integer.parseInt(metaData)); }
+                                case "Nombre de mots" -> { metaFile.setWordAmount(Integer.parseInt(metaData)); }
+                                case "Nombre de caractères" -> { metaFile.setCharacterAmount(Integer.parseInt(metaData)); }
+                            }
+                        }
+                    }
+                }
+            }
+        } catch (SAXException | ParserConfigurationException | IOException e) {
             e.printStackTrace();
         }
     }
