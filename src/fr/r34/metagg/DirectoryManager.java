@@ -7,6 +7,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Objects;
 
 /**
@@ -45,7 +46,19 @@ public class DirectoryManager {
 
 	}
 
+	/*
+	 * Affiche les informations princiaples d'un fichier odt avec son dossier parent
+	 * @param file Fichier dont on veut afficher les informations principales
+	 * 
+	 */
 	public void directoryODTInfo(File file){
+		MetaFile metaFile = new MetaFile(file);
+		String name = file.getName();
+		String title = metaFile.getTitle();
+		Date creattionDate = metaFile.getCreationDate();
+		Float size = metaFile.getSize();
+		System.out.println(file.getParent());
+		System.out.println("◼"+ name + "\t" + title + " " + creattionDate + " " + size + " Ko");
 	}
 
 }

@@ -120,14 +120,11 @@ public class FileManager {
                         lineCut = line.substring(indexD + 20);
                         indexF = lineCut.indexOf('"');
                         hyperTxtWeb = line.substring(indexD + 20, indexD + 20 + indexF);
-                        System.out.println(hyperTxtWeb);
-                        System.out.println(indexD + 20 + " " + indexF + 20);
-                        if(!hyperTxtWbList.contains(hyperTxtWeb)){
+                        if(!hyperTxtWbList.contains(hyperTxtWeb) && indexD > -1){
                             hyperTxtWbList.add(hyperTxtWeb);
                         }
                         line = line.substring(indexD + 20 + indexF);
                     }
-                    hyperTxtWbList.remove(hyperTxtWbList.size() - 1);
                     System.out.println("Liste des liens hypertextes vers des resources web : \n");
                     for (String weblink : hyperTxtWbList){
                         System.out.println("🔘\t" + weblink);
@@ -165,29 +162,20 @@ public class FileManager {
     	}
         return null;
     }
-
+    /*
+    * Récupère et affiche les métadonnées (nom/type mime/poids en Ko) des images présentes dans le fichier ODT passé
+    * @param file Le dossier contenant les différentes images (mzdia) du fichier ODT étudié
+    */
     public void readPictureMetaData(File file) {
-        HashMap<String, String> imageExt = new HashMap<>();
-        imageExt.put("image/avif", "AVIF");
-        imageExt.put("image/bmp", "BMP");
-        imageExt.put("image/gif", "GIF");
-        imageExt.put("image/jpeg", "JPEG");
-        imageExt.put("image/jpg", "JPG");
-        imageExt.put("image/png", "PNG");
-        imageExt.put("image/tif", "TIF");
-        imageExt.put("image/tiff", "TIFF");
-        imageExt.put("image/webp", "WEBP");
-
         HashMap<String, ArrayList<String>> imageMap = new HashMap<>();
         try {
             if (file.getName().equals("media") && file.isDirectory()) {
                 for(File picture : file.listFiles()) {
                     ArrayList<String> pictureData = new ArrayList<>();
-
-                    for(Map.Entry<String, String> m : imageExt.entrySet()){
+                    for(MimeTypeImage m : MimeTypeImage.values()){
                         String mimeType = picture.toURL().openConnection().getContentType();
-                        if(m.getKey().equals(mimeType)){
-                            pictureData.add(m.getValue());
+                        if(m.getMimetype().equals(mimeType)){
+                            pictureData.add(m.getTitle());
                         }
                     }
                     DecimalFormat df = new DecimalFormat("0.0");

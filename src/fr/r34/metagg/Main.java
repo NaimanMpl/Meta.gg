@@ -11,10 +11,10 @@ public class Main {
         FileManager fileM = new FileManager();
         DirectoryManager directoryM = new DirectoryManager();
 
-        File media = new File("C:\\Users\\andre\\OneDrive\\Documents\\Devoir\\L2_informatique\\POO java\\ProjetJava\\Meta\\Meta.gg\\media");
+        File media = new File("C:\\Users\\Utilisateur\\OneDrive\\Documents\\Devoir\\L2_informatique\\POO java\\ProjetJava\\Meta\\Meta.gg\\media");
         fileM.readPictureMetaData(media);
 
-        File thumbnailFolder = new File("C:\\Users\\andre\\OneDrive\\Documents\\Devoir\\L2_informatique\\POO java\\ProjetJava\\Thumbnails");
+        File thumbnailFolder = new File("C:\\Users\\Utilisateur\\OneDrive\\Documents\\Devoir\\L2_informatique\\POO java\\ProjetJava\\Thumbnails");
         File thumbnail = fileM.getThumbnail(thumbnailFolder);
 
         if (args.length == 2) {
@@ -50,5 +50,7 @@ public class Main {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        File odtDirectoryCheck = new File("sujet.odt");
+        directoryM.directoryODTInfo(odtDirectoryCheck);
     }
 }
