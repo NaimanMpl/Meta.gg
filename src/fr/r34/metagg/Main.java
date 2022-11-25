@@ -15,9 +15,13 @@ public class Main {
             if (args[0].equalsIgnoreCase("-f")) {
                 File file = new File(args[1]);
                 MetaFile metaFile = new MetaFile(file);
-                metaFile.displayMetaData();
                 metaFile.setTitle("Pipouloupipope");
+                metaFile.setSubject("Mon super sujet !");
+                metaFile.getKeywords().add("1er mot clé!");
+                metaFile.getKeywords().add("2eme mot clé!");
+                metaFile.getKeywords().add("3eme mot clé!");
                 metaFile.save();
+                metaFile.displayMetaData();
                 /*
                 File fileToZip = new File("./" + destDir.getName());
                 File zipFile = new File(destDir.getName() + ".zip");

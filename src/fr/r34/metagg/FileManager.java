@@ -227,7 +227,13 @@ public class FileManager {
                         case TITLE -> { metaData.setTextContent(metaFile.getTitle()); }
                         case SUBJECT -> { metaData.setTextContent(metaFile.getSubject()); }
                         case CREATION_DATE -> { metaData.setTextContent(metaFile.getCreationDate().toString()); }
-                        case KEYWORD -> { metaData.setTextContent("C'est compliqué"); }
+                        case KEYWORD -> {
+                            NodeList keywords = metaElement.getElementsByTagName(attribute.getTag());
+                            for (int i = 0; i < metaFile.getKeywords().size(); i++) {
+                                Node keyword = keywords.item(i);
+                                keyword.setTextContent(metaFile.getKeywords().get(i));
+                            }
+                        }
                         case PAGE_COUNT -> { metaData.setTextContent(String.valueOf(metaFile.getPagesAmount())); }
                         case CHARACTERS_COUNT -> { metaData.setTextContent(String.valueOf(metaFile.getCharacterAmount())); }
                         case PARAGRAPHS_COUNT -> { metaData.setTextContent(String.valueOf(metaFile.getParagraphAmount())); }
