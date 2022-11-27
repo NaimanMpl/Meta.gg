@@ -16,23 +16,22 @@ public class Main {
                 File file = new File(args[1]);
                 MetaFile metaFile = new MetaFile(file);
                 metaFile.setTitle("Pipouloupipope");
-                metaFile.setSubject("Mon super sujet !");
-                metaFile.getKeywords().add("1er mot clé!");
-                metaFile.getKeywords().add("2eme mot clé!");
-                metaFile.getKeywords().add("3eme mot clé!");
+                metaFile.setSubject("Mon super sujet sjdhf shjf sjh !");
+                metaFile.setWordAmount(7277);
+                metaFile.getKeywords().add("Mot clé test");
                 metaFile.save();
                 metaFile.displayMetaData();
-                /*
-                File fileToZip = new File("./" + destDir.getName());
-                File zipFile = new File(destDir.getName() + ".zip");
+
+                File fileToZip = new File("./" + metaFile.getDestDir().getName());
+                File zipFile = new File(metaFile.getDestDir().getName() + ".zip");
                 try {
                     fileM.zip(fileToZip.toPath(), zipFile.toPath());
                     fileM.changeExtension(zipFile, ".odt");
-                    fileM.delete(destDir);
+                    fileM.delete(metaFile.getDestDir());
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                 */
+
             } else if (args[0].equalsIgnoreCase("-d")) {
                 File folder = new File(args[1] + "/");
                 ArrayList<File> odtInFolder = directoryM.directoryContent(folder, new ArrayList<>());

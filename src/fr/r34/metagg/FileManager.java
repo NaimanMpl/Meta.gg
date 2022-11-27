@@ -51,6 +51,10 @@ public class FileManager {
      * @throws IOException
      * @throws SAXEception
      */
+
+    private final static String DOCUMENT_STATISTIC_TAG = "meta:document-statistic";
+    private final static String OFFICE_META_TAG = "office:meta";
+
     public void readMetaData(MetaFile metaFile) {
         File file = metaFile.getFile();
         ArrayList<File> metaFiles = this.unzip(file, new File("./" + file.getName().substring(0, file.getName().lastIndexOf("."))));
@@ -63,6 +67,7 @@ public class FileManager {
                     this.readAttribute(metaFile, f, MetaAttributes.TITLE);
                     this.readAttribute(metaFile, f, MetaAttributes.SUBJECT);
                     this.readAttribute(metaFile, f, MetaAttributes.CREATION_DATE);
+                    this.readAttribute(metaFile, f, MetaAttributes.KEYWORD);
                     this.readDiverseData(metaFile, f, MetaAttributes.PAGE_COUNT);
                     this.readDiverseData(metaFile, f, MetaAttributes.CHARACTERS_COUNT);
                     this.readDiverseData(metaFile, f, MetaAttributes.WORD_COUNT);
@@ -92,12 +97,20 @@ public class FileManager {
             if (xmlFile.getName().equalsIgnoreCase("meta.xml")) {
                 doc = builder.parse(xmlFile);
                 doc.getDocumentElement().normalize();
-                NodeList metaDatasList = doc.getElementsByTagName("office:meta");
+                NodeList metaDatasList = doc.getElementsByTagName(OFFICE_META_TAG);
                 for (int i = 0; i < metaDatasList.getLength(); i++) {
                     Node node = metaDatasList.item(i);
                     if (node.getNodeType() == Node.ELEMENT_NODE) {
                         Element metaElement = (Element) node;
                         String tag = attribute.getTag();
+                        if (attribute == MetaAttributes.KEYWORD) {
+                            NodeList keywordsList = metaElement.getElementsByTagName(attribute.getTag());
+                            for (int j = 0; j < keywordsList.getLength(); j++) {
+                                Node keyword = keywordsList.item(j);
+                                metaFile.getKeywords().add(keyword.getTextContent());
+                            }
+                            continue;
+                        }
                         Node metaItem = metaElement.getElementsByTagName(tag).item(0);
                         if (metaItem == null) continue;
                         String metaData = metaItem.getTextContent();
@@ -118,18 +131,16 @@ public class FileManager {
             if (xmlFile.getName().equalsIgnoreCase("meta.xml")) {
                 doc = builder.parse(xmlFile);
                 doc.getDocumentElement().normalize();
-                NodeList metaDatasList = doc.getElementsByTagName("office:meta");
-                for (int i = 0; i < metaDatasList.getLength(); i++) {
-                    Node node = metaDatasList.item(i);
-                    if (node.getNodeType() == Node.ELEMENT_NODE) {
-                        Element metaElement = (Element) node;
-                        Node metaItem = metaElement.getElementsByTagName("meta:document-statistic").item(0);
-                        if (metaItem.getAttributes().getLength() == 0) continue;
-                        if (metaItem.getNodeType() == Node.ELEMENT_NODE) {
-                            Element metaItemElement = (Element) metaItem;
-                            String metaData = metaItemElement.getAttribute(attribute.getTag());
-                            metaFile.updateAttribute(attribute , metaData);
-                        }
+                NodeList metaDatasList = doc.getElementsByTagName(OFFICE_META_TAG);
+                Node node = metaDatasList.item(0);
+                if (node.getNodeType() == Node.ELEMENT_NODE) {
+                    Element metaElement = (Element) node;
+                    Node metaItem = metaElement.getElementsByTagName(DOCUMENT_STATISTIC_TAG).item(0);
+                    if (metaItem.getAttributes().getLength() == 0) return;
+                    if (metaItem.getNodeType() == Node.ELEMENT_NODE) {
+                        Element metaItemElement = (Element) metaItem;
+                        String metaData = metaItemElement.getAttribute(attribute.getTag());
+                        metaFile.updateAttribute(attribute , metaData);
                     }
                 }
             }
@@ -216,28 +227,54 @@ public class FileManager {
             DocumentBuilder builder = factory.newDocumentBuilder();
             Document doc = builder.parse(xmlFile);
             doc.getDocumentElement().normalize();
-            NodeList metaDataList = doc.getElementsByTagName("office:meta");
-            Node metaNode = metaDataList.item(0);
-            if (metaNode.getNodeType() == Node.ELEMENT_NODE) {
-                Element metaElement = (Element) metaNode;
-                for (MetaAttributes attribute : MetaAttributes.values()) {
-                    Node metaData = metaElement.getElementsByTagName(attribute.getTag()).item(0);
-                    if (metaData == null) continue;
+            NodeList metaDataList = doc.getElementsByTagName(OFFICE_META_TAG);
+            Node officeMetaNode = metaDataList.item(0);
+            if (officeMetaNode.getNodeType() == Node.ELEMENT_NODE) {
+                Element officeMetaElement = (Element) officeMetaNode;
+                for (int i = 0; i < MetaAttributes.values().length - 4; i++) {
+                    MetaAttributes attribute = MetaAttributes.values()[i];
+                    Node metaData = officeMetaElement.getElementsByTagName(attribute.getTag()).item(0);
+                    if (metaData == null) {
+                        Element newElement = doc.createElement(attribute.getTag());
+                        officeMetaElement.appendChild(newElement);
+                        metaData = officeMetaElement.getElementsByTagName(attribute.getTag()).item(0);
+                    }
                     switch (attribute) {
                         case TITLE -> { metaData.setTextContent(metaFile.getTitle()); }
                         case SUBJECT -> { metaData.setTextContent(metaFile.getSubject()); }
                         case CREATION_DATE -> { metaData.setTextContent(metaFile.getCreationDate().toString()); }
                         case KEYWORD -> {
-                            NodeList keywords = metaElement.getElementsByTagName(attribute.getTag());
-                            for (int i = 0; i < metaFile.getKeywords().size(); i++) {
-                                Node keyword = keywords.item(i);
-                                keyword.setTextContent(metaFile.getKeywords().get(i));
+                            NodeList keywords = officeMetaElement.getElementsByTagName(attribute.getTag());
+                            for (int j = 0; j < metaFile.getKeywords().size(); j++) {
+                                Node keyword = keywords.item(j);
+                                if (keyword == null) {
+                                    keyword = doc.createElement(attribute.getTag());
+                                    officeMetaElement.appendChild(keyword);
+                                }
+                                keyword.setTextContent(metaFile.getKeywords().get(j));
                             }
                         }
-                        case PAGE_COUNT -> { metaData.setTextContent(String.valueOf(metaFile.getPagesAmount())); }
-                        case CHARACTERS_COUNT -> { metaData.setTextContent(String.valueOf(metaFile.getCharacterAmount())); }
-                        case PARAGRAPHS_COUNT -> { metaData.setTextContent(String.valueOf(metaFile.getParagraphAmount())); }
-                        case WORD_COUNT -> { metaData.setTextContent(String.valueOf(metaFile.getWordAmount())); }
+                    }
+                }
+                for (int i = 4; i < MetaAttributes.values().length; i++) {
+                    MetaAttributes attribute = MetaAttributes.values()[i];
+                    Node metaStatsNode = officeMetaElement.getElementsByTagName(DOCUMENT_STATISTIC_TAG).item(0);
+                    if (officeMetaNode.getNodeType() == Node.ELEMENT_NODE) {
+                        Element metaStatsData = (Element) metaStatsNode;
+                        switch (attribute) {
+                            case PAGE_COUNT -> {
+                                metaStatsData.setAttribute(attribute.getTag(), String.valueOf(metaFile.getPagesAmount()));
+                            }
+                            case CHARACTERS_COUNT -> {
+                                metaStatsData.setAttribute(attribute.getTag(), String.valueOf(metaFile.getCharacterAmount()));
+                            }
+                            case PARAGRAPHS_COUNT -> {
+                                metaStatsData.setAttribute(attribute.getTag(), String.valueOf(metaFile.getParagraphAmount()));
+                            }
+                            case WORD_COUNT -> {
+                                metaStatsData.setAttribute(attribute.getTag(), String.valueOf(metaFile.getWordAmount()));
+                            }
+                        }
                     }
                 }
                 System.out.println("Sauvegarde des métas données effectuée ! ✨");
