@@ -16,8 +16,8 @@ public class MetaFile {
 
     public MetaFile(File file) {
         this.file = file;
-        this.title = null;
-        this.subject = null;
+        this.title = "";
+        this.subject = "";
         this.pagesAmount = 0;
         this.paragraphAmount = 0;
         this.wordAmount = 0;

@@ -98,7 +98,7 @@ public class FileManager {
                     }
                 }
             }
-        } catch (ParserConfigurationException | IOException | SAXException e) {
+        } catch (ParserConfigurationException | IOException e) {
             e.printStackTrace();
         }
     }
