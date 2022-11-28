@@ -6,8 +6,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
-import javax.swing.ImageIcon;
-import javax.swing.JLabel;
+import javax.swing.*;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -72,16 +71,31 @@ public class FileManager {
                     this.readDiverseData(metaFile, f, MetaAttributes.CHARACTERS_COUNT);
                     this.readDiverseData(metaFile, f, MetaAttributes.WORD_COUNT);
                     this.readDiverseData(metaFile, f, MetaAttributes.PARAGRAPHS_COUNT);
-                } else if (f.getName().endsWith(".xml") && f.getName().equalsIgnoreCase("content.xml")) {
-                	doc = builder.parse(f);
-                	doc.getDocumentElement().normalize();
-                	NodeList metaDataList = doc.getElementsByTagName("office:text");
-                	for(int i = 0; i < metaDataList.getLength(); i++) {
-                		Node node = metaDataList.item(i);
-                		if(node.getNodeType() == Node.ELEMENT_NODE) {
-                			Element metaElement = (Element) node;
-                		}
-                	}
+                }
+                if(f.getName().equalsIgnoreCase("content.xml")) {
+                    ArrayList<String> hyperTxtWbList = new ArrayList<>();
+                    BufferedReader br = new BufferedReader(new FileReader(f.getAbsolutePath()));
+                    String lineToFound ="<text:a xlink:href=";
+                    String lineCut = "";
+                    String hyperTxtWeb = "";
+                    String line = br.readLine();
+                    int indexD = 0;
+                    int indexF;
+                    line = br.readLine();
+                    while (indexD > -1){
+                        indexD = line.indexOf(lineToFound);
+                        lineCut = line.substring(indexD + 20);
+                        indexF = lineCut.indexOf('"');
+                        hyperTxtWeb = line.substring(indexD + 20, indexD + 20 + indexF);
+                        if(!hyperTxtWbList.contains(hyperTxtWeb) && indexD > -1){
+                            hyperTxtWbList.add(hyperTxtWeb);
+                        }
+                        line = line.substring(indexD + 20 + indexF);
+                    }
+                    System.out.println("Liste des liens hypertextes vers des resources web : \n");
+                    for (String weblink : hyperTxtWbList){
+                        System.out.println("🔘\t" + weblink);
+                    }
                 }
             }
         } catch (ParserConfigurationException | IOException | SAXException e) {
@@ -163,40 +177,30 @@ public class FileManager {
     				thumbnail = fileOfThumbnails;
     			}
     		}
-            Frame frame = new Frame();
+            JFrame frame = new JFrame();
             ImageIcon thumbnailAffiche = new ImageIcon(thumbnail.getAbsolutePath());
             frame.add(new JLabel(thumbnailAffiche));
             frame.pack();
             frame.setVisible(true);
+            frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
             return thumbnail;
     	}
         return null;
     }
-
+    /*
+    * Récupère et affiche les métadonnées (nom/type mime/poids en Ko) des images présentes dans le fichier ODT passé
+    * @param file Le dossier contenant les différentes images (mzdia) du fichier ODT étudié
+    */
     public void readPictureMetaData(File file) {
-        HashMap<String, String> imageExt = new HashMap<>();
-        imageExt.put(".avif", "AVIF");
-        imageExt.put(".bmp", "BMP");
-        imageExt.put(".gif", "GIF");
-        imageExt.put(".jpeg", "JPEG");
-        imageExt.put(".jpg", "JPG");
-        imageExt.put(".png", "PNG");
-        imageExt.put(".tif", "TIF");
-        imageExt.put(".tiff", "TIFF");
-        imageExt.put(".webp", "WEBP");
-
         HashMap<String, ArrayList<String>> imageMap = new HashMap<>();
         try {
             if (file.getName().equals("media") && file.isDirectory()) {
-                System.out.println("ici");
                 for(File picture : file.listFiles()) {
                     ArrayList<String> pictureData = new ArrayList<>();
-
-                    for(Map.Entry<String, String> m : imageExt.entrySet()){
-                        int i = picture.getName().lastIndexOf(".");
-                        String extension = picture.getName().substring(i);
-                        if(m.getKey().equals(extension)){
-                            pictureData.add(m.getValue());
+                    for(MimeTypeImage m : MimeTypeImage.values()){
+                        String mimeType = picture.toURL().openConnection().getContentType();
+                        if(m.getMimetype().equals(mimeType)){
+                            pictureData.add(m.getTitle());
                         }
                     }
                     DecimalFormat df = new DecimalFormat("0.0");
@@ -334,7 +338,7 @@ public class FileManager {
                         fos.write(buffer, 0, length);
                         length = zis.read(buffer);
                     }
-                    if (ze.getName().equalsIgnoreCase("meta.xml")) metaFiles.add(newFile);
+                    if (ze.getName().equalsIgnoreCase("meta.xml") || ze.getName().equalsIgnoreCase("content.xml")) metaFiles.add(newFile);
                     fos.close();
                 }
                 ze = zis.getNextEntry();
