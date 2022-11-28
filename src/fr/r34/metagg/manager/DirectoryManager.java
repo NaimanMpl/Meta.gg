@@ -1,7 +1,9 @@
 /**
  * 
  */
-package fr.r34.metagg;
+package fr.r34.metagg.manager;
+
+import fr.r34.metagg.MetaFile;
 
 import java.io.File;
 import java.io.IOException;

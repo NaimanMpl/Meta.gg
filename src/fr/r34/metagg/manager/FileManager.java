@@ -1,5 +1,8 @@
-package fr.r34.metagg;
+package fr.r34.metagg.manager;
 
+import fr.r34.metagg.MetaAttributes;
+import fr.r34.metagg.MetaFile;
+import fr.r34.metagg.MimeTypeImage;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -39,21 +42,13 @@ public class FileManager {
      * @version 0.0.1
      * @author Naiman Mpl, Andrea PL
      */
-
-    /* Récupère et affiche (terminal) les métadonnées du fichier (unzip) passé en paramètre selon un panel prédéfinis de métadonnées souhaitées
-     * @param file Fichier dont on veut extraire les métadonnées
-     */
-
-    /* Extrait les métadonnées d'un fichier zip passé en paramètres pour en lire le contenu et l'afficher à l'écran
-     * @param file Fichier dont on veut lire les métadonnées
-     * @throws ParserConfigurationException
-     * @throws IOException
-     * @throws SAXEception
-     */
-
     private final static String DOCUMENT_STATISTIC_TAG = "meta:document-statistic";
     private final static String OFFICE_META_TAG = "office:meta";
+    private final static int BUFFER_SIZE = 1024;
 
+    /** Extrait les métadonnées d'un fichier odt passé en paramètres pour en lire le contenu et l'insérer dans l'objet metaFile
+     * @param metaFile Fichier dont on veut lire les métadonnées
+     */
     public void readMetaData(MetaFile metaFile) {
         File file = metaFile.getFile();
         ArrayList<File> metaFiles = this.unzip(file, new File("./" + file.getName().substring(0, file.getName().lastIndexOf("."))));
@@ -92,10 +87,11 @@ public class FileManager {
                         }
                         line = line.substring(indexD + 20 + indexF);
                     }
-                    System.out.println("Liste des liens hypertextes vers des resources web : \n");
                     for (String weblink : hyperTxtWbList){
-                        System.out.println("🔘\t" + weblink);
+                        metaFile.getHyperTextWebList().add(weblink);
                     }
+                    this.readPictureMetaData(metaFile);
+                    this.readThumbnail(metaFile);
                 }
             }
         } catch (ParserConfigurationException | IOException e) {
@@ -103,6 +99,12 @@ public class FileManager {
         }
     }
 
+    /**
+     * Permet de lire un attribut spécifique d'un fichier XML rentré en paramètre
+     * @param metaFile Le fichier où l'on souhaite sauvegarder la donnée lue
+     * @param xmlFile Le fichier XML dont on souhaite extraire les données de l'attribut
+     * @param attribute L'attribut que l'on souhaite lire
+     */
     public void readAttribute(MetaFile metaFile, File xmlFile, MetaAttributes attribute) {
         try {
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
@@ -137,6 +139,13 @@ public class FileManager {
         }
     }
 
+    /**
+     * Permet de lire un attribut spécifique d'un fichier XML rentré en paramètre mais ne regarde que les attributs
+     * parmis les données diverses
+     * @param metaFile Le fichier où l'on souhaite sauvegarder la donnée lue
+     * @param xmlFile Le fichier XML dont on souhaite extraire les données de l'attribut
+     * @param attribute L'attribut que l'on souhaite lire
+     */
     public void readDiverseData(MetaFile metaFile, File xmlFile, MetaAttributes attribute) {
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         try {
@@ -168,30 +177,34 @@ public class FileManager {
      * @param file Le dossier dans lequel est stockée la miniature
      * @return thumbnail Le fichier de la miniature du fichier ODT
      */
-    public File getThumbnail(File file) {
+    public void readThumbnail(MetaFile metaFile) {
     	File thumbnail = null;
+        File file = metaFile.getDestDir();
     	if(file.getName().equalsIgnoreCase("thumbnails")) {
     		for(File fileOfThumbnails : file.listFiles()) {
     			System.out.println(fileOfThumbnails.getName());
-    			if(fileOfThumbnails.getName().equalsIgnoreCase("thumbnail.png")){
+    			if (fileOfThumbnails.getName().equalsIgnoreCase("thumbnail.png")){
     				thumbnail = fileOfThumbnails;
     			}
     		}
-            JFrame frame = new JFrame();
-            ImageIcon thumbnailAffiche = new ImageIcon(thumbnail.getAbsolutePath());
+            //JFrame frame = new JFrame();
+            //ImageIcon thumbnailAffiche = new ImageIcon(thumbnail.getAbsolutePath());
+            /*
             frame.add(new JLabel(thumbnailAffiche));
             frame.pack();
             frame.setVisible(true);
             frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-            return thumbnail;
+
+             */
+            metaFile.setThumbnail(thumbnail);
     	}
-        return null;
     }
-    /*
+    /**
     * Récupère et affiche les métadonnées (nom/type mime/poids en Ko) des images présentes dans le fichier ODT passé
-    * @param file Le dossier contenant les différentes images (mzdia) du fichier ODT étudié
+    * @param metaFile Le dossier contenant les différentes images (mzdia) du fichier ODT étudié
     */
-    public void readPictureMetaData(File file) {
+    public void readPictureMetaData(MetaFile metaFile) {
+        File file = new File(metaFile.getDestDir().getPath() + "/media");
         HashMap<String, ArrayList<String>> imageMap = new HashMap<>();
         try {
             if (file.getName().equals("media") && file.isDirectory()) {
@@ -204,26 +217,19 @@ public class FileManager {
                         }
                     }
                     DecimalFormat df = new DecimalFormat("0.0");
-                    float bytes = (float) picture.length() / 1024;
+                    float bytes = (float) picture.length() / BUFFER_SIZE;
                     pictureData.add(String.valueOf(df.format(bytes)) + "Ko");
-                    imageMap.put(picture.getName(), pictureData);
-                }
-                int nombreImage = imageMap.size();
-                System.out.println("Nombre d'image : " + nombreImage);
-                for(Map.Entry mapentry: imageMap.entrySet()) {
-                    System.out.println("File : " + mapentry.getKey() + " data : " + mapentry.getValue());
+                    metaFile.getMedia().put(picture.getName(), pictureData);
                 }
             }
         } catch (Exception e) {
-            // TODO: handle exception
+            e.printStackTrace();
         }
     }
-    /*
-     * Modifie les métadonnées d'un fichier xml existant.
-     * @param xmlFile le fichier xml dont on souhaite modifier les métadonnées
-     * @param destDirPath Le chemin vers le dossier ou l'on souhaite sauvegarder notre fichier xml modifié
-     * @param attribute L'attribut que l'on souhaite modifier
-     * @param content Le contenu de l'attribut que l'on souhaite modifier
+    /**
+     * Sauvegarde toutes les métadonnées d'un fichier rentré en paramètre dans un fichier XML
+     * @param xmlFile le fichier xml où l'on souhaite sauvegarder nos métadonnées
+     * @param metaFile Le fichier qui contient les métadonnées à sauvegarder
      */
     public void saveMetaDataXML(MetaFile metaFile, File xmlFile) {
         try {
@@ -293,7 +299,7 @@ public class FileManager {
         }
     }
 
-    /*
+    /**
      * Créer (ou écrase si le fichier xml est déjà existant) un fichier xml
      * @param doc
      * @param output
@@ -310,15 +316,15 @@ public class FileManager {
         transformer.transform(source, result);
     }
 
-    /* Extrait les fichiers et répertoires du fichier (zip) passé en paramètre
+    /** Extrait les fichiers et répertoires du fichier (zip) passé en paramètre
      * @param file Le fichier (zip) que l'on souhaite extraire
+     * @param destDir Le dossier de destination des données extraites
      * @return metaFiles La liste des fichiers extraits (xml)
      */
     public ArrayList<File> unzip(File file, File destDir) {
         ArrayList<File> metaFiles = new ArrayList<>();
         try {
-            byte[] buffer = new byte[1024];
-            System.out.println(file.getAbsolutePath());
+            byte[] buffer = new byte[BUFFER_SIZE];
             ZipInputStream zis = new ZipInputStream(new FileInputStream(file.getAbsolutePath()));
             ZipEntry ze = zis.getNextEntry();
             while (ze != null) {
@@ -370,7 +376,7 @@ public class FileManager {
        zos.close();
     }
 
-    /*
+    /**
      * @param file Le fichier dont on souhaite changer l'extension
      * @param newExtension L'extension que l'on souhaite utiliser
      * @return Le nouveau fichier dont l'extension a été modifié
@@ -387,6 +393,10 @@ public class FileManager {
         return newFile;
     }
 
+    /**
+     * Supprime complètement un dossier (existant) rentré en paramètre
+     * @param folder Le dossier que l'on souhaite supprimer
+     */
     public void delete(File folder) {
         if (folder.isDirectory()) {
             if (folder.list().length == 0) {

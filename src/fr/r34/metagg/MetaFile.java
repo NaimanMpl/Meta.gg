@@ -1,21 +1,35 @@
 package fr.r34.metagg;
 
+import fr.r34.metagg.manager.FileManager;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 public class MetaFile {
 
     private String title, subject, mime;
     private final File file, destDir;
+    private File thumbnail;
     private final FileManager fileM;
     private int pagesAmount, paragraphAmount, wordAmount, characterAmount;
     private Date creationDate;
     private float size;
     private final ArrayList<String> keywords;
+    private final HashMap<String, ArrayList<String>> media;
 
+    private final ArrayList<String> hyperTextWebList;
+
+    /**
+     * Initialise l'objet en chargeant les métadonnées présentes dans file pour les inscrires dans les
+     * attributs de la classe
+     * @param file Le fichier dont on souhaite charger les métadonnées
+     */
     public MetaFile(File file) {
         this.file = file;
+        this.thumbnail = null;
         this.title = "";
         this.subject = "";
         this.pagesAmount = 0;
@@ -25,6 +39,8 @@ public class MetaFile {
         this.creationDate = null;
         this.size = 0;
         this.keywords = new ArrayList<>();
+        this.hyperTextWebList = new ArrayList<>();
+        this.media = new HashMap<>();
         this.fileM = new FileManager();
         this.destDir = new File(file.getName().substring(0, file.getName().lastIndexOf(".")));
         fileM.readMetaData(this);
@@ -102,6 +118,14 @@ public class MetaFile {
         return keywords;
     }
 
+    public ArrayList<String> getHyperTextWebList() {
+        return hyperTextWebList;
+    }
+
+    public HashMap<String, ArrayList<String>> getMedia() {
+        return media;
+    }
+
     public String getMime() {
         return mime;
     }
@@ -110,6 +134,8 @@ public class MetaFile {
         return destDir;
     }
 
+    public int getMediasLength() { return media.size(); }
+
     public void displayMetaData() {
         System.out.println("Métadonnées du fichier : " + file.getName());
         System.out.println("Données principales :");
@@ -117,18 +143,32 @@ public class MetaFile {
         System.out.println("\tSujet : " + subject);
         System.out.println("\tDate de création : " + creationDate);
         System.out.println("\tMots-clés : " + keywords);
+        System.out.println("\tNombre d'images : " + this.getMediasLength());
+        for(Map.Entry<String, ArrayList<String>> entry : media.entrySet()) {
+            System.out.println("\tFile : " + entry.getKey() + " data : " + entry.getValue());
+        }
         System.out.println("Données diverses :");
         System.out.println("\tNombre de pages : " + pagesAmount);
         System.out.println("\tNombre de paragraphes : " + paragraphAmount);
         System.out.println("\tNombre de mots : " + wordAmount);
         System.out.println("\tNombre de caractères : " + characterAmount);
+        System.out.println("Liste des liens hypertextes :");
+        for (String webLink : hyperTextWebList) { System.out.println("\t⚪️ " + webLink); }
     }
 
+    /**
+     * Sauvegarde les métadonnées de l'objet dans un nouveau fichier XML
+     */
     public void save() {
         File xmlFile = new File(destDir.getPath() + "/meta.xml");
         fileM.saveMetaDataXML(this, xmlFile);
     }
 
+    /**
+     * Met à jour l'attribut (de l'objet) en fonction de l'attribut passé en paramètre
+     * @param attribute L'attribut que l'on souhaite mettre à jour
+     * @param content Le nouveau contenu de notre attribut
+     */
     public void updateAttribute(MetaAttributes attribute, String content) {
         switch (attribute) {
             case TITLE -> { this.setTitle(content); }
@@ -140,5 +180,13 @@ public class MetaFile {
             case PARAGRAPHS_COUNT -> { this.setParagraphAmount(Integer.parseInt(content)); }
             case WORD_COUNT -> { this.setWordAmount(Integer.parseInt(content)); }
         }
+    }
+
+    public File getThumbnail() {
+        return thumbnail;
+    }
+
+    public void setThumbnail(File thumbnail) {
+        this.thumbnail = thumbnail;
     }
 }
