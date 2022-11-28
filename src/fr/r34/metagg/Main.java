@@ -19,7 +19,11 @@ public class Main {
                 metaFile.setTitle("Pipouloupipope");
                 metaFile.setSubject("Mon super sujet !");
                 metaFile.setWordAmount(7277);
-                metaFile.getKeywords().add("Mot clé test");
+                metaFile.getKeywords().add("Coucou !");
+                metaFile.getKeywords().add("Bonjour !");
+                metaFile.getKeywords().add("Salusse !");
+                metaFile.getKeywords().add("Holà !");
+                metaFile.getKeywords().clear();
                 metaFile.save();
                 metaFile.displayMetaData();
 

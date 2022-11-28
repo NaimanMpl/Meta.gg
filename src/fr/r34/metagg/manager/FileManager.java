@@ -256,6 +256,10 @@ public class FileManager {
                         case CREATION_DATE -> { metaData.setTextContent(metaFile.getCreationDate().toString()); }
                         case KEYWORD -> {
                             NodeList keywords = officeMetaElement.getElementsByTagName(attribute.getTag());
+                            int n = keywords.getLength();
+                            for (int k = n-1; k >= 0; k--) {
+                                officeMetaElement.removeChild(keywords.item(k));
+                            }
                             for (int j = 0; j < metaFile.getKeywords().size(); j++) {
                                 Node keyword = keywords.item(j);
                                 if (keyword == null) {
