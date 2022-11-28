@@ -147,6 +147,7 @@ public class MetaFile {
         for(Map.Entry<String, ArrayList<String>> entry : media.entrySet()) {
             System.out.println("\tFile : " + entry.getKey() + " data : " + entry.getValue());
         }
+        System.out.println("Miniature : " + thumbnail);
         System.out.println("Données diverses :");
         System.out.println("\tNombre de pages : " + pagesAmount);
         System.out.println("\tNombre de paragraphes : " + paragraphAmount);

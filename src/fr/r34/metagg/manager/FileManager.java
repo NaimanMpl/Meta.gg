@@ -179,7 +179,8 @@ public class FileManager {
      */
     public void readThumbnail(MetaFile metaFile) {
     	File thumbnail = null;
-        File file = metaFile.getDestDir();
+        File file = new File(metaFile.getDestDir().getPath() + "/Thumbnails");
+        if (!file.exists()) return;
     	if(file.getName().equalsIgnoreCase("thumbnails")) {
     		for(File fileOfThumbnails : file.listFiles()) {
     			System.out.println(fileOfThumbnails.getName());
