@@ -1,6 +1,6 @@
 package fr.r34.metagg.gui;
 
-import javax.swing.*;
+import javax.swing.JFrame;
 
 public class SplashMenuGUI {
 

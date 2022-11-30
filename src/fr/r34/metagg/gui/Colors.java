@@ -1,6 +1,6 @@
 package fr.r34.metagg.gui;
 
-import java.awt.*;
+import java.awt.Color;
 
 public class Colors {
 
@@ -10,5 +10,6 @@ public class Colors {
     public final static Color BLUE_2 = Color.decode("#2D3848");
     public final static Color BLUE_3 = Color.decode("#172636");
     public final static Color WHITE = Color.decode("#F4F4F4");
+    public final static Color GRAY = Color.decode("#484D53");
 
 }
