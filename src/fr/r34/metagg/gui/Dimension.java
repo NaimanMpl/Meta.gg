@@ -15,4 +15,8 @@ public class Dimension {
     public final static int BUTTON_WIDTH = 170;
 
     public final static String FONT = "Inter";
+
+    public final static int WINDOW_MIN_WIDTH = 1024;
+
+    public final static int WINDOW_MIN_HEIGHT = 768;
 }
