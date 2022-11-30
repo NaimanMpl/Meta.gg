@@ -4,6 +4,8 @@ import fr.r34.metagg.manager.DirectoryManager;
 import fr.r34.metagg.manager.FileManager;
 
 import java.io.*;
+import java.util.ArrayList;
+import java.util.Date;
 
 public class Main {
 
@@ -15,16 +17,6 @@ public class Main {
             if (args[0].equalsIgnoreCase("-f")) {
                 File file = new File(args[1]);
                 MetaFile metaFile = new MetaFile(file);
-
-                metaFile.setTitle("Pipouloupipope");
-                metaFile.setSubject("Mon super sujet !");
-                metaFile.setWordAmount(7277);
-                metaFile.getKeywords().add("Coucou !");
-                metaFile.getKeywords().add("Bonjour !");
-                metaFile.getKeywords().add("Salusse !");
-                metaFile.getKeywords().add("Holà !");
-                metaFile.getKeywords().clear();
-                metaFile.save();
                 metaFile.displayMetaData();
 
                 File fileToZip = new File("./" + metaFile.getDestDir().getName());
@@ -38,22 +30,45 @@ public class Main {
                 }
 
             } else if (args[0].equalsIgnoreCase("-d")) {
-                // TODO
+                File folder = new File(args[1]);
+                ArrayList<File> odtInFolder = new ArrayList<>();
+                odtInFolder = directoryM.directoryContent(folder, odtInFolder);
+                for(File file : odtInFolder){
+                    MetaFile metaFile = new MetaFile(file);
+                    String name = metaFile.getFile().getName();
+                    String title = metaFile.getTitle();
+                    Date creationDate = metaFile.getCreationDate();
+                    Float size = metaFile.getSize();
+                    System.out.println(metaFile.getFile().getParent());
+                    System.out.println("◼"+ name + "\t" + title + " " + creationDate + " " + size + " Ko");
+                }
             }
         } else if (args.length == 4) {
             if (args[0].equalsIgnoreCase("-f")) {
                 File file = new File(args[1]);
-                File destDir = new File(file.getName().substring(0, file.getName().lastIndexOf(".")));
+                MetaFile metaFile = new MetaFile(file);
                 String attribute = args[2].replace("--", "");
                 String content = args[3];
-                fileM.unzip(file, destDir);
-                // fileM.modifyMetaData(new File(destDir.getPath() + "/meta.xml"), destDir.getPath(), attribute, content);
-                File fileToZip = new File("./" + destDir.getName());
-                File zipFile = new File(destDir.getName() + ".zip");
+
+                switch (attribute) {
+                    case "title" -> {
+                        metaFile.setTitle(content);
+                    }
+                    case "subject" -> {
+                        metaFile.setSubject(content);
+                    }
+                    case "keyword" -> {
+                        metaFile.getKeywords().add(content);
+                    }
+                }
+                metaFile.save();
+
+                File fileToZip = new File("./" + metaFile.getDestDir().getName());
+                File zipFile = new File(metaFile.getDestDir().getName() + ".zip");
                 try {
                     fileM.zip(fileToZip.toPath(), zipFile.toPath());
                     fileM.changeExtension(zipFile, ".odt");
-                    fileM.delete(destDir);
+                    fileM.delete(metaFile.getDestDir());
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

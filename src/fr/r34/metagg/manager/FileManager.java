@@ -9,15 +9,12 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
-import javax.swing.*;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
-import java.awt.Frame;
 import java.io.*;
 import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.text.DecimalFormat;
 import javax.xml.transform.Transformer;
@@ -25,9 +22,6 @@ import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
-import javax.xml.*;
-import javax.xml.transform.stream.StreamSource;
-import java.io.*;
 import java.nio.file.*;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.*;
@@ -77,7 +71,7 @@ public class FileManager {
                     int indexD = 0;
                     int indexF;
                     line = br.readLine();
-                    while (indexD > -1){
+                    while (indexD > 0){
                         indexD = line.indexOf(lineToFound);
                         lineCut = line.substring(indexD + 20);
                         indexF = lineCut.indexOf('"');

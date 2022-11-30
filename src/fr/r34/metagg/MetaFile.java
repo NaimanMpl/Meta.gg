@@ -22,6 +22,8 @@ public class MetaFile {
 
     private final ArrayList<String> hyperTextWebList;
 
+    private final static int BUFFER_SIZE = 1024;
+
     /**
      * Initialise l'objet en chargeant les métadonnées présentes dans file pour les inscrires dans les
      * attributs de la classe
@@ -37,7 +39,7 @@ public class MetaFile {
         this.wordAmount = 0;
         this.characterAmount = 0;
         this.creationDate = null;
-        this.size = 0;
+        this.size = (float) file.length() / BUFFER_SIZE;
         this.keywords = new ArrayList<>();
         this.hyperTextWebList = new ArrayList<>();
         this.media = new HashMap<>();
