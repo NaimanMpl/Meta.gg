@@ -38,7 +38,7 @@ public class Main {
                     String name = metaFile.getFile().getName();
                     String title = metaFile.getTitle();
                     Date creationDate = metaFile.getCreationDate();
-                    Float size = metaFile.getSize();
+                    float size = metaFile.getSize();
                     System.out.println(metaFile.getFile().getParent());
                     System.out.println("◼"+ name + "\t" + title + " " + creationDate + " " + size + " Ko");
                 }

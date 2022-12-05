@@ -1,5 +1,6 @@
 package fr.r34.metagg.gui;
 
+import fr.r34.metagg.MetaFile;
 import fr.r34.metagg.gui.panels.MainLeftPanel;
 import fr.r34.metagg.gui.panels.MainRightPanel;
 
@@ -9,6 +10,7 @@ import javax.swing.JPanel;
 import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.Font;
+import java.io.File;
 
 public class MainMenuGUI {
 
@@ -20,7 +22,7 @@ public class MainMenuGUI {
 
         frame = new JFrame();
         leftPanel = new MainLeftPanel();
-        rightPanel = new MainRightPanel();
+        rightPanel = new MainRightPanel(new MetaFile(new File("./sujet.odt")));
 
         container = frame.getContentPane();
 

@@ -5,18 +5,14 @@ import fr.r34.metagg.gui.Colors;
 import fr.r34.metagg.gui.CustomRectangle;
 import fr.r34.metagg.gui.Dimension;
 
-import javax.swing.BoxLayout;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
+import javax.swing.*;
 import javax.swing.border.EmptyBorder;
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.GridLayout;
+import java.awt.*;
+
 
 public class MainLeftPanel extends JPanel {
 
-    private final JPanel header;
+    private final JPanel header, filesContainer;
     private final JLabel appTitle, recentFiles;
     private CustomRectangle rectangle;
 
@@ -26,6 +22,7 @@ public class MainLeftPanel extends JPanel {
     public MainLeftPanel() {
 
         header = new JPanel();
+        filesContainer = new JPanel();
 
         appTitle = new JLabel(Strings.APP_TITLE);
         recentFiles = new JLabel(Strings.RECENT_FILES_TITLE);
@@ -58,11 +55,33 @@ public class MainLeftPanel extends JPanel {
         header.add(appTitle);
         header.add(rectangle);
         header.add(recentFiles);
-        header.setPreferredSize(new java.awt.Dimension(LABEL_WIDTH, 100));
+        ImageIcon icon = new ImageIcon("./assets/img/odt_file_icon.png");
+        JLabel label1 = new JLabel("<html><p style=" + "\"margin-right: 50px\">" + "Coucou</p><br>Hello</html>", icon, JLabel.CENTER);
+        label1.setVerticalTextPosition(JLabel.BOTTOM);
+        label1.setHorizontalTextPosition(JLabel.CENTER);
+        header.add(label1);
         header.setLayout(new BoxLayout(header, BoxLayout.Y_AXIS));
         header.setBackground(Colors.BG_COLOR);
 
-        this.add(header);
+        filesContainer.setLayout(new GridLayout(3, 3, Dimension.DEFAULT_MARGIN, Dimension.DEFAULT_MARGIN));
+        filesContainer.setBackground(Colors.BG_COLOR);
+        filesContainer.setBorder(new EmptyBorder(
+                Dimension.COMPONENT_MARGIN_TOP,
+                2*Dimension.DEFAULT_MARGIN,
+                Dimension.DEFAULT_MARGIN,
+                Dimension.DEFAULT_MARGIN
+        ));
+
+        for (int i = 0; i < 9; i++) {
+            JButton button = new JButton("Click me!");
+            button.setBackground(Colors.BLUE_1);
+            button.setOpaque(true);
+            button.setBorderPainted(false);
+            filesContainer.add(button);
+        }
+
+        this.add(header, BorderLayout.NORTH);
+        this.add(filesContainer, BorderLayout.CENTER);
 
         this.setPreferredSize(new java.awt.Dimension(LABEL_WIDTH, LABEL_HEIGHT));
         this.setBackground(Colors.BG_COLOR);
