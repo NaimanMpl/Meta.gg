@@ -21,6 +21,7 @@ public class SplashScreen {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+
         window.dispose();
     }
 
