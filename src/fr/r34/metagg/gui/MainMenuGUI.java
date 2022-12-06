@@ -7,6 +7,7 @@ import fr.r34.metagg.gui.panels.MainRightPanel;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.UnsupportedLookAndFeelException;
 import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.Font;
@@ -18,10 +19,10 @@ public class MainMenuGUI {
     private final JPanel leftPanel, rightPanel;
     private final Container container;
 
-    public MainMenuGUI() {
+    public MainMenuGUI() throws UnsupportedLookAndFeelException, ClassNotFoundException, InstantiationException, IllegalAccessException {
 
         frame = new JFrame();
-        leftPanel = new MainLeftPanel();
+        leftPanel = new MainLeftPanel(new MetaFile(new File("./sujet.odt")));
         rightPanel = new MainRightPanel(new MetaFile(new File("./sujet.odt")));
 
         container = frame.getContentPane();
@@ -38,7 +39,7 @@ public class MainMenuGUI {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws UnsupportedLookAndFeelException, ClassNotFoundException, InstantiationException, IllegalAccessException {
         new MainMenuGUI();
     }
 

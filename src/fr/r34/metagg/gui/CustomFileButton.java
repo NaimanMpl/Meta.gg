@@ -12,8 +12,6 @@ import java.io.File;
 
 public class CustomFileButton extends JButton {
 
-    private static final long serialVersionUID = 1L;
-
     private static Color color = new Color(39, 51, 67);
     private static Color colorSelection = new Color(23, 38, 54);
     public CustomFileButton(MetaFile metaFile) throws UnsupportedLookAndFeelException, ClassNotFoundException, InstantiationException, IllegalAccessException {
@@ -23,7 +21,7 @@ public class CustomFileButton extends JButton {
         this.setOpaque(true);
         this.setPreferredSize(new Dimension(271, 271));
         this.setText("<html><p style=\"margin-right: 150px\">" + metaFile.getTitle() + "<br><br>Taille : <br>" + "<font color=#577297>" + metaFile.getSize() + "Ko</html>");
-        this.setFont(new Font(fr.r34.metagg.gui.Dimension.FONT, Font.PLAIN, fr.r34.metagg.gui.Dimension.SUBTITLE_SIZE));
+        this.setFont(new Font(fr.r34.metagg.gui.Dimension.FONT, Font.PLAIN, fr.r34.metagg.gui.Dimension.ANNOTATION_SIZE));
         this.setForeground(Color.WHITE);
         this.setIcon(new ImageIcon("./assets/img/odt_file_icon.png"));
         this.setVerticalTextPosition(AbstractButton.BOTTOM);

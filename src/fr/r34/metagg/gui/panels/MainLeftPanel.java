@@ -1,8 +1,9 @@
 package fr.r34.metagg.gui.panels;
 
+import fr.r34.metagg.MetaFile;
 import fr.r34.metagg.Strings;
 import fr.r34.metagg.gui.Colors;
-import fr.r34.metagg.gui.CustomRectangle;
+import fr.r34.metagg.gui.CustomFileButton;
 import fr.r34.metagg.gui.Dimension;
 
 import javax.swing.*;
@@ -14,24 +15,17 @@ public class MainLeftPanel extends JPanel {
 
     private final JPanel header, filesContainer;
     private final JLabel appTitle, recentFiles;
-    private CustomRectangle rectangle;
     private static int LABEL_WIDTH = (int) (0.7* Dimension.WINDOW_WIDTH);
     private static int LABEL_HEIGHT = Dimension.WINDOW_HEIGHT;
+    private final MetaFile metaFile;
 
-    public MainLeftPanel() {
-
+    public MainLeftPanel(MetaFile metaFile) throws UnsupportedLookAndFeelException, ClassNotFoundException, InstantiationException, IllegalAccessException {
+        this.metaFile = metaFile;
         header = new JPanel();
         filesContainer = new JPanel();
 
         appTitle = new JLabel(Strings.APP_TITLE);
         recentFiles = new JLabel(Strings.RECENT_FILES_TITLE);
-
-        rectangle = new CustomRectangle(
-                LABEL_WIDTH - 80,
-                4,
-                Dimension.DEFAULT_MARGIN,
-                Dimension.COMPONENT_MARGIN_TOP
-        );
 
         appTitle.setFont(new Font(Dimension.FONT, Font.PLAIN, Dimension.TITLE_SIZE));
         appTitle.setForeground(Colors.WHITE);
@@ -52,7 +46,6 @@ public class MainLeftPanel extends JPanel {
         this.setLayout(new BorderLayout());
 
         header.add(appTitle);
-        header.add(rectangle);
         header.add(recentFiles);
         header.setLayout(new BoxLayout(header, BoxLayout.Y_AXIS));
         header.setBackground(Colors.BG_COLOR);
@@ -67,11 +60,7 @@ public class MainLeftPanel extends JPanel {
         ));
 
         for (int i = 0; i < 9; i++) {
-            JButton button = new JButton("Click me!");
-            button.setBackground(Colors.BLUE_1);
-            button.setOpaque(true);
-            button.setBorderPainted(false);
-            filesContainer.add(button);
+            filesContainer.add(new CustomFileButton(metaFile));
         }
 
         this.add(header, BorderLayout.NORTH);
