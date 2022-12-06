@@ -15,7 +15,6 @@ public class MainLeftPanel extends JPanel {
     private final JPanel header, filesContainer;
     private final JLabel appTitle, recentFiles;
     private CustomRectangle rectangle;
-
     private static int LABEL_WIDTH = (int) (0.7* Dimension.WINDOW_WIDTH);
     private static int LABEL_HEIGHT = Dimension.WINDOW_HEIGHT;
 
@@ -55,11 +54,6 @@ public class MainLeftPanel extends JPanel {
         header.add(appTitle);
         header.add(rectangle);
         header.add(recentFiles);
-        ImageIcon icon = new ImageIcon("./assets/img/odt_file_icon.png");
-        JLabel label1 = new JLabel("<html><p style=" + "\"margin-right: 50px\">" + "Coucou</p><br>Hello</html>", icon, JLabel.CENTER);
-        label1.setVerticalTextPosition(JLabel.BOTTOM);
-        label1.setHorizontalTextPosition(JLabel.CENTER);
-        header.add(label1);
         header.setLayout(new BoxLayout(header, BoxLayout.Y_AXIS));
         header.setBackground(Colors.BG_COLOR);
 

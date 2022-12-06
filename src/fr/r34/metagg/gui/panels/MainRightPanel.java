@@ -130,6 +130,7 @@ public class MainRightPanel extends JPanel {
             picture = new JLabel(new ImageIcon(fileIcon));
             GridBagConstraints gbc = new GridBagConstraints();
             gbc.anchor = GridBagConstraints.WEST;
+            gbc.weighty = 1;
 
             gbc.gridx = 0;
             gbc.gridy = 0;
