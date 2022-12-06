@@ -20,13 +20,14 @@ public class CustomFileButton extends JButton {
         this.setBackground(color);
         this.setOpaque(true);
         this.setPreferredSize(new Dimension(271, 271));
-        this.setText("<html><p style=\"margin-right: 150px\">" + metaFile.getTitle() + "<br><br>Taille : <br>" + "<font color=#577297>" + metaFile.getSize() + "Ko</html>");
-        this.setFont(new Font(fr.r34.metagg.gui.Dimension.FONT, Font.PLAIN, fr.r34.metagg.gui.Dimension.ANNOTATION_SIZE));
+        double round = (double) Math.round(metaFile.getSize() * 10) / 10;
+        this.setText("<html><p style=\"margin-right: 150px\">" + metaFile.getTitle() + "<br><br>Taille : <br>" + "<font color=#577297>" + round + "Ko</html>");
+        this.setFont(new Font(fr.r34.metagg.gui.Dimension.FONT, Font.PLAIN, fr.r34.metagg.gui.Dimension.PARAGRAPH_SIZE));
         this.setForeground(Color.WHITE);
         this.setIcon(new ImageIcon("./assets/img/odt_file_icon.png"));
         this.setVerticalTextPosition(AbstractButton.BOTTOM);
         this.setHorizontalTextPosition(AbstractButton.CENTER);
-        this.setIconTextGap(25);
+        this.setIconTextGap(10);
         this.setVisible(true);
         this.setUImanagerCustomFileButton();
     }

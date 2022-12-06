@@ -36,6 +36,7 @@ public class MainMenuGUI {
         frame.setSize(Dimension.WINDOW_WIDTH, Dimension.WINDOW_HEIGHT);
         frame.setResizable(false);
         frame.setVisible(true);
+        frame.setLocationRelativeTo(null);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 

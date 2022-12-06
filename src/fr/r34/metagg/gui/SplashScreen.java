@@ -1,6 +1,9 @@
 package fr.r34.metagg.gui;
 
+import fr.r34.metagg.MetaFile;
+
 import javax.swing.*;
+import java.io.File;
 import java.io.IOException;
 public class SplashScreen {
 
@@ -17,9 +20,13 @@ public class SplashScreen {
         window.setLocationRelativeTo(null);
         window.setVisible(true);
         try {
-            Thread.sleep(5000);
+            Thread.sleep(1000);
+            new MainMenuGUI();
         } catch (InterruptedException e) {
             e.printStackTrace();
+        } catch (UnsupportedLookAndFeelException | IllegalAccessException | InstantiationException |
+                 ClassNotFoundException e) {
+            throw new RuntimeException(e);
         }
 
         window.dispose();
