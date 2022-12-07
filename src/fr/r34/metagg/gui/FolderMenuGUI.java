@@ -1,28 +1,26 @@
 package fr.r34.metagg.gui;
 
 import fr.r34.metagg.MetaFile;
+import fr.r34.metagg.gui.panels.FolderLeftPanel;
 import fr.r34.metagg.gui.panels.MainLeftPanel;
 import fr.r34.metagg.gui.panels.MainRightPanel;
 
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.UnsupportedLookAndFeelException;
-import java.awt.BorderLayout;
-import java.awt.Container;
-import java.awt.Font;
+import javax.swing.*;
+import java.awt.*;
 import java.io.File;
 
-public class MainMenuGUI {
+public class FolderMenuGUI {
 
     private final JFrame frame;
+
     private final JPanel leftPanel, rightPanel;
+
     private final Container container;
 
-    public MainMenuGUI() throws UnsupportedLookAndFeelException, ClassNotFoundException, InstantiationException, IllegalAccessException {
+    public FolderMenuGUI(){
 
         frame = new JFrame();
-        leftPanel = new MainLeftPanel(new MetaFile(new File("./sujet.odt")));
+        leftPanel = new FolderLeftPanel(new File("./ParcoursODT/lezgong"));
         rightPanel = new MainRightPanel(new MetaFile(new File("./sujet.odt")));
 
         container = frame.getContentPane();
@@ -37,10 +35,10 @@ public class MainMenuGUI {
         frame.setResizable(false);
         frame.setVisible(true);
         frame.setLocationRelativeTo(null);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     }
 
-    public static void main(String[] args) throws UnsupportedLookAndFeelException, ClassNotFoundException, InstantiationException, IllegalAccessException {
-        new MainMenuGUI();
+    public static void main(String[] args) {
+        new FolderMenuGUI();
     }
 }

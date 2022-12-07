@@ -3,6 +3,7 @@ package fr.r34.metagg.gui.panels;
 import fr.r34.metagg.MetaFile;
 import fr.r34.metagg.Strings;
 import fr.r34.metagg.gui.Colors;
+import fr.r34.metagg.gui.CustomEditButton;
 import fr.r34.metagg.gui.Dimension;
 
 import javax.imageio.ImageIO;
@@ -17,7 +18,7 @@ import java.util.Vector;
 
 public class MainRightPanel extends JPanel {
 
-    private BufferedImage fileIcon;
+    private ImageIcon fileIcon;
     private JLabel picture;
     private final JLabel name;
     private final JLabel size;
@@ -39,10 +40,13 @@ public class MainRightPanel extends JPanel {
     private final Vector<String> keywordsModel;
     private final JList<String> keywordsList;
 
+    private final CustomEditButton edit_Button;
+
     private final MetaFile metaFile;
     private final SimpleDateFormat dateFormat;
 
-    public MainRightPanel(MetaFile metaFile) {
+
+    public MainRightPanel(MetaFile metaFile)  {
         this.metaFile = metaFile;
 
         titleField = new JTextField(metaFile.getTitle());
@@ -122,40 +126,44 @@ public class MainRightPanel extends JPanel {
         keywordsScroller.setBorder(new EmptyBorder(0, Dimension.LITTLE_MARGIN, 0, 0));
         keywordsScroller.setBackground(Colors.BLUE_1);
 
+        try {
+            edit_Button = new CustomEditButton();
+        } catch (UnsupportedLookAndFeelException | IllegalAccessException | InstantiationException |
+                 ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
 
         this.setLayout(new GridBagLayout());
 
-        try {
-            fileIcon = ImageIO.read(new File("./assets/img/odt_file_icon.png"));
-            picture = new JLabel(new ImageIcon(fileIcon));
-            GridBagConstraints gbc = new GridBagConstraints();
-            gbc.anchor = GridBagConstraints.WEST;
-            gbc.weighty = 1;
+        fileIcon = new ImageIcon(Strings.FILE_BUTTON_ICON_PATH);
+        picture = new JLabel(fileIcon);
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.anchor = GridBagConstraints.WEST;
+        gbc.weighty = 1;
 
-            gbc.gridx = 0;
-            gbc.gridy = 0;
-            this.add(panelTitle, gbc);
-            gbc.gridy = 1;
-            this.add(picture, gbc);
-            gbc.gridy = 2;
-            this.add(name, gbc);
-            gbc.gridy = 3;
-            this.add(size, gbc);
-            gbc.gridy = 4;
-            this.add(keywords, gbc);
-            gbc.gridy = 5;
-            this.add(keywordsScroller, gbc);
-            gbc.gridy = 6;
-            this.add(pagesAmount, gbc);
-            gbc.gridy = 7;
-            this.add(wordsAmount, gbc);
-            gbc.gridy = 8;
-            this.add(charAmount, gbc);
-            gbc.gridy = 9;
-            this.add(paragraphsAmount, gbc);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        this.add(panelTitle, gbc);
+        gbc.gridy = 1;
+        this.add(picture, gbc);
+        gbc.gridy = 2;
+        this.add(name, gbc);
+        gbc.gridy = 3;
+        this.add(size, gbc);
+        gbc.gridy = 4;
+        this.add(keywords, gbc);
+        gbc.gridy = 5;
+        this.add(keywordsScroller, gbc);
+        gbc.gridy = 6;
+        this.add(pagesAmount, gbc);
+        gbc.gridy = 7;
+        this.add(wordsAmount, gbc);
+        gbc.gridy = 8;
+        this.add(charAmount, gbc);
+        gbc.gridy = 9;
+        this.add(paragraphsAmount, gbc);
+        gbc.gridy = 10;
+        this.add(edit_Button, gbc);
 
         this.setBorder(new EmptyBorder(
                 Dimension.LITTLE_MARGIN,

@@ -12,9 +12,9 @@ public class Dimension {
 
     public final static int ANNOTATION_SIZE = 8;
 
-    public final static int BUTTON_HEIGHT = 40;
+    public final static int BUTTON_HEIGHT = 35;
 
-    public final static int BUTTON_WIDTH = 170;
+    public final static int BUTTON_WIDTH = 150;
 
     public final static int WINDOW_WIDTH = 1024;
     public final static int WINDOW_HEIGHT = 768;

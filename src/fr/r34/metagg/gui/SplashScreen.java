@@ -13,14 +13,15 @@ public class SplashScreen {
 
     public SplashScreen(){
         window = new JWindow();
-        background = new ImageIcon("./assets/img/splashscreen.png");
+        background = new ImageIcon("./assets/img/splashscreen.gif");
         bgContainer = new JLabel(background);
         window.getContentPane().add(bgContainer);
-        window.setSize(720, 514);
+        window.setSize(720, 512);
         window.setLocationRelativeTo(null);
         window.setVisible(true);
+        /*
         try {
-            Thread.sleep(1000);
+            Thread.sleep(2000);
             new MainMenuGUI();
         } catch (InterruptedException e) {
             e.printStackTrace();
@@ -28,7 +29,8 @@ public class SplashScreen {
                  ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
-
+         */
+        new FolderMenuGUI();
         window.dispose();
     }
 

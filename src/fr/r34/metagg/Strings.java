@@ -1,5 +1,7 @@
 package fr.r34.metagg;
 
+import javax.swing.*;
+
 public class Strings {
 
     public final static String APP_TITLE = "Meta.gg";
@@ -17,5 +19,9 @@ public class Strings {
     public final static String WORDS_AMOUNT = "Nombre de mots : ";
     public final static String CHARACTER_AMOUNT = "Nombre de caractères : ";
     public final static String EDIT = "Éditer";
+    public final static String FILE_BUTTON_ICON_PATH = "./assets/img/odt_file_icon.png";
+    public final static String EDIT_BUTTON_ICON_PATH = "./assets/img/edit_button.png";
+    public final static String PARENT_FOLDER_TITLE = " > ";
+
 
 }
