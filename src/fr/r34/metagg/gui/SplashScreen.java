@@ -11,7 +11,7 @@ public class SplashScreen {
     private JWindow window;
     private JLabel bgContainer;
 
-    public SplashScreen(){
+    public SplashScreen() {
         window = new JWindow();
         background = new ImageIcon("./assets/img/splashscreen.png");
         bgContainer = new JLabel(background);

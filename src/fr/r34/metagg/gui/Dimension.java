@@ -25,6 +25,8 @@ public class Dimension {
     public final static int LITTLE_MARGIN = 10;
     public final static int COMPONENT_MARGIN_TOP = 10;
 
+    public final static int MAX_RECENT_FILES_SIZE = 9;
+
     public final static Font TITLE_FONT = new Font(FONT, Font.PLAIN, TITLE_SIZE);
     public final static Font SUBTITLE_FONT = new Font(FONT, Font.PLAIN, SUBTITLE_SIZE);
     public final static Font PARAGRAPH_FONT = new Font(FONT, Font.PLAIN, PARAGRAPH_SIZE);

@@ -13,6 +13,8 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Vector;
 
 public class MainRightPanel extends JPanel {
@@ -53,7 +55,9 @@ public class MainRightPanel extends JPanel {
         name = new JLabel(metaFile.getFile().getName());
         double round = (double) Math.round(metaFile.getSize() * 10) / 10;
         dateFormat = new SimpleDateFormat("dd-MM-yyyy");
-        String dateText = dateFormat.format(metaFile.getCreationDate());
+        String dateText;
+        if (metaFile.getCreationDate() != null) dateText = dateFormat.format(metaFile.getCreationDate());
+        else dateText = dateFormat.format(new Date(2007, Calendar.OCTOBER, 1));
         size = new JLabel(round + "KB, " + dateText);
         title = new JLabel(Strings.TITLE);
         subject = new JLabel(Strings.SUBJECT);

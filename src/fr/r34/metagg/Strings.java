@@ -17,5 +17,9 @@ public class Strings {
     public final static String WORDS_AMOUNT = "Nombre de mots : ";
     public final static String CHARACTER_AMOUNT = "Nombre de caractères : ";
     public final static String EDIT = "Éditer";
+    public final static String OPEN = "Ouvrir";
+    public final static String MENU_TITLE = "Fichier";
+    public final static String PREF_KEY = "recent_file";
+
 
 }
