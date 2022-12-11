@@ -4,18 +4,20 @@ import fr.r34.metagg.MetaFile;
 import fr.r34.metagg.Strings;
 import fr.r34.metagg.gui.Colors;
 import fr.r34.metagg.gui.Dimension;
+import fr.r34.metagg.gui.custombuttons.CustomEditButton;
+import fr.r34.metagg.manager.Utils;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Vector;
+import java.net.URL;
+import java.util.*;
+import java.util.List;
 
 public class MainRightPanel extends JPanel {
 
@@ -33,19 +35,17 @@ public class MainRightPanel extends JPanel {
     private final JLabel showLinks;
     private final JLabel panelTitle;
     private final JLabel keywords;
-    private final JPanel titlePanel;
-    private final JPanel subjectPanel;
-    private final JPanel showPanel;
     private final JTextField titleField, subjectField;
-    private final JScrollPane keywordsScroller;
-    private final Vector<String> keywordsModel;
-    private final JList<String> keywordsList;
 
     private final MetaFile metaFile;
-    private final SimpleDateFormat dateFormat;
+    private final ArrayList<JTextField> keywordsFieldsList;
+    private final CustomEditButton editButton;
+    private final Utils utils;
 
-    public MainRightPanel(MetaFile metaFile) {
+    public MainRightPanel(MetaFile metaFile) throws UnsupportedLookAndFeelException, IOException, ClassNotFoundException, InstantiationException, IllegalAccessException {
         this.metaFile = metaFile;
+        this.keywordsFieldsList = new ArrayList<>();
+        this.utils = new Utils();
 
         titleField = new JTextField(metaFile.getTitle());
         subjectField = new JTextField(metaFile.getSubject());
@@ -54,11 +54,7 @@ public class MainRightPanel extends JPanel {
         picture = new JLabel();
         name = new JLabel(metaFile.getFile().getName());
         double round = (double) Math.round(metaFile.getSize() * 10) / 10;
-        dateFormat = new SimpleDateFormat("dd-MM-yyyy");
-        String dateText;
-        if (metaFile.getCreationDate() != null) dateText = dateFormat.format(metaFile.getCreationDate());
-        else dateText = dateFormat.format(new Date(2007, Calendar.OCTOBER, 1));
-        size = new JLabel(round + "KB, " + dateText);
+        size = new JLabel(round + "KB, " + metaFile.getCreationDate().substring(0, 10));
         title = new JLabel(Strings.TITLE);
         subject = new JLabel(Strings.SUBJECT);
         keywords = new JLabel(Strings.KEYWORDS);
@@ -69,13 +65,18 @@ public class MainRightPanel extends JPanel {
         showImgs = new JLabel(Strings.SHOW_IMAGES, SwingConstants.CENTER);
         showImgs.setForeground(Colors.BLUE_0);
         showImgs.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        showImgs.setFont(Dimension.ANNOTATION_FONT);
         showLinks = new JLabel(Strings.SHOW_HYPERTEXT_LINKS, SwingConstants.CENTER);
         showLinks.setForeground(Colors.BLUE_0);
         showLinks.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        showLinks.setFont(Dimension.ANNOTATION_FONT);
 
-        titlePanel = new JPanel();
-        subjectPanel = new JPanel();
-        showPanel = new JPanel();
+        JPanel titlePanel = new JPanel();
+        JPanel subjectPanel = new JPanel();
+        JPanel showPanel = new JPanel();
+
+        editButton = new CustomEditButton();
+        editButton.addActionListener(new EditAction());
 
         titleField.setBackground(null);
         titleField.setBorder(null);
@@ -87,76 +88,54 @@ public class MainRightPanel extends JPanel {
         subjectField.setForeground(Colors.WHITE);
         subjectField.setEditable(false);
 
-        titlePanel.setLayout(new FlowLayout(FlowLayout.LEFT));
+        titlePanel.setLayout(new BoxLayout(titlePanel, BoxLayout.Y_AXIS));
         titlePanel.setBackground(null);
         titlePanel.setBorder(null);
 
-        subjectPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
         subjectPanel.setBackground(null);
         subjectPanel.setBorder(null);
 
+        subjectPanel.setLayout(new BoxLayout(subjectPanel, BoxLayout.Y_AXIS));
         titlePanel.add(title);
         titlePanel.add(titleField);
 
         subjectPanel.add(subject);
         subjectPanel.add(subjectField);
 
-        showPanel.setLayout(new FlowLayout());
+        showPanel.setLayout(new BoxLayout(showPanel, BoxLayout.Y_AXIS));
         showPanel.setBackground(null);
         showPanel.setBorder(null);
         showPanel.add(showImgs);
         showPanel.add(showLinks);
 
+
         initFont();
         initColor();
-
-        keywordsModel = new Vector<>();
-        initKeywordsModel();
-
-        keywordsList = new JList<>(keywordsModel);
-        keywordsList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
-        keywordsList.setLayoutOrientation(JList.VERTICAL);
-        keywordsList.setVisibleRowCount(-1);
-        keywordsList.setBackground(Colors.BLUE_1);
-        keywordsList.setForeground(Colors.WHITE);
-
-        keywordsScroller = new JScrollPane(keywordsList);
-
-        keywordsScroller.setPreferredSize(new java.awt.Dimension(150, 80));
-        keywordsScroller.setBorder(new EmptyBorder(0, Dimension.LITTLE_MARGIN, 0, 0));
-        keywordsScroller.setBackground(Colors.BLUE_1);
-
 
         this.setLayout(new GridBagLayout());
 
         try {
-            fileIcon = ImageIO.read(new File("./assets/img/odt_file_icon.png"));
-            picture = new JLabel(new ImageIcon(fileIcon));
+            URL odtUrl = this.getClass().getResource(Strings.ODT_FILE_PATH);
+            if (odtUrl == null) throw new IllegalArgumentException(Strings.ERROR_ODT_ICON_NOT_LOADED);
+            fileIcon = ImageIO.read(odtUrl);
+            ImageIcon imgIcon = utils.getImageFromResource(Strings.ODT_FILE_PATH);
+            picture = new JLabel(imgIcon);
             GridBagConstraints gbc = new GridBagConstraints();
             gbc.anchor = GridBagConstraints.WEST;
             gbc.weighty = 1;
 
+            List<JComponent> components = Arrays.asList(
+                    panelTitle, picture, name, size,
+                    titlePanel, subjectPanel, keywords,
+                    new KeywordsPanel(metaFile, keywordsFieldsList),
+                    pagesAmount, wordsAmount, charAmount, paragraphsAmount,
+                    showPanel, editButton
+            );
             gbc.gridx = 0;
-            gbc.gridy = 0;
-            this.add(panelTitle, gbc);
-            gbc.gridy = 1;
-            this.add(picture, gbc);
-            gbc.gridy = 2;
-            this.add(name, gbc);
-            gbc.gridy = 3;
-            this.add(size, gbc);
-            gbc.gridy = 4;
-            this.add(keywords, gbc);
-            gbc.gridy = 5;
-            this.add(keywordsScroller, gbc);
-            gbc.gridy = 6;
-            this.add(pagesAmount, gbc);
-            gbc.gridy = 7;
-            this.add(wordsAmount, gbc);
-            gbc.gridy = 8;
-            this.add(charAmount, gbc);
-            gbc.gridy = 9;
-            this.add(paragraphsAmount, gbc);
+            for (int i = 0; i < components.size(); i++) {
+                gbc.gridy = i;
+                this.add(components.get(i), gbc);
+            }
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -172,10 +151,6 @@ public class MainRightPanel extends JPanel {
                 Dimension.WINDOW_HEIGHT
         ));
         this.setBackground(Colors.BLUE_1);
-    }
-
-    private void initKeywordsModel() {
-        keywordsModel.addAll(metaFile.getKeywords());
     }
 
     private void initColor() {
@@ -204,6 +179,33 @@ public class MainRightPanel extends JPanel {
         paragraphsAmount.setFont(Dimension.SUBTITLE_FONT);
         showImgs.setFont(Dimension.SUBTITLE_FONT);
         showLinks.setFont(Dimension.SUBTITLE_FONT);
+    }
+
+    class EditAction implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            updateTextField();
+        }
+
+        private void updateTextField() {
+            titleField.setEditable(!titleField.isEditable());
+            subjectField.setEditable(!subjectField.isEditable());
+            for (JTextField keywordField : keywordsFieldsList) {
+                keywordField.setEditable(!keywordField.isEditable());
+            }
+            if (titleField.isEditable()) {
+                editButton.setText(Strings.SAVE_MODIFICATIONS);
+            } else {
+                editButton.setText(Strings.EDIT);
+                metaFile.setTitle(titleField.getText());
+                metaFile.setSubject(subjectField.getText());
+                metaFile.getKeywords().clear();
+                for (JTextField keywordField : keywordsFieldsList) {
+                    metaFile.getKeywords().add(keywordField.getText());
+                }
+                metaFile.save();
+            }
+        }
     }
 
 }

@@ -1,32 +1,38 @@
 package fr.r34.metagg.gui;
 
-import fr.r34.metagg.MetaFile;
+import fr.r34.metagg.Strings;
+import org.xml.sax.SAXException;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
-import java.io.File;
+import javax.xml.parsers.ParserConfigurationException;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.net.URL;
+
 public class SplashScreen {
 
     private ImageIcon background;
     private JWindow window;
     private JLabel bgContainer;
+    private BufferedImage splashImg;
 
-    public SplashScreen() {
+    public SplashScreen() throws IOException {
         window = new JWindow();
-        background = new ImageIcon("./assets/img/splashscreen.png");
+        URL splashUrl = this.getClass().getResource(Strings.SPLASH_SCREEN_FILE_PATH);
+        if (splashUrl == null) throw new IllegalArgumentException(Strings.ERROR_SPLASH_NOT_LOADED);
+        splashImg = ImageIO.read(splashUrl);
+        background = new ImageIcon(splashImg);
         bgContainer = new JLabel(background);
         window.getContentPane().add(bgContainer);
-        window.setSize(720, 514);
+        window.setSize(720, 512);
         window.setLocationRelativeTo(null);
         window.setVisible(true);
         try {
-            Thread.sleep(1000);
             new MainMenuGUI();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
         } catch (UnsupportedLookAndFeelException | IllegalAccessException | InstantiationException |
-                 ClassNotFoundException e) {
-            throw new RuntimeException(e);
+                 ClassNotFoundException | ParserConfigurationException | SAXException e) {
+            e.printStackTrace();
         }
 
         window.dispose();

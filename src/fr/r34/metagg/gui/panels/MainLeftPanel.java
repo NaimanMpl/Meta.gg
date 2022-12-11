@@ -3,16 +3,27 @@ package fr.r34.metagg.gui.panels;
 import fr.r34.metagg.MetaFile;
 import fr.r34.metagg.Strings;
 import fr.r34.metagg.gui.Colors;
-import fr.r34.metagg.gui.CustomFileButton;
+import fr.r34.metagg.gui.custombuttons.CustomFileButton;
 import fr.r34.metagg.gui.Dimension;
 import fr.r34.metagg.gui.MainMenuGUI;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.Map;
 
 
 public class MainLeftPanel extends JPanel {
@@ -23,7 +34,7 @@ public class MainLeftPanel extends JPanel {
     private static int LABEL_HEIGHT = Dimension.WINDOW_HEIGHT;
     private final MainMenuGUI main;
 
-    public MainLeftPanel(MainMenuGUI main) throws UnsupportedLookAndFeelException, ClassNotFoundException, InstantiationException, IllegalAccessException {
+    public MainLeftPanel(MainMenuGUI main) throws UnsupportedLookAndFeelException, ClassNotFoundException, InstantiationException, IllegalAccessException, IOException, ParserConfigurationException, SAXException {
 
         this.main = main;
 
@@ -74,25 +85,41 @@ public class MainLeftPanel extends JPanel {
         this.setBackground(Colors.BG_COLOR);
     }
 
-    private void loadRecentFiles() throws UnsupportedLookAndFeelException, ClassNotFoundException, InstantiationException, IllegalAccessException {
+    private void loadRecentFiles() throws UnsupportedLookAndFeelException, ClassNotFoundException, InstantiationException, IllegalAccessException, IOException, ParserConfigurationException, SAXException {
+        DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
+        Document doc = docBuilder.parse(new File(Strings.CACHE_PATH));
+        NodeList recentFilesList = doc.getElementsByTagName("file");
         for (int i = 0; i < Dimension.MAX_RECENT_FILES_SIZE; i++) {
-            String path = main.getPrefs().get(Strings.PREF_KEY + i, "NULL");
-            if (path.equalsIgnoreCase("NULL")) {
+            if (i >= recentFilesList.getLength()) {
                 filesContainer.add(new CustomFileButton());
-            } else {
-                System.out.println("Recent file " + i + " path :" + path);
-                MetaFile metaFile = new MetaFile(new File(path));
-                CustomFileButton fileBtn = new CustomFileButton(metaFile);
-                fileBtn.addActionListener(new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        main.updateRightPanel(metaFile);
-                    }
-                });
-
-                filesContainer.add(fileBtn);
+                continue;
             }
+            Node recentFileNode = recentFilesList.item(i);
+            if (recentFileNode.getNodeType() != Node.ELEMENT_NODE) continue;
+            Element recentFile = (Element) recentFileNode;
+            Node pathNode = recentFile.getElementsByTagName("path").item(0);
+            if (pathNode.getNodeType() != Node.ELEMENT_NODE) continue;
+            Element pathElement = (Element) pathNode;
+            String path = pathElement.getTextContent();
+            File file = new File(path);
+            System.out.println("Recent file " + path + ":" + path);
+            MetaFile metaFile = new MetaFile(file);
+            CustomFileButton fileBtn = new CustomFileButton(metaFile);
+            main.getMetaFilesOpened().add(metaFile);
+            fileBtn.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    try {
+                        main.updateRightPanel(metaFile);
+                    } catch (UnsupportedLookAndFeelException | IllegalAccessException | InstantiationException |
+                             ClassNotFoundException | IOException ex) {
+                        ex.printStackTrace();
+                    }
+                }
+            });
 
+            filesContainer.add(fileBtn);
         }
     }
 

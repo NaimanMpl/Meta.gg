@@ -21,6 +21,7 @@ import java.io.*;
 import java.nio.file.*;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.text.DecimalFormat;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.zip.ZipEntry;
@@ -43,7 +44,7 @@ public class FileManager {
      */
     public void readMetaData(MetaFile metaFile) {
         File file = metaFile.getFile();
-        ArrayList<File> metaFiles = this.unzip(file, new File("./" + file.getName().substring(0, file.getName().lastIndexOf("."))));
+        ArrayList<File> metaFiles = this.unzip(file, metaFile.getDestDir());
         try {
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             DocumentBuilder builder = factory.newDocumentBuilder();
@@ -126,7 +127,7 @@ public class FileManager {
                     }
                 }
             }
-        } catch (ParserConfigurationException | IOException | SAXException e) {
+        } catch (ParserConfigurationException | IOException | SAXException | ParseException e) {
             e.printStackTrace();
         }
     }
@@ -159,7 +160,7 @@ public class FileManager {
                     }
                 }
             }
-        } catch (SAXException | ParserConfigurationException | IOException e) {
+        } catch (SAXException | ParserConfigurationException | IOException | ParseException e) {
             e.printStackTrace();
         }
     }
@@ -245,7 +246,7 @@ public class FileManager {
                     switch (attribute) {
                         case TITLE -> { metaData.setTextContent(metaFile.getTitle()); }
                         case SUBJECT -> { metaData.setTextContent(metaFile.getSubject()); }
-                        case CREATION_DATE -> { metaData.setTextContent(metaFile.getCreationDate().toString()); }
+                        case CREATION_DATE -> { metaData.setTextContent(metaFile.getCreationDate()); }
                         case KEYWORD -> {
                             NodeList keywords = officeMetaElement.getElementsByTagName(attribute.getTag());
                             int n = keywords.getLength();
@@ -301,7 +302,7 @@ public class FileManager {
      * @param doc
      * @param output
      */
-    private void writeXml(Document doc, OutputStream output) throws TransformerException {
+    public void writeXml(Document doc, OutputStream output) throws TransformerException {
 
         TransformerFactory transformerFactory = TransformerFactory.newInstance();
 
@@ -412,5 +413,4 @@ public class FileManager {
             folder.delete();
         }
     }
-
 }

@@ -4,16 +4,21 @@ import fr.r34.metagg.MetaFile;
 import fr.r34.metagg.Strings;
 import fr.r34.metagg.gui.panels.MainLeftPanel;
 import fr.r34.metagg.gui.panels.MainRightPanel;
+import fr.r34.metagg.manager.CacheManager;
+import org.xml.sax.SAXException;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.xml.parsers.ParserConfigurationException;
 import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
-import java.util.prefs.Preferences;
 
 public class MainMenuGUI {
 
@@ -25,18 +30,24 @@ public class MainMenuGUI {
     private final JMenuItem openFile;
     private static Container container;
     private final JFileChooser fileChoose;
-    private final Preferences prefs;
-    private final ArrayList<MetaFile> recentMetaFiles;
     private final MainMenuGUI main;
-    public MainMenuGUI() throws UnsupportedLookAndFeelException, ClassNotFoundException, InstantiationException, IllegalAccessException {
+    private final File cacheFile;
+    private CacheManager cacheManager;
+    private final ArrayList<MetaFile> metaFilesOpened;
+    private MetaFile currentFile;
+
+    public MainMenuGUI() throws UnsupportedLookAndFeelException, ClassNotFoundException, InstantiationException, IllegalAccessException, IOException, ParserConfigurationException, SAXException {
 
         main = this;
-        prefs = Preferences.userNodeForPackage(MainMenuGUI.class);
-        recentMetaFiles = new ArrayList<>();
+        this.currentFile = new MetaFile();
+        this.metaFilesOpened = new ArrayList<>();
+        this.cacheFile = new File("./cache.xml");
+        this.cacheManager = new CacheManager(cacheFile);
+        cacheManager.initCache();
 
         frame = new JFrame();
         leftPanel = new MainLeftPanel(this);
-        rightPanel = new MainRightPanel(new MetaFile(new File("./sujet.odt")));
+        rightPanel = new MainRightPanel(currentFile);
         menuBar = new JMenuBar();
         menu = new JMenu(Strings.MENU_TITLE);
         openFile = new JMenuItem(Strings.OPEN);
@@ -65,6 +76,24 @@ public class MainMenuGUI {
         frame.setVisible(true);
         frame.setLocationRelativeTo(null);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                int response = JOptionPane.showConfirmDialog(
+                        frame,
+                        "Êtes vous sur de vouloir quitter ?",
+                        "Système",
+                        JOptionPane.YES_NO_OPTION
+                );
+                if (response == JOptionPane.OK_OPTION) {
+                    for (MetaFile metaFile : metaFilesOpened) {
+                        metaFile.save();
+                        metaFile.deleteTempFolder();
+                    }
+                    System.exit(0);
+                }
+            }
+        });
     }
 
     class OpenFileAction implements ActionListener {
@@ -75,57 +104,40 @@ public class MainMenuGUI {
             if (response == JFileChooser.APPROVE_OPTION) {
                 File file = fileChoose.getSelectedFile();
                 MetaFile metaFile = new MetaFile(file);
-
-                updateRightPanel(metaFile);
-                recentMetaFiles.add(metaFile);
-
-                // Vérifie si la limite de fichiers récents n'a pas été atteinte.
-                if (recentMetaFiles.size() > Dimension.MAX_RECENT_FILES_SIZE) {
-                    recentMetaFiles.remove(0);
-                    for (int i = 1; i < recentMetaFiles.size() - 1; i++) {
-                        prefs.put(Strings.PREF_KEY + (i-1), prefs.get(Strings.PREF_KEY + i, "NULL"));
-                    }
-                    prefs.put(Strings.PREF_KEY + "0", file.getAbsolutePath());
-                } else {
-                    prefs.put(Strings.PREF_KEY + (recentMetaFiles.size() - 1), file.getAbsolutePath());
-                }
-
-                /*
+                cacheManager.addFileToCache(metaFile);
+                metaFilesOpened.add(metaFile);
                 try {
-                    updateRecentFilesContainer();
-                } catch (UnsupportedLookAndFeelException | ClassNotFoundException | RuntimeException | InstantiationException | IllegalAccessException ex) {
+                    updateLeftPanel();
+                    updateRightPanel(metaFile);
+                } catch (UnsupportedLookAndFeelException | IllegalAccessException | InstantiationException |
+                         ClassNotFoundException | IOException | ParserConfigurationException | SAXException ex) {
                     ex.printStackTrace();
-                }*/
-
+                }
             }
         }
     }
 
-    public static void main(String[] args) throws UnsupportedLookAndFeelException, ClassNotFoundException, InstantiationException, IllegalAccessException {
+    public static void main(String[] args) throws UnsupportedLookAndFeelException, ClassNotFoundException, InstantiationException, IllegalAccessException, IOException, ParserConfigurationException, SAXException {
         new MainMenuGUI();
     }
 
-    public Preferences getPrefs() {
-        return prefs;
-    }
-
-    public ArrayList<MetaFile> getRecentMetaFiles() {
-        return recentMetaFiles;
-    }
-
-    public void updateRecentFilesContainer() throws UnsupportedLookAndFeelException, ClassNotFoundException, InstantiationException, IllegalAccessException {
+    public void updateLeftPanel() throws UnsupportedLookAndFeelException, ClassNotFoundException, InstantiationException, IllegalAccessException, IOException, ParserConfigurationException, SAXException {
         container.remove(leftPanel);
         leftPanel = new MainLeftPanel(main);
-        container.add(leftPanel);
-        container.repaint();
+        container.add(leftPanel, BorderLayout.WEST);
         container.revalidate();
+        container.repaint();
     }
 
-    public void updateRightPanel(MetaFile metaFile) {
+    public void updateRightPanel(MetaFile metaFile) throws UnsupportedLookAndFeelException, IOException, ClassNotFoundException, InstantiationException, IllegalAccessException {
         container.remove(rightPanel);
         rightPanel = new MainRightPanel(metaFile);
-        container.add(rightPanel);
-        container.repaint();
+        container.add(rightPanel, BorderLayout.EAST);
         container.revalidate();
+        container.repaint();
+    }
+
+    public ArrayList<MetaFile> getMetaFilesOpened() {
+        return metaFilesOpened;
     }
 }
