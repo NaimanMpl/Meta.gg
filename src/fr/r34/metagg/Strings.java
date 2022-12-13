@@ -21,7 +21,11 @@ public class Strings {
     public final static String EDIT = "Éditer";
     public final static String FILE_BUTTON_ICON_PATH = "./assets/img/odt_file_icon.png";
     public final static String EDIT_BUTTON_ICON_PATH = "./assets/img/edit_button.png";
-    public final static String PARENT_FOLDER_TITLE = " > ";
+
+    public final static String FILE_BUTTON_ICON_FOLDER_PANEL_PATH = "./assets/img/odt_file_icon_folder_panel.png";
+
+    public final static String FOLDER_ICON_PATH = "./assets/img/folder_icon.png";
+    public final static String PARENT_FOLDER_TITLE = ">";
 
 
 }

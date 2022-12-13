@@ -180,15 +180,6 @@ public class FileManager {
     				thumbnail = fileOfThumbnails;
     			}
     		}
-            //JFrame frame = new JFrame();
-            //ImageIcon thumbnailAffiche = new ImageIcon(thumbnail.getAbsolutePath());
-            /*
-            frame.add(new JLabel(thumbnailAffiche));
-            frame.pack();
-            frame.setVisible(true);
-            frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-
-             */
             metaFile.setThumbnail(thumbnail);
     	}
     }

@@ -17,10 +17,10 @@ public class FolderMenuGUI {
 
     private final Container container;
 
-    public FolderMenuGUI(){
+    public FolderMenuGUI() throws UnsupportedLookAndFeelException, ClassNotFoundException, InstantiationException, IllegalAccessException {
 
         frame = new JFrame();
-        leftPanel = new FolderLeftPanel(new File("./ParcoursODT/lezgong"));
+        leftPanel = new FolderLeftPanel(new File("./ParcoursODT"));
         rightPanel = new MainRightPanel(new MetaFile(new File("./sujet.odt")));
 
         container = frame.getContentPane();
@@ -38,7 +38,7 @@ public class FolderMenuGUI {
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws UnsupportedLookAndFeelException, ClassNotFoundException, InstantiationException, IllegalAccessException {
         new FolderMenuGUI();
     }
 }

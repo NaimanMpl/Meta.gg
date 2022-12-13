@@ -3,7 +3,7 @@ package fr.r34.metagg.gui.panels;
 import fr.r34.metagg.MetaFile;
 import fr.r34.metagg.Strings;
 import fr.r34.metagg.gui.Colors;
-import fr.r34.metagg.gui.CustomFileButton;
+import fr.r34.metagg.gui.customButtons.CustomFileButton;
 import fr.r34.metagg.gui.Dimension;
 
 import javax.swing.*;

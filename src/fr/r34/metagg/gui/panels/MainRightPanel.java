@@ -3,16 +3,12 @@ package fr.r34.metagg.gui.panels;
 import fr.r34.metagg.MetaFile;
 import fr.r34.metagg.Strings;
 import fr.r34.metagg.gui.Colors;
-import fr.r34.metagg.gui.CustomEditButton;
+import fr.r34.metagg.gui.customButtons.CustomEditButton;
 import fr.r34.metagg.gui.Dimension;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Vector;
 
@@ -46,7 +42,7 @@ public class MainRightPanel extends JPanel {
     private final SimpleDateFormat dateFormat;
 
 
-    public MainRightPanel(MetaFile metaFile)  {
+    public MainRightPanel(MetaFile metaFile) throws UnsupportedLookAndFeelException, ClassNotFoundException, InstantiationException, IllegalAccessException {
         this.metaFile = metaFile;
 
         titleField = new JTextField(metaFile.getTitle());
@@ -126,12 +122,7 @@ public class MainRightPanel extends JPanel {
         keywordsScroller.setBorder(new EmptyBorder(0, Dimension.LITTLE_MARGIN, 0, 0));
         keywordsScroller.setBackground(Colors.BLUE_1);
 
-        try {
-            edit_Button = new CustomEditButton();
-        } catch (UnsupportedLookAndFeelException | IllegalAccessException | InstantiationException |
-                 ClassNotFoundException e) {
-            throw new RuntimeException(e);
-        }
+        edit_Button = new CustomEditButton();
 
         this.setLayout(new GridBagLayout());
 
@@ -151,18 +142,22 @@ public class MainRightPanel extends JPanel {
         gbc.gridy = 3;
         this.add(size, gbc);
         gbc.gridy = 4;
-        this.add(keywords, gbc);
+        this.add(titlePanel, gbc);
         gbc.gridy = 5;
-        this.add(keywordsScroller, gbc);
+        this.add(subjectPanel, gbc);
         gbc.gridy = 6;
-        this.add(pagesAmount, gbc);
+        this.add(keywords, gbc);
         gbc.gridy = 7;
-        this.add(wordsAmount, gbc);
+        this.add(keywordsScroller, gbc);
         gbc.gridy = 8;
-        this.add(charAmount, gbc);
+        this.add(pagesAmount, gbc);
         gbc.gridy = 9;
-        this.add(paragraphsAmount, gbc);
+        this.add(wordsAmount, gbc);
         gbc.gridy = 10;
+        this.add(charAmount, gbc);
+        gbc.gridy = 11;
+        this.add(paragraphsAmount, gbc);
+        gbc.gridy = 12;
         this.add(edit_Button, gbc);
 
         this.setBorder(new EmptyBorder(
