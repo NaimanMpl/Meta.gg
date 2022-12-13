@@ -57,6 +57,7 @@ public class Main {
                     }
                 }
                 metaFile.save();
+                metaFile.deleteTempFolder();
             }
         }
     }

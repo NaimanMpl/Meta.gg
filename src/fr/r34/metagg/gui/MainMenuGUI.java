@@ -87,6 +87,7 @@ public class MainMenuGUI {
                 );
                 if (response == JOptionPane.OK_OPTION) {
                     for (MetaFile metaFile : metaFilesOpened) {
+                        if (!metaFile.getDestDir().exists()) continue;
                         metaFile.save();
                         metaFile.deleteTempFolder();
                     }

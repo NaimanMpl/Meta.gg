@@ -5,13 +5,10 @@ import fr.r34.metagg.Strings;
 import fr.r34.metagg.gui.Colors;
 import fr.r34.metagg.manager.Utils;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.*;
-import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 

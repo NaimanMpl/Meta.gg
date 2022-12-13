@@ -118,7 +118,6 @@ public class MainLeftPanel extends JPanel {
                     }
                 }
             });
-
             filesContainer.add(fileBtn);
         }
     }
