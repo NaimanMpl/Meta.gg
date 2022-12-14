@@ -50,7 +50,7 @@ public class FilePanel extends JPanel {
             GridBagConstraints gbc2 = new GridBagConstraints();
             gbc2.gridwidth = GridBagConstraints.REMAINDER;
             gbc2.weightx = 1;
-            gbc2.fill = GridBagConstraints.HORIZONTAL;
+            gbc2.fill = GridBagConstraints.NONE;
             gbc2.insets = new Insets(Dimension.LITTLE_MARGIN, 5, 0, 5);
             mainList.add(customFileInFolderButton, gbc2, 0);
             validate();

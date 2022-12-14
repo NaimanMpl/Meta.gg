@@ -13,12 +13,12 @@ import java.util.ArrayList;
 public class ArborescencePanel extends JPanel {
 
     private JLabel arborescencePath;
+    private JPanel top;
     private ArrayList<File> folderContent = new ArrayList<>();
     public String arborescencePathText = "";
 
     public ArborescencePanel(File parentFolder, String arborescencePathText){
         super();
-        this.setLayout(new BorderLayout());
         this.setBackground(Colors.BG_COLOR);
         this.setBorder(new EmptyBorder(fr.r34.metagg.gui.Dimension.COMPONENT_MARGIN_TOP, 2* fr.r34.metagg.gui.Dimension.DEFAULT_MARGIN, fr.r34.metagg.gui.Dimension.DEFAULT_MARGIN, fr.r34.metagg.gui.Dimension.DEFAULT_MARGIN));
         Arborescence arborescence = new Arborescence();
@@ -30,7 +30,11 @@ public class ArborescencePanel extends JPanel {
         arborescencePath.setIcon(myFolderIcon);
         arborescencePathText += ">" + parentFolder.getName();
 
-        this.add(arborescencePath, BorderLayout.NORTH);
-        this.add(new FolderPanel(folderContent), BorderLayout.SOUTH);
+        top = new JPanel();
+        top.setLayout(new FlowLayout(FlowLayout.LEFT));
+
+        this.add(arborescencePath);
+        this.add(new FolderPanel(folderContent));
+        this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
     }
 }

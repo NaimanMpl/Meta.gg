@@ -15,6 +15,7 @@ public class FolderPanel extends JPanel {
     private JPanel mainList;
     private JScrollPane scrollPane;
     private ArrayList<File> folderContent = new ArrayList<File>();
+    private int panelToAdd = 0, n = 0;
     public FolderPanel(ArrayList<File> folderContent) {
         setLayout(new BorderLayout());
 
@@ -33,22 +34,27 @@ public class FolderPanel extends JPanel {
         scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         add(scrollPane);
 
-        for(File folder : folderContent){
-            CustomFolderButton customFolderButton;
-            if(folder == null){
-                customFolderButton = new CustomFolderButton();
-            } else{
-                customFolderButton = new CustomFolderButton(folder);
-            }
+        if(folderContent.size() < 6){
+            panelToAdd = 6 - folderContent.size();
+        }
+        if((folderContent.size() % 2) != 0){
+            File folderNull = null;
+            folderContent.add(folderNull);
+            System.out.println("Folder null ajouté");
+        }
+
+        for (int x = 1; x < (folderContent.size()); x += 2){
+            File folder = folderContent.get(x-1);
+            File folder2 = folderContent.get(x);
+            FolderButtonPanel folderButtonPanel = new FolderButtonPanel(folder, folder2);
             GridBagConstraints gbc2 = new GridBagConstraints();
-            gbc2.gridwidth = GridBagConstraints.REMAINDER;
-            gbc2.weighty = 1;
-            gbc2.fill = GridBagConstraints.VERTICAL;
+            gbc2.gridwidth = GridBagConstraints.HORIZONTAL;
+            gbc2.weightx = 1;
+            gbc2.fill = GridBagConstraints.NONE;
             gbc2.insets = new Insets(Dimension.LITTLE_MARGIN, 5, 0, 5);
-            mainList.add(customFolderButton, gbc2, 0);
+            mainList.add(folderButtonPanel, gbc2, 0);
             validate();
             repaint();
         }
-
     }
 }

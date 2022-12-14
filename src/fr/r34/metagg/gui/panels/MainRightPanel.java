@@ -119,7 +119,7 @@ public class MainRightPanel extends JPanel {
         keywordsScroller = new JScrollPane(keywordsList);
 
         keywordsScroller.setPreferredSize(new java.awt.Dimension(150, 80));
-        keywordsScroller.setBorder(new EmptyBorder(0, Dimension.LITTLE_MARGIN, 0, 0));
+        keywordsScroller.setBorder(new EmptyBorder(0, 0, 0, 0));
         keywordsScroller.setBackground(Colors.BLUE_1);
 
         edit_Button = new CustomEditButton();
@@ -161,10 +161,10 @@ public class MainRightPanel extends JPanel {
         this.add(edit_Button, gbc);
 
         this.setBorder(new EmptyBorder(
-                Dimension.LITTLE_MARGIN,
-                Dimension.LITTLE_MARGIN,
-                Dimension.LITTLE_MARGIN,
-                Dimension.LITTLE_MARGIN
+                Dimension.DEFAULT_MARGIN,
+                Dimension.DEFAULT_MARGIN,
+                Dimension.DEFAULT_MARGIN,
+                Dimension.DEFAULT_MARGIN
         ));
         this.setPreferredSize(new java.awt.Dimension(
                 (int) (0.3* Dimension.WINDOW_WIDTH),

@@ -29,7 +29,7 @@ import java.util.zip.ZipOutputStream;
 
 public class FileManager {
 
-    /*
+    /**
      * Gestionnaire de fichiers permettant de lire et accéder aux métadonnées d'un fichier
      * @version 0.0.1
      * @author Naiman Mpl, Andrea PL
@@ -66,11 +66,10 @@ public class FileManager {
                     String lineCut = "";
                     String hyperTxtWeb = "";
                     String line = br.readLine();
-                    int indexD = 0;
-                    int indexF;
                     line = br.readLine();
-                    while (indexD > 0){
-                        indexD = line.indexOf(lineToFound);
+                    int indexD = line.indexOf(lineToFound);
+                    int indexF;
+                    while (indexD > -1){
                         lineCut = line.substring(indexD + 20);
                         indexF = lineCut.indexOf('"');
                         hyperTxtWeb = line.substring(indexD + 20, indexD + 20 + indexF);
@@ -78,6 +77,7 @@ public class FileManager {
                             hyperTxtWbList.add(hyperTxtWeb);
                         }
                         line = line.substring(indexD + 20 + indexF);
+                        indexD = line.indexOf(lineToFound);
                     }
                     for (String weblink : hyperTxtWbList){
                         metaFile.getHyperTextWebList().add(weblink);

@@ -22,7 +22,7 @@ public class CustomFolderButton extends JPanel {
         numberOdtInFolder = folderContent.size();
         this.setBackground(Colors.BLUE_1);
         this.setOpaque(true);
-        this.setPreferredSize(new Dimension(255, 142));
+        this.setPreferredSize(new Dimension(200, 140));
         folderNameLabel = new JLabel();
         folderNameLabel.setText(folder.getName());
         folderNameLabel.setForeground(Colors.WHITE);
@@ -34,7 +34,7 @@ public class CustomFolderButton extends JPanel {
         folderIcon = new JLabel(new ImageIcon(Strings.FOLDER_ICON_PATH));
 
         this.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-        this.setLayout(new FlowLayout());
+        this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
 
         this.add(folderIcon);
         this.add(folderNameLabel);
@@ -44,9 +44,10 @@ public class CustomFolderButton extends JPanel {
 
     public CustomFolderButton(){
         super();
-        this.setBackground(Colors.BG_COLOR);
+        this.setBackground(Colors.BLUE_1);
         this.setOpaque(true);
-        this.setPreferredSize(new Dimension(50, 50));
+        this.setPreferredSize(new Dimension(200, 140));
+        this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
         this.setVisible(true);
     }
 }
