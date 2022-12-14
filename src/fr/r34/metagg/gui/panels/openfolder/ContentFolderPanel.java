@@ -1,9 +1,10 @@
-package fr.r34.metagg.gui.panels;
+package fr.r34.metagg.gui.panels.openfolder;
 
+import fr.r34.metagg.Strings;
 import fr.r34.metagg.gui.Colors;
+import fr.r34.metagg.manager.Utils;
 
 import javax.swing.*;
-import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -18,7 +19,7 @@ public class ContentFolderPanel extends JPanel {
     public ContentFolderPanel(ArrayList<File> folderContent, File folder) throws IOException {
         super();
         this.setBackground(Colors.BG_COLOR);
-        myFolderIcon = new ImageIcon("./assets/img/my_folder_icon.png");
+        myFolderIcon = new Utils().getImageFromResource(Strings.MY_FOLDER_ICON_PATH);
         myFolder = new JLabel(folder.getName(), myFolderIcon, JLabel.LEFT);
         myFolder.setForeground(Colors.WHITE);
         folderContentPanel = new FilePanel(folderContent);

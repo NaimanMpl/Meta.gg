@@ -1,8 +1,9 @@
-package fr.r34.metagg.gui.panels;
+package fr.r34.metagg.gui.panels.openfolder;
 
 import fr.r34.metagg.Strings;
 import fr.r34.metagg.gui.Arborescence;
 import fr.r34.metagg.gui.Colors;
+import fr.r34.metagg.manager.Utils;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -27,7 +28,7 @@ public class ArborescencePanel extends JPanel {
         arborescencePath = new JLabel();
         arborescencePath.setText("<html><font color=#273343>" + arborescencePathText + " " + Strings.PARENT_FOLDER_TITLE + " " + "<font color=#ffffff>" + parentFolder.getName() + "</html>");
         arborescencePath.setFont(new Font(fr.r34.metagg.gui.Dimension.FONT, Font.PLAIN, fr.r34.metagg.gui.Dimension.TITLE_SIZE));
-        ImageIcon myFolderIcon = new ImageIcon("./assets/img/my_folder_icon.png");
+        ImageIcon myFolderIcon = new Utils().getImageFromResource(Strings.MY_FOLDER_ICON_PATH);
         arborescencePath.setIcon(myFolderIcon);
         arborescencePathText += ">" + parentFolder.getName();
 

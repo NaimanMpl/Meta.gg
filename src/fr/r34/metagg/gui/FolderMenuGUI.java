@@ -1,9 +1,8 @@
 package fr.r34.metagg.gui;
 
 import fr.r34.metagg.MetaFile;
-import fr.r34.metagg.gui.panels.FolderLeftPanel;
-import fr.r34.metagg.gui.panels.MainLeftPanel;
-import fr.r34.metagg.gui.panels.MainRightPanel;
+import fr.r34.metagg.gui.panels.openfolder.FolderLeftPanel;
+import fr.r34.metagg.gui.panels.openfile.MainRightPanel;
 
 import javax.swing.*;
 import java.awt.*;

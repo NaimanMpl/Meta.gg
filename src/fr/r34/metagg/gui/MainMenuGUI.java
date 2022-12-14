@@ -2,8 +2,8 @@ package fr.r34.metagg.gui;
 
 import fr.r34.metagg.MetaFile;
 import fr.r34.metagg.Strings;
-import fr.r34.metagg.gui.panels.MainLeftPanel;
-import fr.r34.metagg.gui.panels.MainRightPanel;
+import fr.r34.metagg.gui.panels.openfile.MainLeftPanel;
+import fr.r34.metagg.gui.panels.openfile.MainRightPanel;
 import fr.r34.metagg.manager.CacheManager;
 import org.xml.sax.SAXException;
 

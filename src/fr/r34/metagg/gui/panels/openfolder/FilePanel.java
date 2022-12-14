@@ -1,4 +1,4 @@
-package fr.r34.metagg.gui.panels;
+package fr.r34.metagg.gui.panels.openfolder;
 
 import fr.r34.metagg.MetaFile;
 import fr.r34.metagg.gui.Colors;

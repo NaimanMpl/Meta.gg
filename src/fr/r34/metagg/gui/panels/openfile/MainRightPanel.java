@@ -1,4 +1,4 @@
-package fr.r34.metagg.gui.panels;
+package fr.r34.metagg.gui.panels.openfile;
 
 import fr.r34.metagg.MetaFile;
 import fr.r34.metagg.Strings;
@@ -49,10 +49,6 @@ public class MainRightPanel extends JPanel {
         this.keywordsFieldsList = new ArrayList<>();
         this.utils = new Utils();
         this.linksPanel = new LinksPanel(metaFile);
-
-        if (metaFile.getThumbnail() != null) {
-            System.out.println("coucou " + metaFile.getThumbnail().getAbsolutePath());
-        }
 
         titleField = new JTextField(metaFile.getTitle());
         subjectField = new JTextField(metaFile.getSubject());
