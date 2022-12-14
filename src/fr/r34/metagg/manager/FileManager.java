@@ -70,7 +70,7 @@ public class FileManager {
                     int indexD = 0;
                     int indexF;
                     line = br.readLine();
-                    while (indexD > 0){
+                    while (indexD > -1){
                         indexD = line.indexOf(lineToFound);
                         lineCut = line.substring(indexD + 20);
                         indexF = lineCut.indexOf('"');
@@ -175,22 +175,13 @@ public class FileManager {
         File file = new File(metaFile.getDestDir().getPath() + "/Thumbnails");
         if (!file.exists()) return;
     	if(file.getName().equalsIgnoreCase("thumbnails")) {
-    		for(File fileOfThumbnails : file.listFiles()) {
+    		for (File fileOfThumbnails : file.listFiles()) {
     			System.out.println(fileOfThumbnails.getName());
     			if (fileOfThumbnails.getName().equalsIgnoreCase("thumbnail.png")){
     				thumbnail = fileOfThumbnails;
     			}
     		}
-            //JFrame frame = new JFrame();
-            //ImageIcon thumbnailAffiche = new ImageIcon(thumbnail.getAbsolutePath());
-            /*
-            frame.add(new JLabel(thumbnailAffiche));
-            frame.pack();
-            frame.setVisible(true);
-            frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-
-             */
-            metaFile.setThumbnail(thumbnail);
+            if (metaFile.getThumbnail() != null) metaFile.setThumbnail(thumbnail);
     	}
     }
     /**

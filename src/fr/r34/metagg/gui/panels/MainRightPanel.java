@@ -43,13 +43,17 @@ public class MainRightPanel extends JPanel {
     private final ArrayList<JTextField> keywordsFieldsList;
     private final CustomEditButton editButton;
     private final Utils utils;
-    private final JPanel panel, showLinksPanel, keywordsPanel;
+    private final JPanel linksPanel, showLinksPanel, keywordsPanel;
 
     public MainRightPanel(MetaFile metaFile) throws UnsupportedLookAndFeelException, IOException, ClassNotFoundException, InstantiationException, IllegalAccessException {
         this.metaFile = metaFile;
         this.keywordsFieldsList = new ArrayList<>();
         this.utils = new Utils();
-        this.panel = new LinksPanel(metaFile);
+        this.linksPanel = new LinksPanel(metaFile);
+
+        if (metaFile.getThumbnail() != null) {
+            System.out.println("coucou " + metaFile.getThumbnail().getAbsolutePath());
+        }
 
         titleField = new JTextField(metaFile.getTitle());
         subjectField = new JTextField(metaFile.getSubject());
@@ -85,7 +89,6 @@ public class MainRightPanel extends JPanel {
         this.keywordsPanel = new KeywordsPanel(metaFile, keywordsFieldsList);
 
         showLinksPanel.add(showLinks);
-        showLinksPanel.setVisible(false);
 
         editButton = new CustomEditButton();
         editButton.addActionListener(new EditAction());
@@ -99,6 +102,8 @@ public class MainRightPanel extends JPanel {
         subjectField.setBorder(null);
         subjectField.setForeground(Colors.WHITE);
         subjectField.setEditable(false);
+
+        linksPanel.setVisible(false);
 
         titlePanel.setLayout(new BoxLayout(titlePanel, BoxLayout.Y_AXIS));
         titlePanel.setBackground(null);
@@ -137,7 +142,7 @@ public class MainRightPanel extends JPanel {
 
             List<JComponent> components = Arrays.asList(
                     panelTitle, picture, name, size,
-                    titlePanel, subjectPanel, showLinksPanel, keywords,
+                    titlePanel, subjectPanel, linksPanel, keywords,
                     keywordsPanel, pagesAmount, wordsAmount, charAmount,
                     paragraphsAmount, showPanel, editButton
             );
@@ -225,8 +230,9 @@ public class MainRightPanel extends JPanel {
             pagesAmount.setVisible(!pagesAmount.isVisible());
             wordsAmount.setVisible(!wordsAmount.isVisible());
             charAmount.setVisible(!charAmount.isVisible());
+            keywords.setVisible(!keywords.isVisible());
             paragraphsAmount.setVisible(!paragraphsAmount.isVisible());
-            showLinksPanel.setVisible(!showLinksPanel.isVisible());
+            linksPanel.setVisible(!linksPanel.isVisible());
         }
     }
 
