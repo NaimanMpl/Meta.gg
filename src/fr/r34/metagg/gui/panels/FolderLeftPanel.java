@@ -43,25 +43,6 @@ public class FolderLeftPanel extends JPanel {
         header.setBackground(Colors.BG_COLOR);
 
         parentsFolderContainer = new ArborescencePanel(folder, initArborescencePathText);
-
-        /*
-        ImageIcon myFolderIcon = new ImageIcon("./assets/img/my_folder_icon.png");
-        myFolder = new JLabel(folder.getName(), myFolderIcon, JLabel.LEFT);
-        myFolder.setForeground(Colors.WHITE);
-
-        GridBagConstraints gbcnt = new GridBagConstraints();
-        filesInFolderContainer.setLayout(new GridBagLayout());
-        filesInFolderContainer.setBackground(Colors.BG_COLOR);
-        gbcnt.fill = GridBagConstraints.VERTICAL;
-        gbcnt.gridx = 0;
-        gbcnt.gridy = 0;
-        filesInFolderContainer.add(myFolder, gbcnt);
-        gbcnt.gridx = 0;
-        gbcnt.gridy = 1;
-        filesInFolderContainer.add(new FilePanel(folderContent), gbcnt);
-        filesInFolderContainer.setBorder(new EmptyBorder(Dimension.COMPONENT_MARGIN_TOP, 2*Dimension.DEFAULT_MARGIN, Dimension.DEFAULT_MARGIN, Dimension.DEFAULT_MARGIN));
-         */
-
         filesInFolderContainer = new ContentFolderPanel(folderContent, folder);
 
         this.setLayout(new BorderLayout());

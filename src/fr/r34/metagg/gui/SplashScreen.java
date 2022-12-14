@@ -30,6 +30,7 @@ public class SplashScreen {
         window.setVisible(true);
         try {
             new MainMenuGUI();
+            new FolderMenuGUI();
         } catch (UnsupportedLookAndFeelException | IllegalAccessException | InstantiationException |
                  ClassNotFoundException | ParserConfigurationException | SAXException e) {
             e.printStackTrace();

@@ -1,7 +1,7 @@
 package fr.r34.metagg.gui.panels;
 
 import fr.r34.metagg.gui.Colors;
-import fr.r34.metagg.gui.customButtons.CustomFolderButton;
+import fr.r34.metagg.gui.custombuttons.CustomFolderButton;
 
 import javax.swing.*;
 import java.awt.*;

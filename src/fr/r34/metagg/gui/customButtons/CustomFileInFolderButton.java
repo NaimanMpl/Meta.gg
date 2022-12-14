@@ -1,4 +1,4 @@
-package fr.r34.metagg.gui.customButtons;
+package fr.r34.metagg.gui.custombuttons;
 
 import fr.r34.metagg.MetaFile;
 import fr.r34.metagg.Strings;

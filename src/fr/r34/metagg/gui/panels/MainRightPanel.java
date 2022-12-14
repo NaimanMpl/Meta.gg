@@ -3,11 +3,11 @@ package fr.r34.metagg.gui.panels;
 import fr.r34.metagg.MetaFile;
 import fr.r34.metagg.Strings;
 import fr.r34.metagg.gui.Colors;
-import fr.r34.metagg.gui.customButtons.CustomEditButton;
 import fr.r34.metagg.gui.Dimension;
-import fr.r34.metagg.gui.custombuttons.CustomEditButton;
 import fr.r34.metagg.manager.Utils;
+import fr.r34.metagg.gui.custombuttons.CustomEditButton;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
@@ -23,7 +23,7 @@ import java.util.List;
 
 public class MainRightPanel extends JPanel {
 
-    private ImageIcon fileIcon;
+    private BufferedImage fileIcon;
     private JLabel picture;
     private final JLabel name;
     private final JLabel size;
@@ -38,9 +38,6 @@ public class MainRightPanel extends JPanel {
     private final JLabel panelTitle;
     private final JLabel keywords;
     private final JTextField titleField, subjectField;
-
-    private final CustomEditButton edit_Button;
-
     private final MetaFile metaFile;
     private final ArrayList<JTextField> keywordsFieldsList;
     private final CustomEditButton editButton;

@@ -8,6 +8,7 @@ import fr.r34.metagg.gui.panels.MainRightPanel;
 import javax.swing.*;
 import java.awt.*;
 import java.io.File;
+import java.io.IOException;
 
 public class FolderMenuGUI {
 
@@ -17,7 +18,7 @@ public class FolderMenuGUI {
 
     private final Container container;
 
-    public FolderMenuGUI() throws UnsupportedLookAndFeelException, ClassNotFoundException, InstantiationException, IllegalAccessException {
+    public FolderMenuGUI() throws UnsupportedLookAndFeelException, ClassNotFoundException, InstantiationException, IllegalAccessException, IOException {
 
         frame = new JFrame();
         leftPanel = new FolderLeftPanel(new File("./ParcoursODT"));
@@ -38,7 +39,7 @@ public class FolderMenuGUI {
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     }
 
-    public static void main(String[] args) throws UnsupportedLookAndFeelException, ClassNotFoundException, InstantiationException, IllegalAccessException {
+    public static void main(String[] args) throws UnsupportedLookAndFeelException, ClassNotFoundException, InstantiationException, IllegalAccessException, IOException {
         new FolderMenuGUI();
     }
 }
