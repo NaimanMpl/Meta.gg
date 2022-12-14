@@ -43,32 +43,15 @@ public class FolderLeftPanel extends JPanel {
         header.setBackground(Colors.BG_COLOR);
 
         parentsFolderContainer = new ArborescencePanel(folder, initArborescencePathText);
-
-        /*
-        ImageIcon myFolderIcon = new ImageIcon("./assets/img/my_folder_icon.png");
-        myFolder = new JLabel(folder.getName(), myFolderIcon, JLabel.LEFT);
-        myFolder.setForeground(Colors.WHITE);
-
-        GridBagConstraints gbcnt = new GridBagConstraints();
-        filesInFolderContainer.setLayout(new GridBagLayout());
-        filesInFolderContainer.setBackground(Colors.BG_COLOR);
-        gbcnt.fill = GridBagConstraints.VERTICAL;
-        gbcnt.gridx = 0;
-        gbcnt.gridy = 0;
-        filesInFolderContainer.add(myFolder, gbcnt);
-        gbcnt.gridx = 0;
-        gbcnt.gridy = 1;
-        filesInFolderContainer.add(new FilePanel(folderContent), gbcnt);
-        filesInFolderContainer.setBorder(new EmptyBorder(Dimension.COMPONENT_MARGIN_TOP, 2*Dimension.DEFAULT_MARGIN, Dimension.DEFAULT_MARGIN, Dimension.DEFAULT_MARGIN));
-         */
+        parentsFolderContainer.setPreferredSize(new java.awt.Dimension(Dimension.WINDOW_WIDTH, 200));
 
         filesInFolderContainer = new ContentFolderPanel(folderContent, folder);
 
-        this.setLayout(new BorderLayout());
+        this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
-        this.add(header, BorderLayout.NORTH);
-        this.add(parentsFolderContainer, BorderLayout.CENTER);
-        this.add(filesInFolderContainer, BorderLayout.SOUTH);
+        this.add(header);
+        this.add(parentsFolderContainer);
+        this.add(filesInFolderContainer);
 
         this.setPreferredSize(new java.awt.Dimension(LABEL_WIDTH, LABEL_HEIGHT));
         this.setBackground(Colors.BG_COLOR);

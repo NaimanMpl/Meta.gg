@@ -23,6 +23,6 @@ public class ContentFolderPanel extends JPanel {
         folderContentPanel = new FilePanel(folderContent);
         this.add(myFolder);
         this.add(folderContentPanel);
-        this.setLayout(new BorderLayout());
+        this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
     }
 }
