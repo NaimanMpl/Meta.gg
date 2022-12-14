@@ -8,6 +8,7 @@ import fr.r34.metagg.gui.custombuttons.CustomFileInFolderButton;
 import javax.swing.*;
 import java.awt.*;
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class FilePanel extends JPanel {
@@ -15,7 +16,7 @@ public class FilePanel extends JPanel {
     private JScrollPane scrollPane;
     private ArrayList<File> folderContent = new ArrayList<File>();
 
-    public FilePanel(ArrayList<File> folderContent) {
+    public FilePanel(ArrayList<File> folderContent) throws IOException {
         setLayout(new BorderLayout());
         setPreferredSize(new java.awt.Dimension(500, 200));
 

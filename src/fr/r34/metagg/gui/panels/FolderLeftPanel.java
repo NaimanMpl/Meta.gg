@@ -9,6 +9,7 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 
 
@@ -26,7 +27,7 @@ public class FolderLeftPanel extends JPanel {
     private final String initArborescencePathText = "";
 
 
-    public FolderLeftPanel(File folder) {
+    public FolderLeftPanel(File folder) throws IOException {
         this.folder = folder;
         DirectoryManager directoryManager = new DirectoryManager();
         folderContent = directoryManager.directoryContent(folder, folderContent);

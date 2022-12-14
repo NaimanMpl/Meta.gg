@@ -8,6 +8,7 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class ArborescencePanel extends JPanel {
@@ -17,7 +18,7 @@ public class ArborescencePanel extends JPanel {
     private ArrayList<File> folderContent = new ArrayList<>();
     public String arborescencePathText = "";
 
-    public ArborescencePanel(File parentFolder, String arborescencePathText){
+    public ArborescencePanel(File parentFolder, String arborescencePathText) throws IOException {
         super();
         this.setBackground(Colors.BG_COLOR);
         this.setBorder(new EmptyBorder(fr.r34.metagg.gui.Dimension.COMPONENT_MARGIN_TOP, 2* fr.r34.metagg.gui.Dimension.DEFAULT_MARGIN, fr.r34.metagg.gui.Dimension.DEFAULT_MARGIN, fr.r34.metagg.gui.Dimension.DEFAULT_MARGIN));

@@ -3,6 +3,8 @@ package fr.r34.metagg.gui.custombuttons;
 import fr.r34.metagg.MetaFile;
 import fr.r34.metagg.Strings;
 import fr.r34.metagg.gui.Colors;
+import fr.r34.metagg.manager.Utils;
+import jdk.jshell.execution.Util;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -10,16 +12,19 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.io.IOException;
 
 public class CustomFileInFolderButton extends JPanel {
 
     private static JLabel metafileNameLabel, metafileSizeLabel, metafileDateLabel, fileIcon;
     private double round;
+    private Utils utils;
     private MouseListener mouseListener;
-    public CustomFileInFolderButton(MetaFile metaFile){
+    public CustomFileInFolderButton(MetaFile metaFile) throws IOException {
         super();
         this.setBackground(Colors.BLUE_1);
         this.setOpaque(true);
+        this.utils = new Utils();
         this.setPreferredSize(new Dimension(600, 60));
         metafileNameLabel = new JLabel();
         metafileNameLabel.setText(metaFile.getFile().getName());
@@ -34,7 +39,7 @@ public class CustomFileInFolderButton extends JPanel {
         metafileDateLabel.setText("" + metaFile.getCreationDate());
         metafileDateLabel.setForeground(Colors.BLUE_0);
         metafileDateLabel.setFont(new Font(fr.r34.metagg.gui.Dimension.FONT, Font.PLAIN, fr.r34.metagg.gui.Dimension.PARAGRAPH_SIZE));
-        fileIcon = new JLabel(new ImageIcon(Strings.FILE_BUTTON_ICON_FOLDER_PANEL_PATH));
+        fileIcon = new JLabel(utils.getImageFromResource(Strings.FILE_BUTTON_ICON_FOLDER_PANEL_PATH));
 
         this.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         this.setLayout(new GridLayout(1, 3, 30, 0));

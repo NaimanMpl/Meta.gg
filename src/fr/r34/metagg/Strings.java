@@ -9,8 +9,6 @@ public class Strings {
     public final static String SHOW_IMAGES = "Afficher les images";
     public final static String SHOW_HYPERTEXT_LINKS = "Afficher les liens hypertextes";
     public final static String HYPERTEXT_TITLE = "Liens hypertextes :";
-
-    // MainRightPanel
     public final static String RIGHT_PANEL_TITLE = "Métadonnées du fichier";
     public final static String TITLE = "Titre : ";
     public final static String SUBJECT = "Sujet : ";
@@ -32,10 +30,9 @@ public class Strings {
     public final static String CACHE_PATH = "./cache.xml";
 
     public final static String FILE_BUTTON_ICON_PATH = "/odt_file_icon.png";
+    public final static String FILE_BUTTON_ICON_FOLDER_PANEL_PATH = "/odt_file_icon_folder_panel.png";
 
-    public final static String FILE_BUTTON_ICON_FOLDER_PANEL_PATH = "./assets/img/odt_file_icon_folder_panel.png";
-
-    public final static String FOLDER_ICON_PATH = "./assets/img/folder_icon.png";
+    public final static String FOLDER_ICON_PATH = "/folder_icon.png";
     public final static String PARENT_FOLDER_TITLE = ">";
 
 

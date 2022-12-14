@@ -6,6 +6,7 @@ import fr.r34.metagg.gui.Dimension;
 import javax.swing.*;
 import java.awt.*;
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class FolderPanel extends JPanel {
@@ -13,7 +14,7 @@ public class FolderPanel extends JPanel {
     private JScrollPane scrollPane;
     private ArrayList<File> folderContent = new ArrayList<File>();
     private int panelToAdd = 0, n = 0;
-    public FolderPanel(ArrayList<File> folderContent) {
+    public FolderPanel(ArrayList<File> folderContent) throws IOException {
         setLayout(new BorderLayout());
 
         mainList = new JPanel(new GridBagLayout());
