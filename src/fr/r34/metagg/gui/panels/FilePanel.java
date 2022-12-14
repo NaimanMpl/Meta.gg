@@ -17,6 +17,7 @@ public class FilePanel extends JPanel {
 
     public FilePanel(ArrayList<File> folderContent) {
         setLayout(new BorderLayout());
+        setPreferredSize(new java.awt.Dimension(500, 200));
 
         mainList = new JPanel(new GridBagLayout());
         mainList.setBackground(Colors.BG_COLOR);

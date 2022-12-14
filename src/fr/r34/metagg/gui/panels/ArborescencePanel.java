@@ -36,5 +36,6 @@ public class ArborescencePanel extends JPanel {
         this.add(arborescencePath);
         this.add(new FolderPanel(folderContent));
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+        this.setVisible(true);
     }
 }

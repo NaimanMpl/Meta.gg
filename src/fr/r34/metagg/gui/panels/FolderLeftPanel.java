@@ -45,11 +45,11 @@ public class FolderLeftPanel extends JPanel {
         parentsFolderContainer = new ArborescencePanel(folder, initArborescencePathText);
         filesInFolderContainer = new ContentFolderPanel(folderContent, folder);
 
-        this.setLayout(new BorderLayout());
+        this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
-        this.add(header, BorderLayout.NORTH);
-        this.add(parentsFolderContainer, BorderLayout.CENTER);
-        this.add(filesInFolderContainer, BorderLayout.SOUTH);
+        this.add(header);
+        this.add(parentsFolderContainer);
+        this.add(filesInFolderContainer);
 
         this.setPreferredSize(new java.awt.Dimension(LABEL_WIDTH, LABEL_HEIGHT));
         this.setBackground(Colors.BG_COLOR);
