@@ -4,12 +4,16 @@ import fr.r34.metagg.manager.DirectoryManager;
 import fr.r34.metagg.manager.FileManager;
 
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
 public class Main {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws ParseException {
         FileManager fileM = new FileManager();
         DirectoryManager directoryM = new DirectoryManager();
 
@@ -18,16 +22,7 @@ public class Main {
                 File file = new File(args[1]);
                 MetaFile metaFile = new MetaFile(file);
                 metaFile.displayMetaData();
-
-                File fileToZip = new File("./" + metaFile.getDestDir().getName());
-                File zipFile = new File(metaFile.getDestDir().getName() + ".zip");
-                try {
-                    fileM.zip(fileToZip.toPath(), zipFile.toPath());
-                    fileM.changeExtension(zipFile, ".odt");
-                    fileM.delete(metaFile.getDestDir());
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                metaFile.deleteTempFolder();
 
             } else if (args[0].equalsIgnoreCase("-d")) {
                 File folder = new File(args[1]);
@@ -37,7 +32,7 @@ public class Main {
                     MetaFile metaFile = new MetaFile(file);
                     String name = metaFile.getFile().getName();
                     String title = metaFile.getTitle();
-                    Date creationDate = metaFile.getCreationDate();
+                    String creationDate = metaFile.getCreationDate();
                     float size = metaFile.getSize();
                     System.out.println(metaFile.getFile().getParent());
                     System.out.println("◼"+ name + "\t" + title + " " + creationDate + " " + size + " Ko");
@@ -62,16 +57,7 @@ public class Main {
                     }
                 }
                 metaFile.save();
-
-                File fileToZip = new File("./" + metaFile.getDestDir().getName());
-                File zipFile = new File(metaFile.getDestDir().getName() + ".zip");
-                try {
-                    fileM.zip(fileToZip.toPath(), zipFile.toPath());
-                    fileM.changeExtension(zipFile, ".odt");
-                    fileM.delete(metaFile.getDestDir());
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                metaFile.deleteTempFolder();
             }
         }
     }

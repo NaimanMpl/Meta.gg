@@ -21,6 +21,7 @@ import java.io.*;
 import java.nio.file.*;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.text.DecimalFormat;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.zip.ZipEntry;
@@ -29,7 +30,7 @@ import java.util.zip.ZipOutputStream;
 
 public class FileManager {
 
-    /*
+    /**
      * Gestionnaire de fichiers permettant de lire et accéder aux métadonnées d'un fichier
      * @version 0.0.1
      * @author Naiman Mpl, Andrea PL
@@ -43,7 +44,7 @@ public class FileManager {
      */
     public void readMetaData(MetaFile metaFile) {
         File file = metaFile.getFile();
-        ArrayList<File> metaFiles = this.unzip(file, new File("./" + file.getName().substring(0, file.getName().lastIndexOf("."))));
+        ArrayList<File> metaFiles = this.unzip(file, metaFile.getDestDir());
         try {
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             DocumentBuilder builder = factory.newDocumentBuilder();
@@ -66,11 +67,10 @@ public class FileManager {
                     String lineCut = "";
                     String hyperTxtWeb = "";
                     String line = br.readLine();
-                    int indexD = 0;
-                    int indexF;
                     line = br.readLine();
-                    while (indexD > 0){
-                        indexD = line.indexOf(lineToFound);
+                    int indexD = line.indexOf(lineToFound);
+                    int indexF;
+                    while (indexD > -1){
                         lineCut = line.substring(indexD + 20);
                         indexF = lineCut.indexOf('"');
                         hyperTxtWeb = line.substring(indexD + 20, indexD + 20 + indexF);
@@ -78,6 +78,7 @@ public class FileManager {
                             hyperTxtWbList.add(hyperTxtWeb);
                         }
                         line = line.substring(indexD + 20 + indexF);
+                        indexD = line.indexOf(lineToFound);
                     }
                     for (String weblink : hyperTxtWbList){
                         metaFile.getHyperTextWebList().add(weblink);
@@ -126,7 +127,7 @@ public class FileManager {
                     }
                 }
             }
-        } catch (ParserConfigurationException | IOException | SAXException e) {
+        } catch (ParserConfigurationException | IOException | SAXException | ParseException e) {
             e.printStackTrace();
         }
     }
@@ -159,7 +160,7 @@ public class FileManager {
                     }
                 }
             }
-        } catch (SAXException | ParserConfigurationException | IOException e) {
+        } catch (SAXException | ParserConfigurationException | IOException | ParseException e) {
             e.printStackTrace();
         }
     }
@@ -174,22 +175,13 @@ public class FileManager {
         File file = new File(metaFile.getDestDir().getPath() + "/Thumbnails");
         if (!file.exists()) return;
     	if(file.getName().equalsIgnoreCase("thumbnails")) {
-    		for(File fileOfThumbnails : file.listFiles()) {
+    		for (File fileOfThumbnails : file.listFiles()) {
     			System.out.println(fileOfThumbnails.getName());
     			if (fileOfThumbnails.getName().equalsIgnoreCase("thumbnail.png")){
     				thumbnail = fileOfThumbnails;
     			}
     		}
-            //JFrame frame = new JFrame();
-            //ImageIcon thumbnailAffiche = new ImageIcon(thumbnail.getAbsolutePath());
-            /*
-            frame.add(new JLabel(thumbnailAffiche));
-            frame.pack();
-            frame.setVisible(true);
-            frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-
-             */
-            metaFile.setThumbnail(thumbnail);
+            if (metaFile.getThumbnail() != null) metaFile.setThumbnail(thumbnail);
     	}
     }
     /**
@@ -245,7 +237,7 @@ public class FileManager {
                     switch (attribute) {
                         case TITLE -> { metaData.setTextContent(metaFile.getTitle()); }
                         case SUBJECT -> { metaData.setTextContent(metaFile.getSubject()); }
-                        case CREATION_DATE -> { metaData.setTextContent(metaFile.getCreationDate().toString()); }
+                        case CREATION_DATE -> { metaData.setTextContent(metaFile.getCreationDate()); }
                         case KEYWORD -> {
                             NodeList keywords = officeMetaElement.getElementsByTagName(attribute.getTag());
                             int n = keywords.getLength();
@@ -301,7 +293,7 @@ public class FileManager {
      * @param doc
      * @param output
      */
-    private void writeXml(Document doc, OutputStream output) throws TransformerException {
+    public void writeXml(Document doc, OutputStream output) throws TransformerException {
 
         TransformerFactory transformerFactory = TransformerFactory.newInstance();
 
@@ -412,5 +404,4 @@ public class FileManager {
             folder.delete();
         }
     }
-
 }

@@ -3,6 +3,10 @@ package fr.r34.metagg;
 import fr.r34.metagg.manager.FileManager;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -11,17 +15,16 @@ import java.util.Map;
 public class MetaFile {
 
     private String title, subject, mime;
-    private final File file, destDir;
+    private File file, destDir;
     private File thumbnail;
-    private final FileManager fileM;
+    private FileManager fileM;
     private int pagesAmount, paragraphAmount, wordAmount, characterAmount;
-    private Date creationDate;
+    private String creationDate;
     private float size;
     private final ArrayList<String> keywords;
     private final HashMap<String, ArrayList<String>> media;
 
     private final ArrayList<String> hyperTextWebList;
-
     private final static int BUFFER_SIZE = 1024;
 
     /**
@@ -44,8 +47,24 @@ public class MetaFile {
         this.hyperTextWebList = new ArrayList<>();
         this.media = new HashMap<>();
         this.fileM = new FileManager();
-        this.destDir = new File(file.getName().substring(0, file.getName().lastIndexOf(".")));
+        this.destDir = new File(file.getAbsolutePath().substring(0, file.getAbsolutePath().lastIndexOf(".")));
         fileM.readMetaData(this);
+    }
+
+    public MetaFile() {
+        this.file = new File("unknown");
+        this.thumbnail = null;
+        this.title = "";
+        this.subject = "";
+        this.pagesAmount = 0;
+        this.paragraphAmount = 0;
+        this.wordAmount = 0;
+        this.characterAmount = 0;
+        this.creationDate = "01-01-1970";
+        this.size = 0;
+        this.keywords = new ArrayList<>();
+        this.hyperTextWebList = new ArrayList<>();
+        this.media = new HashMap<>();
     }
 
     public File getFile() {
@@ -100,11 +119,11 @@ public class MetaFile {
         this.characterAmount = characterAmount;
     }
 
-    public Date getCreationDate() {
+    public String getCreationDate() {
         return creationDate;
     }
 
-    public void setCreationDate(Date creationDate) {
+    public void setCreationDate(String creationDate) {
         this.creationDate = creationDate;
     }
 
@@ -163,8 +182,21 @@ public class MetaFile {
      * Sauvegarde les métadonnées de l'objet dans un nouveau fichier XML
      */
     public void save() {
-        File xmlFile = new File(destDir.getPath() + "/meta.xml");
+        File xmlFile = new File(destDir.getAbsolutePath() + "/meta.xml");
         fileM.saveMetaDataXML(this, xmlFile);
+    }
+
+    public void deleteTempFolder() {
+        File fileToZip = this.getDestDir();
+        String zipFilePath = this.getDestDir().getAbsolutePath();
+        File zipFile = new File(zipFilePath + ".zip");
+        try {
+            fileM.zip(fileToZip.toPath(), zipFile.toPath());
+            fileM.changeExtension(zipFile, ".odt");
+            fileM.delete(this.getDestDir());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -172,11 +204,11 @@ public class MetaFile {
      * @param attribute L'attribut que l'on souhaite mettre à jour
      * @param content Le nouveau contenu de notre attribut
      */
-    public void updateAttribute(MetaAttributes attribute, String content) {
+    public void updateAttribute(MetaAttributes attribute, String content) throws ParseException {
         switch (attribute) {
             case TITLE -> { this.setTitle(content); }
             case SUBJECT -> { this.setSubject(content); }
-            case CREATION_DATE -> { this.setCreationDate(new Date()); }
+            case CREATION_DATE -> { this.setCreationDate(content); }
             case KEYWORD -> { this.getKeywords().add(content); }
             case PAGE_COUNT -> { this.setPagesAmount(Integer.parseInt(content)); }
             case CHARACTERS_COUNT -> { this.setCharacterAmount(Integer.parseInt(content)); }
