@@ -38,7 +38,7 @@ public class SplashScreen {
         window.dispose();
     }
 
-    public static void main(String[] arg) throws IOException {
+    public static void main(String[] arg) throws IOException, UnsupportedLookAndFeelException, ClassNotFoundException, InstantiationException, IllegalAccessException {
         new SplashScreen();
     }
 }

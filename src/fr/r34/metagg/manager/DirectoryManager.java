@@ -31,7 +31,6 @@ public class DirectoryManager {
 				else {
 					String mimetype = element.toURL().openConnection().getContentType();
 					if (Objects.equals(mimetype, "application/vnd.oasis.opendocument.text")) {
-						String fileName = element.getName();
 						odtInFolder.add(element);
 					}
 				}
