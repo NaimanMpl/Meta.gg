@@ -30,6 +30,8 @@ public class LinksPanel extends JPanel {
         JScrollPane scrollPane = new JScrollPane(mainPanel);
         scrollPane.setPreferredSize(new Dimension((int) (0.2* fr.r34.metagg.gui.Dimension.WINDOW_WIDTH), 200));
         scrollPane.setBorder(null);
+        scrollPane.setBackground(Colors.BLUE_1);
+        mainPanel.setBackground(Colors.BLUE_1);
         this.add(scrollPane);
         this.setBackground(Colors.BLUE_1);
     }

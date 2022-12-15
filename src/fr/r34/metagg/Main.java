@@ -36,6 +36,7 @@ public class Main {
                     float size = metaFile.getSize();
                     System.out.println(metaFile.getFile().getParent());
                     System.out.println("◼"+ name + "\t" + title + " " + creationDate + " " + size + " Ko");
+                    metaFile.deleteTempFolder();
                 }
             }
         } else if (args.length == 4) {

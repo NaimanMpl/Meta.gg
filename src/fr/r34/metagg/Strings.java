@@ -21,6 +21,10 @@ public class Strings {
     public final static String SAVE_MODIFICATIONS = "Sauvegarder";
     public final static String OPEN = "Ouvrir";
     public final static String MENU_TITLE = "Fichier";
+    public final static String NO_TITLE = "Pas de titre";
+    public final static String NO_SUBJECT = "Pas de sujet";
+    public final static String ADD_KEYWORD = "Ajouter un mot-clé";
+    public final static String ENTER_KEYWORD = "Veuillez saisir un mot-clé";
     public final static String ERROR_SPLASH_NOT_LOADED = "File not found : L'image de chargement n'a pas pu être chargé !";
     public final static String ERROR_ODT_ICON_NOT_LOADED = "File not found : L'icone de fichiers n'a pas pu être chargé !";
     public final static String ODT_FILE_PATH = "/odt_file_icon.png";
@@ -31,7 +35,6 @@ public class Strings {
 
     public final static String FILE_BUTTON_ICON_PATH = "/odt_file_icon.png";
     public final static String FILE_BUTTON_ICON_FOLDER_PANEL_PATH = "/odt_file_icon_folder_panel.png";
-
     public final static String FOLDER_ICON_PATH = "/folder_icon.png";
     public final static String MY_FOLDER_ICON_PATH = "/my_folder_icon.png";
     public final static String PARENT_FOLDER_TITLE = ">";

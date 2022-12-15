@@ -27,7 +27,7 @@ public class MainMenuGUI {
     private static JPanel rightPanel;
     private final JMenuBar menuBar;
     private final JMenu menu;
-    private final JMenuItem openFile;
+    private final JMenuItem openFile, saveFile;
     private static Container container;
     private final JFileChooser fileChoose;
     private final MainMenuGUI main;
@@ -47,18 +47,22 @@ public class MainMenuGUI {
 
         frame = new JFrame();
         leftPanel = new MainLeftPanel(this);
-        rightPanel = new MainRightPanel(currentFile);
+        rightPanel = new MainRightPanel(this, currentFile);
         menuBar = new JMenuBar();
         menu = new JMenu(Strings.MENU_TITLE);
         openFile = new JMenuItem(Strings.OPEN);
+        saveFile = new JMenuItem(Strings.SAVE_MODIFICATIONS);
 
         fileChoose = new JFileChooser();
+        fileChoose.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
         fileChoose.addChoosableFileFilter(new FileNameExtensionFilter("Fichier ODT (*.odt)", "odt"));
         fileChoose.setAcceptAllFileFilterUsed(false);
 
         openFile.addActionListener(new OpenFileAction());
+        saveFile.addActionListener(new SaveFileAction());
 
         menu.add(openFile);
+        menu.add(saveFile);
 
         menuBar.add(menu);
 
@@ -75,7 +79,6 @@ public class MainMenuGUI {
         frame.setResizable(false);
         frame.setVisible(true);
         frame.setLocationRelativeTo(null);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
@@ -86,15 +89,12 @@ public class MainMenuGUI {
                         JOptionPane.YES_NO_OPTION
                 );
                 if (response == JOptionPane.OK_OPTION) {
-                    for (MetaFile metaFile : metaFilesOpened) {
-                        if (!metaFile.getDestDir().exists()) continue;
-                        metaFile.save();
-                        metaFile.deleteTempFolder();
-                    }
+                    saveAllFiles();
                     System.exit(0);
                 }
             }
         });
+        frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
     }
 
     class OpenFileAction implements ActionListener {
@@ -104,6 +104,15 @@ public class MainMenuGUI {
             int response = fileChoose.showOpenDialog(null);
             if (response == JFileChooser.APPROVE_OPTION) {
                 File file = fileChoose.getSelectedFile();
+                if (file.isDirectory()) {
+                    try {
+                        new FolderMenuGUI(main, file);
+                    } catch (UnsupportedLookAndFeelException | ClassNotFoundException | InstantiationException |
+                             IllegalAccessException | IOException ex) {
+                        ex.printStackTrace();
+                    }
+                    return;
+                }
                 MetaFile metaFile = new MetaFile(file);
                 cacheManager.addFileToCache(metaFile);
                 metaFilesOpened.add(metaFile);
@@ -118,13 +127,28 @@ public class MainMenuGUI {
         }
     }
 
+    class SaveFileAction implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            for (MetaFile metaFile : metaFilesOpened) metaFile.save();
+        }
+    }
+
+    private void saveAllFiles() {
+        for (MetaFile metaFile : metaFilesOpened) {
+            if (!metaFile.getDestDir().exists()) continue;
+            metaFile.save();
+            metaFile.deleteTempFolder();
+        }
+    }
+
     public static void main(String[] args) throws UnsupportedLookAndFeelException, ClassNotFoundException, InstantiationException, IllegalAccessException, IOException, ParserConfigurationException, SAXException {
         new MainMenuGUI();
     }
 
     public void updateLeftPanel() throws UnsupportedLookAndFeelException, ClassNotFoundException, InstantiationException, IllegalAccessException, IOException, ParserConfigurationException, SAXException {
         container.remove(leftPanel);
-        leftPanel = new MainLeftPanel(main);
+        leftPanel = new MainLeftPanel(this);
         container.add(leftPanel, BorderLayout.WEST);
         container.revalidate();
         container.repaint();
@@ -132,7 +156,7 @@ public class MainMenuGUI {
 
     public void updateRightPanel(MetaFile metaFile) throws UnsupportedLookAndFeelException, IOException, ClassNotFoundException, InstantiationException, IllegalAccessException {
         container.remove(rightPanel);
-        rightPanel = new MainRightPanel(metaFile);
+        rightPanel = new MainRightPanel(this, metaFile);
         container.add(rightPanel, BorderLayout.EAST);
         container.revalidate();
         container.repaint();

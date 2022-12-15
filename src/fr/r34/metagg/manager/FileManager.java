@@ -74,7 +74,7 @@ public class FileManager {
                         lineCut = line.substring(indexD + 20);
                         indexF = lineCut.indexOf('"');
                         hyperTxtWeb = line.substring(indexD + 20, indexD + 20 + indexF);
-                        if(!hyperTxtWbList.contains(hyperTxtWeb) && indexD > -1){
+                        if(!hyperTxtWbList.contains(hyperTxtWeb)){
                             hyperTxtWbList.add(hyperTxtWeb);
                         }
                         line = line.substring(indexD + 20 + indexF);
@@ -176,12 +176,11 @@ public class FileManager {
         if (!file.exists()) return;
     	if(file.getName().equalsIgnoreCase("thumbnails")) {
     		for (File fileOfThumbnails : file.listFiles()) {
-    			System.out.println(fileOfThumbnails.getName());
-    			if (fileOfThumbnails.getName().equalsIgnoreCase("thumbnail.png")){
-    				thumbnail = fileOfThumbnails;
-    			}
+    			if (fileOfThumbnails.getName().equalsIgnoreCase("thumbnail.png")) {
+                    thumbnail = fileOfThumbnails;
+                    metaFile.setThumbnail(thumbnail);
+                }
     		}
-            if (metaFile.getThumbnail() != null) metaFile.setThumbnail(thumbnail);
     	}
     }
     /**

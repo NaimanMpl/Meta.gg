@@ -25,6 +25,7 @@ public class CustomEditButton extends JButton {
         this.setHorizontalTextPosition(AbstractButton.RIGHT);
         this.setIconTextGap(10);
         this.setVisible(true);
+        this.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
     }
 
 }

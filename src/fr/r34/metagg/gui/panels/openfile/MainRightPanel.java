@@ -4,6 +4,8 @@ import fr.r34.metagg.MetaFile;
 import fr.r34.metagg.Strings;
 import fr.r34.metagg.gui.Colors;
 import fr.r34.metagg.gui.Dimension;
+import fr.r34.metagg.gui.MainMenuGUI;
+import fr.r34.metagg.gui.custombuttons.CustomAddKeywordButton;
 import fr.r34.metagg.manager.Utils;
 import fr.r34.metagg.gui.custombuttons.CustomEditButton;
 
@@ -16,6 +18,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.*;
@@ -44,14 +47,14 @@ public class MainRightPanel extends JPanel {
     private final Utils utils;
     private final JPanel linksPanel, showLinksPanel, keywordsPanel;
 
-    public MainRightPanel(MetaFile metaFile) throws UnsupportedLookAndFeelException, IOException, ClassNotFoundException, InstantiationException, IllegalAccessException {
+    public MainRightPanel(MainMenuGUI main, MetaFile metaFile) throws UnsupportedLookAndFeelException, ClassNotFoundException, InstantiationException, IllegalAccessException {
         this.metaFile = metaFile;
         this.keywordsFieldsList = new ArrayList<>();
         this.utils = new Utils();
         this.linksPanel = new LinksPanel(metaFile);
 
-        titleField = new JTextField(metaFile.getTitle());
-        subjectField = new JTextField(metaFile.getSubject());
+        titleField = new JTextField(metaFile.getTitle().isEmpty() ? Strings.NO_TITLE : metaFile.getTitle());
+        subjectField = new JTextField(metaFile.getSubject().isEmpty() ? Strings.NO_SUBJECT : metaFile.getSubject());
 
         panelTitle = new JLabel(Strings.RIGHT_PANEL_TITLE);
         picture = new JLabel();
@@ -85,18 +88,31 @@ public class MainRightPanel extends JPanel {
 
         showLinksPanel.add(showLinks);
 
+        JPanel buttonsPanel = new JPanel();
+
         editButton = new CustomEditButton();
         editButton.addActionListener(new EditAction());
+
+        CustomAddKeywordButton addKeywordButton = new CustomAddKeywordButton(main, metaFile);
+
+        buttonsPanel.setLayout(new FlowLayout());
+        buttonsPanel.setBackground(null);
+
+        buttonsPanel.add(editButton);
+        buttonsPanel.add(addKeywordButton);
 
         titleField.setBackground(null);
         titleField.setBorder(null);
         titleField.setForeground(Colors.WHITE);
         titleField.setEditable(false);
+        titleField.setPreferredSize(new java.awt.Dimension((int) (0.25*Dimension.WINDOW_WIDTH), 20));
 
         subjectField.setBackground(null);
         subjectField.setBorder(null);
         subjectField.setForeground(Colors.WHITE);
         subjectField.setEditable(false);
+        subjectField.setPreferredSize(new java.awt.Dimension((int) (0.25*Dimension.WINDOW_WIDTH), 20));
+
 
         linksPanel.setVisible(false);
 
@@ -126,20 +142,32 @@ public class MainRightPanel extends JPanel {
         this.setLayout(new GridBagLayout());
 
         try {
-            URL odtUrl = this.getClass().getResource(Strings.ODT_FILE_PATH);
-            if (odtUrl == null) throw new IllegalArgumentException(Strings.ERROR_ODT_ICON_NOT_LOADED);
-            fileIcon = ImageIO.read(odtUrl);
-            ImageIcon imgIcon = utils.getImageFromResource(Strings.ODT_FILE_PATH);
+            ImageIcon imgIcon;
+            String miniaturePath = Strings.ODT_FILE_PATH;
+            if (metaFile.getThumbnail() != null) {
+                BufferedImage miniatureImg = ImageIO.read(new File(metaFile.getThumbnail().getAbsolutePath()));
+                imgIcon = new ImageIcon(miniatureImg);
+                Image resizeImage = imgIcon.getImage().getScaledInstance(75, 88, Image.SCALE_SMOOTH);
+                imgIcon = new ImageIcon(resizeImage);
+            } else {
+                imgIcon = utils.getImageFromResource(miniaturePath);
+            }
+            JPanel pictureLabel = new JPanel();
             picture = new JLabel(imgIcon);
+            pictureLabel.add(picture);
+            pictureLabel.setPreferredSize(new java.awt.Dimension((int) (0.25* Dimension.WINDOW_WIDTH), 100));
+            pictureLabel.setBackground(Colors.BLUE_1);
+            pictureLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+
             GridBagConstraints gbc = new GridBagConstraints();
             gbc.anchor = GridBagConstraints.WEST;
             gbc.weighty = 1;
 
             List<JComponent> components = Arrays.asList(
-                    panelTitle, picture, name, size,
+                    panelTitle, pictureLabel, name, size,
                     titlePanel, subjectPanel, linksPanel, keywords,
                     keywordsPanel, pagesAmount, wordsAmount, charAmount,
-                    paragraphsAmount, showPanel, editButton
+                    paragraphsAmount, showPanel, buttonsPanel
             );
             gbc.gridx = 0;
             for (int i = 0; i < components.size(); i++) {
@@ -164,6 +192,8 @@ public class MainRightPanel extends JPanel {
     }
 
     private void initColor() {
+        titleField.setForeground(Colors.WHITE);
+        subjectField.setForeground(Colors.WHITE);
         panelTitle.setForeground(Colors.WHITE);
         name.setForeground(Colors.WHITE);
         size.setForeground(Colors.BLUE_0);
@@ -177,6 +207,8 @@ public class MainRightPanel extends JPanel {
     }
 
     public void initFont() {
+        titleField.setFont(Dimension.PARAGRAPH_FONT);
+        subjectField.setFont(Dimension.PARAGRAPH_FONT);
         panelTitle.setFont(Dimension.TITLE_FONT);
         name.setFont(Dimension.SUBTITLE_FONT);
         size.setFont(Dimension.SUBTITLE_FONT);

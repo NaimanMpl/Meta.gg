@@ -24,8 +24,9 @@ public class KeywordsPanel extends JPanel {
                 JLabel closeImg = new JLabel(utils.getImageFromResource(Strings.CLOSE_FILE_PATH));
                 closeImg.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
-                JPanel keywordPanel = new JPanel(new GridLayout(1, 2, 30, 30));
+                JPanel keywordPanel = new JPanel(new GridLayout(1, 2, 10, 10));
                 JTextField keywordField = new JTextField(keyword);
+
                 closeImg.addMouseListener(new MouseAdapter() {
                     @Override
                     public void mouseClicked(MouseEvent e) {
@@ -53,7 +54,10 @@ public class KeywordsPanel extends JPanel {
             JScrollPane scrollPane = new JScrollPane(mainPanel);
             scrollPane.setPreferredSize(new Dimension((int) (0.25* fr.r34.metagg.gui.Dimension.WINDOW_WIDTH), 100));
             scrollPane.setBorder(null);
+            scrollPane.setBackground(Colors.BLUE_1);
             this.add(scrollPane);
+            mainPanel.setBackground(Colors.BLUE_1);
+            scrollPane.setBackground(Colors.BLUE_1);
             this.setBackground(Colors.BLUE_1);
         } catch (IOException e) {
             e.printStackTrace();
