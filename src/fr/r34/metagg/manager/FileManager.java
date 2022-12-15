@@ -188,15 +188,14 @@ public class FileManager {
     * @param metaFile Le dossier contenant les différentes images (mzdia) du fichier ODT étudié
     */
     public void readPictureMetaData(MetaFile metaFile) {
-        File file = new File(metaFile.getDestDir().getPath() + "/media");
-        HashMap<String, ArrayList<String>> imageMap = new HashMap<>();
+        File file = new File(metaFile.getDestDir().getAbsolutePath() + "/media");
         try {
             if (file.getName().equals("media") && file.isDirectory()) {
                 for(File picture : file.listFiles()) {
                     ArrayList<String> pictureData = new ArrayList<>();
                     for(MimeTypeImage m : MimeTypeImage.values()){
                         String mimeType = picture.toURL().openConnection().getContentType();
-                        if(m.getMimetype().equals(mimeType)){
+                        if (m.getMimetype().equals(mimeType)) {
                             pictureData.add(m.getTitle());
                         }
                     }
@@ -210,6 +209,7 @@ public class FileManager {
             e.printStackTrace();
         }
     }
+
     /**
      * Sauvegarde toutes les métadonnées d'un fichier rentré en paramètre dans un fichier XML
      * @param xmlFile le fichier xml où l'on souhaite sauvegarder nos métadonnées

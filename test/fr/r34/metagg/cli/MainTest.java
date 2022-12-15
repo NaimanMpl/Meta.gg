@@ -4,7 +4,6 @@ import fr.r34.metagg.MetaFile;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
-import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -13,33 +12,44 @@ class MainTest {
     @Test
     public void testModifications() {
 
-        File file = new File("C:\\Users\\Naiman\\Desktop\\BanqueSujetODT\\partiel.odt");
+        File file = new File("/Users/naiman/Desktop/testODT/partiel.odt");
+        MetaFile tmpMetaFile = new MetaFile(file);
+
+        assertNotNull(tmpMetaFile);
+
+        tmpMetaFile.setTitle("");
+        tmpMetaFile.setSubject("");
+        tmpMetaFile.getKeywords().clear();
+        tmpMetaFile.save();
+        tmpMetaFile.deleteTempFolder();
+
+        assertTrue(tmpMetaFile.getTitle().isEmpty());
+        assertTrue(tmpMetaFile.getSubject().isEmpty());
+        assertTrue(tmpMetaFile.getKeywords().isEmpty());
+
         MetaFile metaFile = new MetaFile(file);
-
-        assertNotNull(metaFile);
-
-        metaFile.setTitle("");
-        assertTrue(metaFile.getTitle().isEmpty());
-
         metaFile.setTitle("Hello World !");
         metaFile.setSubject("Un sujet...");
+        String[] keywords = {"1", "2", "3"};
+        metaFile.getKeywords().add("1");
+        metaFile.getKeywords().add("2");
+        metaFile.getKeywords().add("3");
+
         metaFile.save();
         metaFile.deleteTempFolder();
 
+        metaFile = new MetaFile(file);
+
         assertEquals("Hello World !", metaFile.getTitle());
         assertEquals("Un sujet...", metaFile.getSubject());
+        assertArrayEquals(keywords, metaFile.getKeywords().toArray());
 
-        MetaFile newMetaFile = new MetaFile(file);
-
-        assertEquals("Hello World !", newMetaFile.getTitle());
-        assertEquals("Un sujet...", newMetaFile.getSubject());
-
-        newMetaFile.deleteTempFolder();
+        metaFile.deleteTempFolder();
     }
 
     @Test
     public void testFolderDelete() {
-        File file = new File("C:\\Users\\Naiman\\Desktop\\BanqueSujetODT\\partiel.odt");
+        File file = new File("/Users/naiman/Desktop/testODT/partiel.odt");
         MetaFile metaFile = new MetaFile(file);
         metaFile.deleteTempFolder();
         assertFalse(metaFile.getDestDir().exists());

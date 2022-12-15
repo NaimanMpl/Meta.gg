@@ -73,6 +73,7 @@ public class MainRightPanel extends JPanel {
         showImgs.setForeground(Colors.BLUE_0);
         showImgs.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         showImgs.setFont(Dimension.ANNOTATION_FONT);
+        showImgs.addMouseListener(new DisplayImagesAction());
 
         showLinks = new JLabel(Strings.SHOW_HYPERTEXT_LINKS, SwingConstants.CENTER);
         showLinks.setForeground(Colors.BLUE_0);
@@ -261,6 +262,29 @@ public class MainRightPanel extends JPanel {
             paragraphsAmount.setVisible(!paragraphsAmount.isVisible());
             linksPanel.setVisible(!linksPanel.isVisible());
         }
+    }
+
+    class DisplayImagesAction extends MouseAdapter {
+        @Override
+        public void mouseClicked(MouseEvent e) {
+            Object[] options = {"Précédent", "Suivant", "Quitter"};
+            ImageIcon imageIcon = new ImageIcon(metaFile.getDestDir().getAbsolutePath() + "/media/image1.png");
+            JLabel img = new JLabel(imageIcon);
+            JPanel imagePanel = new JPanel();
+            imagePanel.add(img);
+
+            int choice = JOptionPane.showOptionDialog(
+                    null,
+                    imagePanel,
+                    "Images",
+                    JOptionPane.YES_NO_CANCEL_OPTION,
+                    JOptionPane.PLAIN_MESSAGE,
+                    null,
+                    options,
+                    null
+            );
+        }
+
     }
 
 }
