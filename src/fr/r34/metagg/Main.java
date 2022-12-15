@@ -28,7 +28,7 @@ public class Main {
                 File folder = new File(args[1]);
                 ArrayList<File> odtInFolder = new ArrayList<>();
                 odtInFolder = directoryM.directoryContent(folder, odtInFolder);
-                for(File file : odtInFolder){
+                for (File file : odtInFolder) {
                     MetaFile metaFile = new MetaFile(file);
                     String name = metaFile.getFile().getName();
                     String title = metaFile.getTitle();

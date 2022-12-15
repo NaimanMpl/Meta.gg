@@ -8,6 +8,7 @@ public class Strings {
     public final static String RECENT_FILES_TITLE = "Fichiers récents";
     public final static String SHOW_IMAGES = "Afficher les images";
     public final static String SHOW_HYPERTEXT_LINKS = "Afficher les liens hypertextes";
+    public final static String HIDE_HYPERTEXT_LINKS = "Cacher les liens hypertextes";
     public final static String HYPERTEXT_TITLE = "Liens hypertextes :";
     public final static String RIGHT_PANEL_TITLE = "Métadonnées du fichier";
     public final static String TITLE = "Titre : ";
@@ -22,6 +23,7 @@ public class Strings {
     public final static String OPEN = "Ouvrir";
     public final static String MENU_TITLE = "Fichier";
     public final static String NO_TITLE = "Pas de titre";
+    public final static String NO_PICTURES = "Ce fichier ne possède pas d'image !";
     public final static String NO_SUBJECT = "Pas de sujet";
     public final static String ADD_KEYWORD = "Ajouter un mot-clé";
     public final static String ENTER_KEYWORD = "Veuillez saisir un mot-clé";

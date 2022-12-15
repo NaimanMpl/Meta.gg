@@ -46,12 +46,17 @@ public class MainRightPanel extends JPanel {
     private final CustomEditButton editButton;
     private final Utils utils;
     private final JPanel linksPanel, showLinksPanel, keywordsPanel;
+    private final ArrayList<File> pictures;
+    private File currentPicture;
+    private int i;
 
     public MainRightPanel(MainMenuGUI main, MetaFile metaFile) throws UnsupportedLookAndFeelException, ClassNotFoundException, InstantiationException, IllegalAccessException {
         this.metaFile = metaFile;
         this.keywordsFieldsList = new ArrayList<>();
+        this.pictures = new ArrayList<>(metaFile.getPictures().keySet());
         this.utils = new Utils();
         this.linksPanel = new LinksPanel(metaFile);
+        this.i = 0;
 
         titleField = new JTextField(metaFile.getTitle().isEmpty() ? Strings.NO_TITLE : metaFile.getTitle());
         subjectField = new JTextField(metaFile.getSubject().isEmpty() ? Strings.NO_SUBJECT : metaFile.getSubject());
@@ -260,6 +265,8 @@ public class MainRightPanel extends JPanel {
             charAmount.setVisible(!charAmount.isVisible());
             keywords.setVisible(!keywords.isVisible());
             paragraphsAmount.setVisible(!paragraphsAmount.isVisible());
+            if (!linksPanel.isVisible()) showLinks.setText(Strings.HIDE_HYPERTEXT_LINKS);
+            else showLinks.setText(Strings.SHOW_HYPERTEXT_LINKS);
             linksPanel.setVisible(!linksPanel.isVisible());
         }
     }
@@ -267,22 +274,80 @@ public class MainRightPanel extends JPanel {
     class DisplayImagesAction extends MouseAdapter {
         @Override
         public void mouseClicked(MouseEvent e) {
-            Object[] options = {"Précédent", "Suivant", "Quitter"};
-            ImageIcon imageIcon = new ImageIcon(metaFile.getDestDir().getAbsolutePath() + "/media/image1.png");
-            JLabel img = new JLabel(imageIcon);
-            JPanel imagePanel = new JPanel();
-            imagePanel.add(img);
+            if (pictures.isEmpty()) {
+                JOptionPane.showMessageDialog(null, Strings.NO_PICTURES, "Système", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            Object[] options = {"Suivant", "Précédent", "Quitter"};
 
-            int choice = JOptionPane.showOptionDialog(
-                    null,
-                    imagePanel,
-                    "Images",
-                    JOptionPane.YES_NO_CANCEL_OPTION,
-                    JOptionPane.PLAIN_MESSAGE,
-                    null,
-                    options,
-                    null
-            );
+            currentPicture = pictures.get(i);
+
+            String size = metaFile.getMedia().get(currentPicture.getName()).get(1);
+            ImageIcon imageIcon = new ImageIcon(currentPicture.getAbsolutePath());
+            JLabel img = new JLabel(imageIcon);
+            JLabel imgType = new JLabel(metaFile.getPictures().get(currentPicture).getTitle() + " " + size);
+
+            JPanel imagePanel = new JPanel();
+
+            imgType.setForeground(Colors.WHITE);
+            imgType.setFont(Dimension.SUBTITLE_FONT);
+            imgType.setAlignmentX(Component.CENTER_ALIGNMENT);
+            img.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+            imagePanel.setBackground(Colors.BLUE_1);
+            imagePanel.setLayout(new BoxLayout(imagePanel, BoxLayout.Y_AXIS));
+            imagePanel.add(img);
+            imagePanel.add(imgType);
+
+            int choice = -5;
+            while (choice != JOptionPane.CANCEL_OPTION && choice != -1) {
+                ImageIcon currentPictureIcon = new ImageIcon(currentPicture.getAbsolutePath());
+                Image currentPictureImg = currentPictureIcon.getImage().getScaledInstance(
+                        currentPictureIcon.getIconWidth() - 150,
+                        currentPictureIcon.getIconHeight() - 150,
+                        Image.SCALE_SMOOTH
+                );
+                img.setIcon(new ImageIcon(currentPictureImg));
+                size = metaFile.getMedia().get(currentPicture.getName()).get(1);
+                imgType.setText(metaFile.getPictures().get(currentPicture).getTitle() + " " + size);
+                choice = JOptionPane.showOptionDialog(
+                        null,
+                        imagePanel,
+                        currentPicture.getName(),
+                        JOptionPane.YES_NO_CANCEL_OPTION,
+                        JOptionPane.PLAIN_MESSAGE,
+                        null,
+                        options,
+                        null
+                );
+                switch (choice) {
+                    case JOptionPane.OK_OPTION -> {
+                        i += 1;
+                        currentPicture = getNextPicture(pictures, i);
+                    }
+                    case JOptionPane.NO_OPTION -> {
+                        i -= 1;
+                        currentPicture = getPreviousPicture(pictures, i);
+                    }
+                }
+
+            }
+        }
+
+        private File getNextPicture(ArrayList<File> pictures, int k) {
+            if (k >= pictures.size()) {
+                i = 0;
+                return pictures.get(i);
+            }
+            return pictures.get(k);
+        }
+
+        private File getPreviousPicture(ArrayList<File> pictures, int k) {
+            if (k < 0) {
+                i = pictures.size() - 1;
+                return pictures.get(i);
+            }
+            return pictures.get(k);
         }
 
     }

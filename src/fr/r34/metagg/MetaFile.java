@@ -14,7 +14,7 @@ import java.util.Map;
 
 public class MetaFile {
 
-    private String title, subject, mime;
+    private String title, subject;
     private File file, destDir;
     private File thumbnail;
     private FileManager fileM;
@@ -23,8 +23,8 @@ public class MetaFile {
     private float size;
     private final ArrayList<String> keywords;
     private final HashMap<String, ArrayList<String>> media;
-
     private final ArrayList<String> hyperTextWebList;
+    private final HashMap<File, MimeTypeImage> pictures;
     private final static int BUFFER_SIZE = 1024;
 
     /**
@@ -47,6 +47,7 @@ public class MetaFile {
         this.hyperTextWebList = new ArrayList<>();
         this.media = new HashMap<>();
         this.fileM = new FileManager();
+        this.pictures = new HashMap<>();
         this.destDir = new File(file.getAbsolutePath().substring(0, file.getAbsolutePath().lastIndexOf(".")));
         fileM.readMetaData(this);
     }
@@ -64,6 +65,7 @@ public class MetaFile {
         this.size = 0;
         this.keywords = new ArrayList<>();
         this.hyperTextWebList = new ArrayList<>();
+        this.pictures = new HashMap<>();
         this.media = new HashMap<>();
     }
 
@@ -143,12 +145,12 @@ public class MetaFile {
         return hyperTextWebList;
     }
 
-    public HashMap<String, ArrayList<String>> getMedia() {
-        return media;
+    public HashMap<File, MimeTypeImage> getPictures() {
+        return pictures;
     }
 
-    public String getMime() {
-        return mime;
+    public HashMap<String, ArrayList<String>> getMedia() {
+        return media;
     }
 
     public File getDestDir() {

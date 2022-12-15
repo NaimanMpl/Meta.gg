@@ -197,6 +197,7 @@ public class FileManager {
                         String mimeType = picture.toURL().openConnection().getContentType();
                         if (m.getMimetype().equals(mimeType)) {
                             pictureData.add(m.getTitle());
+                            metaFile.getPictures().put(picture, m);
                         }
                     }
                     DecimalFormat df = new DecimalFormat("0.0");
