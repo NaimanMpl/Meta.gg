@@ -20,26 +20,24 @@ import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.net.URL;
 import java.util.*;
 import java.util.List;
 
 public class MainRightPanel extends JPanel {
 
-    private BufferedImage fileIcon;
     private JLabel picture;
-    private final JLabel name;
-    private final JLabel size;
-    private final JLabel title;
-    private final JLabel subject;
-    private final JLabel pagesAmount;
-    private final JLabel wordsAmount;
-    private final JLabel charAmount;
-    private final JLabel paragraphsAmount;
-    private final JLabel showImgs;
-    private final JLabel showLinks;
-    private final JLabel panelTitle;
-    private final JLabel keywords;
+    private JLabel name;
+    private JLabel size;
+    private JLabel title;
+    private JLabel subject;
+    private JLabel pagesAmount;
+    private JLabel wordsAmount;
+    private JLabel charAmount;
+    private JLabel paragraphsAmount;
+    private JLabel showImgs;
+    private JLabel showLinks;
+    private JLabel panelTitle;
+    private JLabel keywords;
     private final JTextField titleField, subjectField;
     private final MetaFile metaFile;
     private final ArrayList<JTextField> keywordsFieldsList;
@@ -50,6 +48,17 @@ public class MainRightPanel extends JPanel {
     private File currentPicture;
     private int i;
 
+    /**
+     * Panneau de droite de l'application, contenat toutes les métadonnées du fichier renseigné en paramètre
+     * affiché en colonne ainsi que de deux boutons l'un permettant l'édition de ces métadonnées ainsi que la sauvegarde
+     * et l'autre permettant l'ajout d'un mot-clé.
+     * @param main L'instance de la classe principale contenant la frame principale de l'application
+     * @param metaFile Le fichier dont on souhaite afficher les métadonnées
+     * @throws UnsupportedLookAndFeelException
+     * @throws ClassNotFoundException
+     * @throws InstantiationException
+     * @throws IllegalAccessException
+     */
     public MainRightPanel(MainMenuGUI main, MetaFile metaFile) throws UnsupportedLookAndFeelException, ClassNotFoundException, InstantiationException, IllegalAccessException {
         this.metaFile = metaFile;
         this.keywordsFieldsList = new ArrayList<>();
@@ -58,33 +67,11 @@ public class MainRightPanel extends JPanel {
         this.linksPanel = new LinksPanel(metaFile);
         this.i = 0;
 
+        // Si jamais le fichier n'a pas de titre ou de sujet alors le message "Pas de titre" ou "Pas de sujet" est affiché à l'écran
         titleField = new JTextField(metaFile.getTitle().isEmpty() ? Strings.NO_TITLE : metaFile.getTitle());
         subjectField = new JTextField(metaFile.getSubject().isEmpty() ? Strings.NO_SUBJECT : metaFile.getSubject());
 
-        panelTitle = new JLabel(Strings.RIGHT_PANEL_TITLE);
-        picture = new JLabel();
-        name = new JLabel(metaFile.getFile().getName());
-        double round = (double) Math.round(metaFile.getSize() * 10) / 10;
-        size = new JLabel(round + "KB, " + metaFile.getCreationDate().substring(0, 10));
-        title = new JLabel(Strings.TITLE);
-        subject = new JLabel(Strings.SUBJECT);
-        keywords = new JLabel(Strings.KEYWORDS);
-        pagesAmount = new JLabel(Strings.PAGES_AMOUNT + metaFile.getPagesAmount());
-        wordsAmount = new JLabel(Strings.WORDS_AMOUNT + metaFile.getWordAmount());
-        charAmount = new JLabel(Strings.CHARACTER_AMOUNT + metaFile.getCharacterAmount());
-        paragraphsAmount = new JLabel(Strings.PARAGRAPHS_AMOUNT + metaFile.getPagesAmount());
-
-        showImgs = new JLabel(Strings.SHOW_IMAGES, SwingConstants.CENTER);
-        showImgs.setForeground(Colors.BLUE_0);
-        showImgs.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-        showImgs.setFont(Dimension.ANNOTATION_FONT);
-        showImgs.addMouseListener(new DisplayImagesAction());
-
-        showLinks = new JLabel(Strings.SHOW_HYPERTEXT_LINKS, SwingConstants.CENTER);
-        showLinks.setForeground(Colors.BLUE_0);
-        showLinks.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-        showLinks.setFont(Dimension.ANNOTATION_FONT);
-        showLinks.addMouseListener(new DisplayLinksAction());
+        initLabel();
 
         JPanel titlePanel = new JPanel();
         JPanel subjectPanel = new JPanel();
@@ -147,30 +134,40 @@ public class MainRightPanel extends JPanel {
 
         this.setLayout(new GridBagLayout());
 
+        /*
+        Chargement de la miniature afin de pouvoir l'afficher au top du panneau.
+        Si jamais le fichier n'a pas de miniature, alors une image par défaut est affichée.
+         */
         try {
             ImageIcon imgIcon;
             String miniaturePath = Strings.ODT_FILE_PATH;
             if (metaFile.getThumbnail() != null) {
+                // Chargement de l'image de la miniature
                 BufferedImage miniatureImg = ImageIO.read(new File(metaFile.getThumbnail().getAbsolutePath()));
                 imgIcon = new ImageIcon(miniatureImg);
+                // Redimensionnement de la miniature afin qu'elle n'apparaisse pas trop grande sur le GUI
                 Image resizeImage = imgIcon.getImage().getScaledInstance(75, 88, Image.SCALE_SMOOTH);
                 imgIcon = new ImageIcon(resizeImage);
             } else {
+                // Chargement de l'image par défaut si le fichier n'a pas de miniature
                 imgIcon = utils.getImageFromResource(miniaturePath);
             }
-            JPanel pictureLabel = new JPanel();
+
+            // Création d'un panel contenant l'image, afin qu'il soit plus facile de la centrer
+            JPanel picturePanel = new JPanel();
             picture = new JLabel(imgIcon);
-            pictureLabel.add(picture);
-            pictureLabel.setPreferredSize(new java.awt.Dimension((int) (0.25* Dimension.WINDOW_WIDTH), 100));
-            pictureLabel.setBackground(Colors.BLUE_1);
-            pictureLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+            picturePanel.add(picture);
+            picturePanel.setPreferredSize(new java.awt.Dimension((int) (0.25* Dimension.WINDOW_WIDTH), 100));
+            picturePanel.setBackground(Colors.BLUE_1);
+            picturePanel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
             GridBagConstraints gbc = new GridBagConstraints();
             gbc.anchor = GridBagConstraints.WEST;
             gbc.weighty = 1;
 
+            // Création de la liste des composants du panneau de droite dans l'ordre où ils sont censés apparaître
             List<JComponent> components = Arrays.asList(
-                    panelTitle, pictureLabel, name, size,
+                    panelTitle, picturePanel, name, size,
                     titlePanel, subjectPanel, linksPanel, keywords,
                     keywordsPanel, pagesAmount, wordsAmount, charAmount,
                     paragraphsAmount, showPanel, buttonsPanel
@@ -197,6 +194,39 @@ public class MainRightPanel extends JPanel {
         this.setBackground(Colors.BLUE_1);
     }
 
+    /**
+     * Initialisation des différents textes de l'application et remplissage si nécessaire de ces derniers
+     */
+    private void initLabel() {
+        panelTitle = new JLabel(Strings.RIGHT_PANEL_TITLE);
+        picture = new JLabel();
+        name = new JLabel(metaFile.getFile().getName());
+        double round = (double) Math.round(metaFile.getSize() * 10) / 10;
+        size = new JLabel(round + "KB, " + metaFile.getCreationDate().substring(0, 10));
+        title = new JLabel(Strings.TITLE);
+        subject = new JLabel(Strings.SUBJECT);
+        keywords = new JLabel(Strings.KEYWORDS);
+        pagesAmount = new JLabel(Strings.PAGES_AMOUNT + metaFile.getPagesAmount());
+        wordsAmount = new JLabel(Strings.WORDS_AMOUNT + metaFile.getWordAmount());
+        charAmount = new JLabel(Strings.CHARACTER_AMOUNT + metaFile.getCharacterAmount());
+        paragraphsAmount = new JLabel(Strings.PARAGRAPHS_AMOUNT + metaFile.getPagesAmount());
+
+        showImgs = new JLabel(Strings.SHOW_IMAGES, SwingConstants.CENTER);
+        showImgs.setForeground(Colors.BLUE_0);
+        showImgs.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        showImgs.setFont(Dimension.ANNOTATION_FONT);
+        showImgs.addMouseListener(new DisplayImagesAction());
+
+        showLinks = new JLabel(Strings.SHOW_HYPERTEXT_LINKS, SwingConstants.CENTER);
+        showLinks.setForeground(Colors.BLUE_0);
+        showLinks.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        showLinks.setFont(Dimension.ANNOTATION_FONT);
+        showLinks.addMouseListener(new DisplayLinksAction());
+    }
+
+    /**
+     * Initialisation des couleurs des textes
+     */
     private void initColor() {
         titleField.setForeground(Colors.WHITE);
         subjectField.setForeground(Colors.WHITE);
@@ -212,6 +242,9 @@ public class MainRightPanel extends JPanel {
         keywords.setForeground(Colors.WHITE);
     }
 
+    /**
+     * Initialisation de la police utilisée par les textes ainsi que leur taille
+     */
     public void initFont() {
         titleField.setFont(Dimension.PARAGRAPH_FONT);
         subjectField.setFont(Dimension.PARAGRAPH_FONT);
@@ -229,6 +262,12 @@ public class MainRightPanel extends JPanel {
         showLinks.setFont(Dimension.SUBTITLE_FONT);
     }
 
+    /**
+     * Classe gérant l'édition des métadonnées. Lorsque l'utilisateur clique sur le bouton "Éditer"
+     * L'ensemble des JTextField deviennent éditables et le bouton "Éditer" devient alors "Sauvegarder".
+     * Par contre, si l'utilisateur clique sur le bouton "Sauvegarder" l'ensemble des JTextFields deviennent
+     * non éditable et on effectue la sauvegarde du fichier en partant des données renseigné dans les JTextFields.
+     */
     class EditAction implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -256,6 +295,12 @@ public class MainRightPanel extends JPanel {
         }
     }
 
+    /**
+     * Classe gérant l'affichage des liens hypertextes.
+     * Lorsque l'on clique sur le bouton "Afficher les liens hypertextes", l'ensemble du panneau de droite
+     * contenant les données principales et diverses devient invisible (mais toujours présent) pour
+     * laisser place au panneau qui contient les liens hypertextes. Si l'on rappuie sur le bouton l'ensemble du panneau de droite redevient visible.
+     */
     class DisplayLinksAction extends MouseAdapter {
         @Override
         public void mouseClicked(MouseEvent e) {
@@ -271,6 +316,10 @@ public class MainRightPanel extends JPanel {
         }
     }
 
+    /**
+     * Classe gérant l'affichage des images sous la forme d'un popup avec 2 boutons permettant
+     * la navigation entre les différentes images du fichier.
+     */
     class DisplayImagesAction extends MouseAdapter {
         @Override
         public void mouseClicked(MouseEvent e) {
@@ -278,6 +327,7 @@ public class MainRightPanel extends JPanel {
                 JOptionPane.showMessageDialog(null, Strings.NO_PICTURES, "Système", JOptionPane.ERROR_MESSAGE);
                 return;
             }
+            // Liste des options disponibles
             Object[] options = {"Suivant", "Précédent", "Quitter"};
 
             currentPicture = pictures.get(i);
@@ -285,8 +335,10 @@ public class MainRightPanel extends JPanel {
             String size = metaFile.getMedia().get(currentPicture.getName()).get(1);
             ImageIcon imageIcon = new ImageIcon(currentPicture.getAbsolutePath());
             JLabel img = new JLabel(imageIcon);
+            // Affichage des données de l'image sous la forme : File.png : 34.0Ko
             JLabel imgType = new JLabel(metaFile.getPictures().get(currentPicture).getTitle() + " " + size);
 
+            // Création du label contenant l'image ainsi que les boutons de navigation
             JPanel imagePanel = new JPanel();
 
             imgType.setForeground(Colors.WHITE);
@@ -300,8 +352,13 @@ public class MainRightPanel extends JPanel {
             imagePanel.add(imgType);
 
             int choice = -5;
+            /*
+            Algorithme permettant de continuer à afficher la popup contenant l'image tant que l'utilisateur
+            n'appuie pas sur le bouton pour fermer la popup ou le bouton "Quitter"
+             */
             while (choice != JOptionPane.CANCEL_OPTION && choice != -1) {
                 ImageIcon currentPictureIcon = new ImageIcon(currentPicture.getAbsolutePath());
+                // Redimension de l'image si jamais cette dernière est trop grande
                 Image currentPictureImg = currentPictureIcon.getImage().getScaledInstance(
                         currentPictureIcon.getIconWidth() - 150,
                         currentPictureIcon.getIconHeight() - 150,
@@ -310,6 +367,7 @@ public class MainRightPanel extends JPanel {
                 img.setIcon(new ImageIcon(currentPictureImg));
                 size = metaFile.getMedia().get(currentPicture.getName()).get(1);
                 imgType.setText(metaFile.getPictures().get(currentPicture).getTitle() + " " + size);
+                // Génération et affichage de la popup contenant l'image ainsi que les boutons de navigation à partir du label créer précédemment
                 choice = JOptionPane.showOptionDialog(
                         null,
                         imagePanel,
@@ -334,6 +392,12 @@ public class MainRightPanel extends JPanel {
             }
         }
 
+        /**
+         * Permet de récupérer l'image qui se situe après celle affichée à l'écran.
+         * @param pictures Liste des images du fichier
+         * @param k Indice de l'image affiché actuellement dans l'application
+         * @return L'image suivante
+         */
         private File getNextPicture(ArrayList<File> pictures, int k) {
             if (k >= pictures.size()) {
                 i = 0;
@@ -342,6 +406,12 @@ public class MainRightPanel extends JPanel {
             return pictures.get(k);
         }
 
+        /**
+         * Permet de récupérer l'image qui se situe avant celle affichée à l'écran.
+         * @param pictures Liste des images du fichier
+         * @param k Indice de l'image affiché actuellement dans l'application
+         * @return L'image précédente
+         */
         private File getPreviousPicture(ArrayList<File> pictures, int k) {
             if (k < 0) {
                 i = pictures.size() - 1;

@@ -226,9 +226,21 @@ public class FileManager {
             Node officeMetaNode = metaDataList.item(0);
             if (officeMetaNode.getNodeType() == Node.ELEMENT_NODE) {
                 Element officeMetaElement = (Element) officeMetaNode;
+                /*
+                Séparation de la sauvegarde en 2 boucles, la première s'occupant de mettre à jour
+                dans le fichier XML les différentes balises des données principales du fichier,
+                la deuxième mettant à jour dans le fichier XML les données concernant les données
+                diverses du fichier renseigné en paramètre.
+                 */
+
+                /*
+                Mis à jour dans le fichier XML des métadonnées principales.
+                (Titre, Sujet, Date de création, Mots-clés)
+                 */
                 for (int i = 0; i < MetaAttributes.values().length - 4; i++) {
                     MetaAttributes attribute = MetaAttributes.values()[i];
                     Node metaData = officeMetaElement.getElementsByTagName(attribute.getTag()).item(0);
+                    // Créer la balise de l'attribut si jamais elle n'existe pas dans le fichier XML.
                     if (metaData == null) {
                         Element newElement = doc.createElement(attribute.getTag());
                         officeMetaElement.appendChild(newElement);
@@ -255,6 +267,10 @@ public class FileManager {
                         }
                     }
                 }
+                /*
+                Mis à jour dans le fichier XML des métadonnées diverses.
+                (Nombre de pages, Nombre de mots, Nombre de caractères, Nombre de paragraphes)
+                 */
                 for (int i = 4; i < MetaAttributes.values().length; i++) {
                     MetaAttributes attribute = MetaAttributes.values()[i];
                     Node metaStatsNode = officeMetaElement.getElementsByTagName(DOCUMENT_STATISTIC_TAG).item(0);
@@ -279,6 +295,7 @@ public class FileManager {
                 System.out.println("Sauvegarde des métas données effectuée ! ✨");
             }
             try (FileOutputStream fos = new FileOutputStream(metaFile.getDestDir() + "/meta.xml")) {
+                // Une fois le fichier XML mis à jour il faut le sauvegarder en le re-écrivant
                 writeXml(doc, fos);
             } catch (TransformerException e) {
                 e.printStackTrace();
@@ -346,7 +363,7 @@ public class FileManager {
         return metaFiles;
     }
 
-    /*
+    /**
      * Compresse complètement un dossier en un fichier zip
      * @param sourceDirPath Le chemin vers le dossier que l'on souhaite compresser
      * @param zipPath Le chemin ou l'on souhaite sauvegarder notre dossier compressé
@@ -375,7 +392,11 @@ public class FileManager {
         String name = file.getName().substring(0, i);
         File newFile = new File(file.getParent(), name + newExtension);
         try {
-            Files.move(file.toPath(), newFile.toPath().resolveSibling(newFile.getName()), StandardCopyOption.REPLACE_EXISTING);
+            Files.move(
+                    file.toPath(),
+                    newFile.toPath().resolveSibling(newFile.getName()),
+                    StandardCopyOption.REPLACE_EXISTING
+            );
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -23,7 +23,6 @@ public class Main {
                 MetaFile metaFile = new MetaFile(file);
                 metaFile.displayMetaData();
                 metaFile.deleteTempFolder();
-
             } else if (args[0].equalsIgnoreCase("-d")) {
                 File folder = new File(args[1]);
                 ArrayList<File> odtInFolder = new ArrayList<>();

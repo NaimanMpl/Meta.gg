@@ -32,6 +32,19 @@ public class MainLeftPanel extends JPanel {
     private static int LABEL_HEIGHT = Dimension.WINDOW_HEIGHT;
     private final MainMenuGUI main;
 
+    /**
+     * Panneau gauche de l'application, contenant les fichiers récemments ouverts ainsi que le titre de l'application
+     * Ce panneau affiche les fichiers récemments ouverts sous la forme d'une grille 3x3 et laisse des cases vides
+     * si jamais il y a une minorité de fichiers ouverts par rapport à la place disponible.
+     * @param main L'instance de la classe principale contenant la frame principale de l'application
+     * @throws UnsupportedLookAndFeelException
+     * @throws ClassNotFoundException
+     * @throws InstantiationException
+     * @throws IllegalAccessException
+     * @throws IOException
+     * @throws ParserConfigurationException
+     * @throws SAXException
+     */
     public MainLeftPanel(MainMenuGUI main) throws UnsupportedLookAndFeelException, ClassNotFoundException, InstantiationException, IllegalAccessException, IOException, ParserConfigurationException, SAXException {
 
         this.main = main;
@@ -65,6 +78,7 @@ public class MainLeftPanel extends JPanel {
         header.setLayout(new BoxLayout(header, BoxLayout.Y_AXIS));
         header.setBackground(Colors.BG_COLOR);
 
+        // Grille contenant les fichiers récemments ouverts
         filesContainer.setLayout(new GridLayout(3, 3, Dimension.DEFAULT_MARGIN, Dimension.DEFAULT_MARGIN));
         filesContainer.setBackground(Colors.BG_COLOR);
         filesContainer.setBorder(new EmptyBorder(
@@ -74,6 +88,7 @@ public class MainLeftPanel extends JPanel {
                 Dimension.DEFAULT_MARGIN
         ));
 
+        // Chargement des fichiers récents pour y remplir la grille
         loadRecentFiles();
 
         this.add(header, BorderLayout.NORTH);
@@ -83,12 +98,26 @@ public class MainLeftPanel extends JPanel {
         this.setBackground(Colors.BG_COLOR);
     }
 
+    /**
+     * Charge les fichiers récemments ouverts depuis le fichier cache, puis remplit la grille en fonction des fichiers présents dans le cache.
+     * @throws UnsupportedLookAndFeelException
+     * @throws ClassNotFoundException
+     * @throws InstantiationException
+     * @throws IllegalAccessException
+     * @throws IOException
+     * @throws ParserConfigurationException
+     * @throws SAXException
+     */
     private void loadRecentFiles() throws UnsupportedLookAndFeelException, ClassNotFoundException, InstantiationException, IllegalAccessException, IOException, ParserConfigurationException, SAXException {
         DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
         Document doc = docBuilder.parse(new File(Strings.CACHE_PATH));
         NodeList recentFilesList = doc.getElementsByTagName("file");
         for (int i = 0; i < Dimension.MAX_RECENT_FILES_SIZE; i++) {
+            /*
+            Si jamais il y a une minorité de fichiers ouverts par rapport au nombre de case disponible.
+            Dans ce cas, on affiche des cases vides.
+             */
             if (i >= recentFilesList.getLength()) {
                 filesContainer.add(new CustomFileButton());
                 continue;
@@ -104,7 +133,12 @@ public class MainLeftPanel extends JPanel {
             System.out.println("Recent file " + path + ":" + path);
             MetaFile metaFile = new MetaFile(file);
             CustomFileButton fileBtn = new CustomFileButton(metaFile);
-            main.getMetaFilesOpened().add(metaFile);
+            if (!main.getMetaFilesOpened().contains(metaFile)) main.getMetaFilesOpened().add(metaFile);
+            /*
+            Si jamais on clique sur un fichier récemment ouvert, il faut charger ses données puis
+            les afficher sur le panneau de droite de l'application. Ce qui implique que l'on doit mettre
+            à jour l'affichage lorsque l'on appuie sur ce bouton.
+             */
             fileBtn.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {

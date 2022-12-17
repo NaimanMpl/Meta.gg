@@ -12,6 +12,12 @@ public class Utils {
 
     public Utils() {}
 
+    /**
+     * Permet de charger une image depuis le fichier resource en spécifiant le chemin vers cette dernière.
+     * @param path Le chemin vers l'image que l'on souhaite charger (à partir du dossier "resources")
+     * @return imgIcon l'image chargé.
+     * @throws IOException
+     */
     public ImageIcon getImageFromResource(String path) throws IOException {
         URL odtUrl = this.getClass().getResource(path);
         if (odtUrl == null) throw new IllegalArgumentException(Strings.ERROR_ODT_ICON_NOT_LOADED);

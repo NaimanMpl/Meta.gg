@@ -20,8 +20,6 @@ public class DirectoryManager {
 	 * @version 0.0.2
 	 * @author Andrea PL, Naïman Mpl
 	 * @return odtInFolder La liste des fichiers .odt contu dans le dossier passé en paramètre et ses sous dossiers
-	 * @throws IOException 
-	 * @throws MalformedURLException 
 	 */
 	public ArrayList<File> directoryContent(File folder, ArrayList<File> odtInFolder){
 		try {

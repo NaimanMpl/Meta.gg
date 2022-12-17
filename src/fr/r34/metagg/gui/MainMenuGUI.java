@@ -36,6 +36,17 @@ public class MainMenuGUI {
     private final ArrayList<MetaFile> metaFilesOpened;
     private MetaFile currentFile;
 
+    /**
+     * Frame principale de l'application c'est elle qui affiche les fichiers récents (panneau de gauche)
+     * ainsi que le fichier ouvert (panneau de droite)
+     * @throws UnsupportedLookAndFeelException
+     * @throws ClassNotFoundException
+     * @throws InstantiationException
+     * @throws IllegalAccessException
+     * @throws IOException
+     * @throws ParserConfigurationException
+     * @throws SAXException
+     */
     public MainMenuGUI() throws UnsupportedLookAndFeelException, ClassNotFoundException, InstantiationException, IllegalAccessException, IOException, ParserConfigurationException, SAXException {
 
         main = this;
@@ -97,6 +108,14 @@ public class MainMenuGUI {
         frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
     }
 
+    /**
+     * Cette classe s'occupe de gérer l'ouverture d'un fichier.
+     * Lorsque l'utilisateur a choisit un fichier a ouvrir, on ajoute ce fichier dans les fichiers
+     * récemments ouverts et dans le cache puis on met à jour l'affichage du panneau de gauche ainsi
+     * que celui de droite (car les informations ne sont plus les mêmes).
+     * Par contre si on ouvre un dossier on fait alors appel à la class "FolderMenuGUI" qui s'occupe
+     * d'afficher le contenu d'un dossier ainsi que ses fichiers ODT.
+     */
     class OpenFileAction implements ActionListener {
 
         @Override
@@ -114,8 +133,10 @@ public class MainMenuGUI {
                     return;
                 }
                 MetaFile metaFile = new MetaFile(file);
-                cacheManager.addFileToCache(metaFile);
-                metaFilesOpened.add(metaFile);
+                if (!metaFilesOpened.contains(metaFile)) {
+                    cacheManager.addFileToCache(metaFile);
+                    metaFilesOpened.add(metaFile);
+                }
                 try {
                     updateLeftPanel();
                     updateRightPanel(metaFile);
@@ -127,6 +148,10 @@ public class MainMenuGUI {
         }
     }
 
+    /**
+     * Sauvegarde les métadonnées de tout les fichiers récemments ouverts dans le fichier "meta.xml"
+     * (Mais le fichier .odt reste inchangé!)
+     */
     class SaveFileAction implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -134,6 +159,11 @@ public class MainMenuGUI {
         }
     }
 
+    /**
+     * Sauvegarde les métadonnées de tout les fichiers récemments ouverts, extrait leurs dossiers temporairement
+     * ouverts puis change l'extension du fichier compressé en .odt. On obtient alors un nouveau fichier odt
+     * contenant les modifications effectuées.
+     */
     private void saveAllFiles() {
         for (MetaFile metaFile : metaFilesOpened) {
             if (!metaFile.getDestDir().exists()) continue;
@@ -146,6 +176,18 @@ public class MainMenuGUI {
         new MainMenuGUI();
     }
 
+    /**
+     * Met à jour le contenu du panneau de gauche (celui concernant les fichiers récemments ouvert)
+     * On fait appel à cette méthode lorsque l'on ouvre un nouveau fichier afin qu'il puisse apparaître
+     * dans les fichiers récemments ouverts
+     * @throws UnsupportedLookAndFeelException
+     * @throws ClassNotFoundException
+     * @throws InstantiationException
+     * @throws IllegalAccessException
+     * @throws IOException
+     * @throws ParserConfigurationException
+     * @throws SAXException
+     */
     public void updateLeftPanel() throws UnsupportedLookAndFeelException, ClassNotFoundException, InstantiationException, IllegalAccessException, IOException, ParserConfigurationException, SAXException {
         container.remove(leftPanel);
         leftPanel = new MainLeftPanel(this);
@@ -154,6 +196,18 @@ public class MainMenuGUI {
         container.repaint();
     }
 
+
+    /**
+     * Met à jour le contenu du panneau de droite (celui concernant les informations du fichier ouvert).
+     * On fait appel à cette méthode lorsque l'on clique sur un fichier ouvert récemment ou lors de
+     * l'ouverture d'un fichier.
+     * @param metaFile Le fichier que l'on souhaite ouvrir (ou consulter)
+     * @throws UnsupportedLookAndFeelException
+     * @throws IOException
+     * @throws ClassNotFoundException
+     * @throws InstantiationException
+     * @throws IllegalAccessException
+     */
     public void updateRightPanel(MetaFile metaFile) throws UnsupportedLookAndFeelException, IOException, ClassNotFoundException, InstantiationException, IllegalAccessException {
         container.remove(rightPanel);
         rightPanel = new MainRightPanel(this, metaFile);
@@ -162,6 +216,10 @@ public class MainMenuGUI {
         container.repaint();
     }
 
+    /**
+     * Renvoie la liste de tout les fichiers ouverts lors de l'exécution du programme
+     * @return La liste des fichiers ouverts
+     */
     public ArrayList<MetaFile> getMetaFilesOpened() {
         return metaFilesOpened;
     }

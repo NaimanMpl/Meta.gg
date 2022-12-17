@@ -4,6 +4,11 @@ import javax.swing.*;
 
 public class Strings {
 
+    /**
+     * Constantes définis au préalables pour simplifier l'affichage des différents composants
+     * du GUI. Cette classe stock aussi les chemins vers les images de l'application
+     */
+
     public final static String APP_TITLE = "Meta.gg";
     public final static String RECENT_FILES_TITLE = "Fichiers récents";
     public final static String SHOW_IMAGES = "Afficher les images";

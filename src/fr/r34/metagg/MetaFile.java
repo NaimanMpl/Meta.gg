@@ -28,8 +28,13 @@ public class MetaFile {
     private final static int BUFFER_SIZE = 1024;
 
     /**
-     * Initialise l'objet en chargeant les métadonnées présentes dans file pour les inscrires dans les
-     * attributs de la classe
+     * Initialise l'objet en chargeant les métadonnées présentes dans le paramètre "file"
+     * pour y inscrires dans les différents attributs de la classe les métadonnées.
+     * À chaque appel du constructeur les métadonnées sont chargées et stockées dans leurs
+     * attributs respectifs puis extrait le fichier ODT
+     * à la racine du fichier renseigné en paramètre afin qu'on puisse modifier et lire le contenu
+     * du fichier XML.
+     * Cet objet a pour but de simplifier l'affichage des métadonnées ainsi que leur stockage.
      * @param file Le fichier dont on souhaite charger les métadonnées
      */
     public MetaFile(File file) {
@@ -52,6 +57,10 @@ public class MetaFile {
         fileM.readMetaData(this);
     }
 
+    /**
+     * Initialise un fichier vide, un fichier par défaut ne contenant que des informations factices.
+     * Ce constructeur a pour but de simplifier l'affichage d'un fichier par défaut dans le GUI.
+     */
     public MetaFile() {
         this.file = new File("unknown");
         this.thumbnail = null;
@@ -69,14 +78,26 @@ public class MetaFile {
         this.media = new HashMap<>();
     }
 
+    /**
+     * Permet de récuperer le fichier (Java) de l'objet
+     * @return Le fichier (Java) de l'objet
+     */
     public File getFile() {
         return file;
     }
 
+    /**
+     * Permet de récuperer le titre du fichier
+     * @return Le titre du fichier
+     */
     public String getTitle() {
         return title;
     }
 
+    /**
+     * Permet de modifier le titre du fichier
+     * @param title Le nouveau titre que l'on souhaite attribuer au fichier
+     */
     public void setTitle(String title) {
         this.title = title;
     }
@@ -137,14 +158,27 @@ public class MetaFile {
         this.size = size;
     }
 
+    /**
+     * Permet de récuperer les mots clés sous la forme d'une liste de chaine de caractères
+     * @return La liste des mots clés de notre fichier
+     */
     public ArrayList<String> getKeywords() {
         return keywords;
     }
 
+    /**
+     * Permet de récuperer les liens hypertextes sous la forme d'une liste de chaine de caractères
+     * @return La liste des liens hypertextes de notre fichier
+     */
     public ArrayList<String> getHyperTextWebList() {
         return hyperTextWebList;
     }
 
+    /**
+     * Permet de récuperer les images de notre fichier sous la forme d'un dictionnaire.
+     * La clé est l'image tandis que la valeur est son Mime (PNG, GIF, JPEG...)
+     * @return
+     */
     public HashMap<File, MimeTypeImage> getPictures() {
         return pictures;
     }
@@ -153,12 +187,36 @@ public class MetaFile {
         return media;
     }
 
+    /**
+     * Permet de récuperer le dossier extrait lors du chargement des métadonnées
+     * @return Le fichier faisant référence au dossier extrait
+     */
     public File getDestDir() {
         return destDir;
     }
 
     public int getMediasLength() { return media.size(); }
 
+    /**
+     * Permet de récuperer la miniature de notre fichier
+     * @return La miniature du fichier
+     */
+    public File getThumbnail() {
+        return thumbnail;
+    }
+
+    /**
+     * Permet la modification de la miniature du fichier. (Utile uniquement lors du chargement des métadonnées)
+     * La nouvelle miniature ne sera pas modifié lors de la sauvegarde
+     * @param thumbnail La miniature que l'on souhaite attribuer au fichier
+     */
+    public void setThumbnail(File thumbnail) {
+        this.thumbnail = thumbnail;
+    }
+
+    /**
+     * Affiche les différentes métadonnées stockées au préalable de manière claire et distincte.
+     */
     public void displayMetaData() {
         System.out.println("Métadonnées du fichier : " + file.getName());
         System.out.println("Données principales :");
@@ -181,13 +239,18 @@ public class MetaFile {
     }
 
     /**
-     * Sauvegarde les métadonnées de l'objet dans un nouveau fichier XML
+     * Sauvegarde les métadonnées de l'objet dans le fichier "meta.xml" extrait lors de l'initialisation
+     * dans le constructeur.
      */
     public void save() {
         File xmlFile = new File(destDir.getAbsolutePath() + "/meta.xml");
         fileM.saveMetaDataXML(this, xmlFile);
     }
 
+    /**
+     * Compresse le dossier extrait lors de l'initialisation (appel du constructeur) et convertit son extension en ".odt".
+     * Puis enfin, supprime le dossier extrait lors de l'initialisation de l'objet
+     */
     public void deleteTempFolder() {
         File fileToZip = this.getDestDir();
         String zipFilePath = this.getDestDir().getAbsolutePath();
@@ -202,7 +265,8 @@ public class MetaFile {
     }
 
     /**
-     * Met à jour l'attribut (de l'objet) en fonction de l'attribut passé en paramètre
+     * Met à jour l'attribut (de l'objet) en fonction de l'attribut passé en paramètre et du
+     * contenu que l'on souhaite insérer à cet attribut
      * @param attribute L'attribut que l'on souhaite mettre à jour
      * @param content Le nouveau contenu de notre attribut
      */
@@ -217,13 +281,5 @@ public class MetaFile {
             case PARAGRAPHS_COUNT -> { this.setParagraphAmount(Integer.parseInt(content)); }
             case WORD_COUNT -> { this.setWordAmount(Integer.parseInt(content)); }
         }
-    }
-
-    public File getThumbnail() {
-        return thumbnail;
-    }
-
-    public void setThumbnail(File thumbnail) {
-        this.thumbnail = thumbnail;
     }
 }
