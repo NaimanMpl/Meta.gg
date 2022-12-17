@@ -3,6 +3,7 @@ package fr.r34.metagg.gui.panels.openfolder;
 import fr.r34.metagg.Strings;
 import fr.r34.metagg.gui.Colors;
 import fr.r34.metagg.gui.Dimension;
+import fr.r34.metagg.gui.FolderMenuGUI;
 import fr.r34.metagg.manager.DirectoryManager;
 
 import javax.swing.*;
@@ -11,6 +12,7 @@ import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Stack;
 
 
 public class FolderLeftPanel extends JPanel {
@@ -26,11 +28,14 @@ public class FolderLeftPanel extends JPanel {
 
     private final String initArborescencePathText = "";
 
+    private final FolderMenuGUI main;
 
-    public FolderLeftPanel(File folder) throws IOException {
+
+    public FolderLeftPanel(File folder, FolderMenuGUI main) throws IOException {
+        this.main = main;
         this.folder = folder;
         DirectoryManager directoryManager = new DirectoryManager();
-        folderContent = directoryManager.directoryContent(folder, folderContent);
+        folderContent = directoryManager.odtInDirectory(folder);
 
         header = new JPanel();
         appTitle = new JLabel(Strings.APP_TITLE);
@@ -43,8 +48,8 @@ public class FolderLeftPanel extends JPanel {
         header.setLayout(new BoxLayout(header, BoxLayout.Y_AXIS));
         header.setBackground(Colors.BG_COLOR);
 
-        parentsFolderContainer = new ArborescencePanel(folder, initArborescencePathText);
-        filesInFolderContainer = new ContentFolderPanel(folderContent, folder);
+        parentsFolderContainer = new ArborescencePanel(folder, main);
+        filesInFolderContainer = new ContentFolderPanel(folderContent, folder, main);
 
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 

@@ -41,7 +41,7 @@ public class MetaFile {
         this.paragraphAmount = 0;
         this.wordAmount = 0;
         this.characterAmount = 0;
-        this.creationDate = null;
+        this.creationDate = "01-01-1970";
         this.size = (float) file.length() / BUFFER_SIZE;
         this.keywords = new ArrayList<>();
         this.hyperTextWebList = new ArrayList<>();

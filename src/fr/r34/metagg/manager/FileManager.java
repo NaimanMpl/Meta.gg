@@ -23,7 +23,6 @@ import java.nio.file.attribute.BasicFileAttributes;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
@@ -190,7 +189,6 @@ public class FileManager {
     */
     public void readPictureMetaData(MetaFile metaFile) {
         File file = new File(metaFile.getDestDir().getPath() + "/media");
-        HashMap<String, ArrayList<String>> imageMap = new HashMap<>();
         try {
             if (file.getName().equals("media") && file.isDirectory()) {
                 for(File picture : file.listFiles()) {

@@ -40,6 +40,19 @@ public class DirectoryManager {
 			e.printStackTrace();
 		}
 		return null;
-
+	}
+	public ArrayList<File> odtInDirectory(File folder) {
+		ArrayList<File> odtInFolder = new ArrayList<>();
+		try {
+			for (File element : folder.listFiles()) {
+				String mimetype = element.toURL().openConnection().getContentType();
+				if (Objects.equals(mimetype, "application/vnd.oasis.opendocument.text")) {
+					odtInFolder.add(element);
+				}
+			}
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+		return odtInFolder;
 	}
 }

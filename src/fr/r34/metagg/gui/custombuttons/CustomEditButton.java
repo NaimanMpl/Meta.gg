@@ -7,11 +7,9 @@ import java.awt.*;
 import java.awt.Dimension;
 
 public class CustomEditButton extends JButton {
-
     private static Color color = new Color(255, 255, 255);
-    private static Color colorSelection = new Color(143, 147, 150);
 
-    public CustomEditButton() throws UnsupportedLookAndFeelException, ClassNotFoundException, InstantiationException, IllegalAccessException {
+    public CustomEditButton() {
         super();
         this.setBorderPainted(false);
         this.setFocusPainted(false);

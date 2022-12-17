@@ -3,6 +3,7 @@ package fr.r34.metagg.gui.custombuttons;
 import fr.r34.metagg.MetaFile;
 import fr.r34.metagg.Strings;
 import fr.r34.metagg.gui.Colors;
+import fr.r34.metagg.gui.FolderMenuGUI;
 import fr.r34.metagg.manager.Utils;
 import jdk.jshell.execution.Util;
 
@@ -19,9 +20,11 @@ public class CustomFileInFolderButton extends JPanel {
     private static JLabel metafileNameLabel, metafileSizeLabel, metafileDateLabel, fileIcon;
     private double round;
     private Utils utils;
-    private MouseListener mouseListener;
-    public CustomFileInFolderButton(MetaFile metaFile) throws IOException {
+    private FolderMenuGUI main;
+
+    public CustomFileInFolderButton(MetaFile metaFile, FolderMenuGUI main) throws IOException {
         super();
+        this.main = main;
         this.setBackground(Colors.BLUE_1);
         this.setOpaque(true);
         this.utils = new Utils();
@@ -49,7 +52,20 @@ public class CustomFileInFolderButton extends JPanel {
         this.add(metafileDateLabel);
         this.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
         this.setVisible(true);
+
+        this.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                try {
+                    main.updateFolderRightPanel(metaFile);
+                } catch (UnsupportedLookAndFeelException | IllegalAccessException | InstantiationException |
+                         ClassNotFoundException | IOException ex) {
+                    throw new RuntimeException(ex);
+                }
+            }
+        });
     }
+
     public CustomFileInFolderButton(){
         super();
         this.setBackground(Colors.BLUE_1);

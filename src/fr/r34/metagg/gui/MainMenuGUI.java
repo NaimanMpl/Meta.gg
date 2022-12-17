@@ -124,7 +124,7 @@ public class MainMenuGUI {
 
     public void updateLeftPanel() throws UnsupportedLookAndFeelException, ClassNotFoundException, InstantiationException, IllegalAccessException, IOException, ParserConfigurationException, SAXException {
         container.remove(leftPanel);
-        leftPanel = new MainLeftPanel(main);
+        leftPanel = new MainLeftPanel(this);
         container.add(leftPanel, BorderLayout.WEST);
         container.revalidate();
         container.repaint();

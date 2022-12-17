@@ -34,6 +34,7 @@ public class Strings {
 
     public final static String FOLDER_ICON_PATH = "/folder_icon.png";
     public final static String MY_FOLDER_ICON_PATH = "/my_folder_icon.png";
+    public final static String RETURN_BUTTON_ICON = "/return_button.png";
     public final static String PARENT_FOLDER_TITLE = ">";
 
 

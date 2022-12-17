@@ -15,20 +15,13 @@ import java.net.URL;
 
 public class CustomFileButton extends JButton {
 
+    private JTextArea jTextArea;
     private static Color color = new Color(39, 51, 67);
     private static Color colorSelection = new Color(23, 38, 54);
     private BufferedImage odtIcon = null;
+    private String metafileNameDisplay;
     private Utils utils;
 
-    public CustomFileButton() throws UnsupportedLookAndFeelException, ClassNotFoundException, InstantiationException, IllegalAccessException, IOException {
-        super();
-        this.setBorderPainted(false);
-        this.setBackground(color);
-        this.setFocusPainted(false);
-        this.setOpaque(true);
-        this.setPreferredSize(new Dimension(271, 271));
-        this.setVisible(true);
-    }
     public CustomFileButton(MetaFile metaFile) throws UnsupportedLookAndFeelException, ClassNotFoundException, InstantiationException, IllegalAccessException, IOException {
         super();
         this.utils = new Utils();
@@ -40,13 +33,28 @@ public class CustomFileButton extends JButton {
         this.setOpaque(true);
         this.setPreferredSize(new Dimension(271, 271));
         double round = (double) Math.round(metaFile.getSize() * 10) / 10;
-        this.setText("<html><p style=\"margin-right: 150px\">" + metaFile.getFile().getName() + "<br><br>Taille : <br>" + "<font color=#577297>" + round + "Ko</html>");
+        if(metaFile.getFile().getName().length() > 10){
+            int indexD = 0;
+            int indexF = 9;
+            metafileNameDisplay = metaFile.getFile().getName().substring(indexD, indexF);
+            metafileNameDisplay += "...";
+        }
+        this.setText("<html><p style=\"margin-right: 150px\">" + metafileNameDisplay + "<br><br>Taille : <br>" + "<font color=#577297>" + round + "Ko</html>");
         this.setFont(new Font(fr.r34.metagg.gui.Dimension.FONT, Font.PLAIN, fr.r34.metagg.gui.Dimension.PARAGRAPH_SIZE));
         this.setForeground(Colors.WHITE);
         this.setIcon(utils.getImageFromResource(Strings.FILE_BUTTON_ICON_PATH));
         this.setVerticalTextPosition(AbstractButton.BOTTOM);
         this.setHorizontalTextPosition(AbstractButton.CENTER);
         this.setIconTextGap(10);
+        this.setVisible(true);
+    }
+    public CustomFileButton() throws UnsupportedLookAndFeelException, ClassNotFoundException, InstantiationException, IllegalAccessException, IOException {
+        super();
+        this.setBorderPainted(false);
+        this.setBackground(color);
+        this.setFocusPainted(false);
+        this.setOpaque(true);
+        this.setPreferredSize(new Dimension(271, 271));
         this.setVisible(true);
     }
 }
