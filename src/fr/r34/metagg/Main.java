@@ -23,12 +23,11 @@ public class Main {
                 MetaFile metaFile = new MetaFile(file);
                 metaFile.displayMetaData();
                 metaFile.deleteTempFolder();
-
             } else if (args[0].equalsIgnoreCase("-d")) {
                 File folder = new File(args[1]);
                 ArrayList<File> odtInFolder = new ArrayList<>();
                 odtInFolder = directoryM.directoryContent(folder, odtInFolder);
-                for(File file : odtInFolder){
+                for (File file : odtInFolder) {
                     MetaFile metaFile = new MetaFile(file);
                     String name = metaFile.getFile().getName();
                     String title = metaFile.getTitle();
@@ -36,6 +35,7 @@ public class Main {
                     float size = metaFile.getSize();
                     System.out.println(metaFile.getFile().getParent());
                     System.out.println("◼"+ name + "\t" + title + " " + creationDate + " " + size + " Ko");
+                    metaFile.deleteTempFolder();
                 }
             }
         } else if (args.length == 4) {

@@ -17,6 +17,14 @@ public class SplashScreen {
     private JLabel bgContainer;
     private BufferedImage splashImg;
 
+    /**
+     * Ouvre un page de chargement le temps que le menu principal
+     * charge et se lance. Une fois que le menu principal est lancé,
+     * la page de chargement se ferme automatiquement.
+     * L'image a été choisie arbitrairement selon un design précis.
+     *
+     * @throws IOException
+     */
     public SplashScreen() throws IOException {
         window = new JWindow();
         URL splashUrl = this.getClass().getResource(Strings.SPLASH_SCREEN_FILE_PATH);
@@ -28,9 +36,10 @@ public class SplashScreen {
         window.setSize(720, 512);
         window.setLocationRelativeTo(null);
         window.setVisible(true);
+        UIManager.put("OptionPane.background", Colors.BLUE_1);
+        UIManager.put("Panel.background", Colors.BLUE_1);
         try {
             new MainMenuGUI();
-            new FolderMenuGUI();
         } catch (UnsupportedLookAndFeelException | IllegalAccessException | InstantiationException |
                  ClassNotFoundException | ParserConfigurationException | SAXException e) {
             e.printStackTrace();

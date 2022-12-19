@@ -2,6 +2,7 @@ package fr.r34.metagg.gui.panels.openfolder;
 
 import fr.r34.metagg.Strings;
 import fr.r34.metagg.gui.Colors;
+import fr.r34.metagg.gui.MainMenuGUI;
 import fr.r34.metagg.manager.Utils;
 
 import javax.swing.*;
@@ -14,15 +15,30 @@ public class ContentFolderPanel extends JPanel {
     private final JLabel myFolder;
     private final JPanel folderContentPanel;
 
-    ImageIcon myFolderIcon = new ImageIcon();
+    private ImageIcon myFolderIcon;
+    private MainMenuGUI main;
 
-    public ContentFolderPanel(ArrayList<File> folderContent, File folder) throws IOException {
+    /**
+     * JPanel modifié et personnalisé en selon un design prédéfinis
+     * Ce JPanel a pour fonction de structurer la partie inférieur
+     * de la partie gauche du FolderPanel. Ce JPanel va contenir
+     * une scrollbar des fichiers ODT présent dans le dossier ouvert
+     * et un JLabel avec une icône définit selon un design et le nom
+     * du dossier actuellement ouvert et choisit par l'utilisateur.
+     *
+     * @param folderContent     Liste des fichiers ODT présents dans le dossier ouvert par l'utilisateur.
+     * @param folder            Dossier choisit et ouvert par l'utilisateur.
+     * @param main              Instance de la Frame principale "FolderMenuGUI"
+     * @throws IOException
+     */
+    public ContentFolderPanel(ArrayList<File> folderContent, File folder, MainMenuGUI main) throws IOException {
         super();
+        this.main = main;
         this.setBackground(Colors.BG_COLOR);
         myFolderIcon = new Utils().getImageFromResource(Strings.MY_FOLDER_ICON_PATH);
         myFolder = new JLabel(folder.getName(), myFolderIcon, JLabel.LEFT);
         myFolder.setForeground(Colors.WHITE);
-        folderContentPanel = new FilePanel(folderContent);
+        folderContentPanel = new FilePanel(folderContent, main);
         this.add(myFolder);
         this.add(folderContentPanel);
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));

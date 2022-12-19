@@ -3,6 +3,7 @@ package fr.r34.metagg.gui.panels.openfolder;
 import fr.r34.metagg.Strings;
 import fr.r34.metagg.gui.Colors;
 import fr.r34.metagg.gui.Dimension;
+import fr.r34.metagg.gui.MainMenuGUI;
 import fr.r34.metagg.manager.DirectoryManager;
 
 import javax.swing.*;
@@ -26,11 +27,29 @@ public class FolderLeftPanel extends JPanel {
 
     private final String initArborescencePathText = "";
 
+    private final MainMenuGUI main;
 
-    public FolderLeftPanel(File folder) throws IOException {
+
+    /**
+     * JPanel modifié et personnalisé en fonction d'un design
+     * prédéfini. Ce JPanel a pour but de rassembler les différents
+     * sous panel de la partie gauche de l'interface. Ce panel est
+     * composé de :
+     * - un JPanel "header" qui contiendra le nom de l'application
+     * - un JPanel pour la partie arborescence du dossier passé en paramètre.
+     * - un JPanel pour la partie des fichiers ODT du dossier passé en paramètre.
+     * La partie arborescence fait seulement appel à la classe ArborescencePanel.
+     * La partie fichier du dossier fait seulement appel à la classe ContentFolderPanel.
+     *
+     * @param folder    Dossier choisit et ouvert par l'utilisateur pour parcours ses différents sous-dossier et fichiers ODT.
+     * @param main      Instance de la Frame principale FolderMenuGUI.
+     * @throws IOException
+     */
+    public FolderLeftPanel(File folder, MainMenuGUI main) throws IOException {
+        this.main = main;
         this.folder = folder;
         DirectoryManager directoryManager = new DirectoryManager();
-        folderContent = directoryManager.directoryContent(folder, folderContent);
+        folderContent = directoryManager.odtInDirectory(folder);
 
         header = new JPanel();
         appTitle = new JLabel(Strings.APP_TITLE);
@@ -43,8 +62,8 @@ public class FolderLeftPanel extends JPanel {
         header.setLayout(new BoxLayout(header, BoxLayout.Y_AXIS));
         header.setBackground(Colors.BG_COLOR);
 
-        parentsFolderContainer = new ArborescencePanel(folder, initArborescencePathText);
-        filesInFolderContainer = new ContentFolderPanel(folderContent, folder);
+        parentsFolderContainer = new ArborescencePanel(folder, main);
+        filesInFolderContainer = new ContentFolderPanel(folderContent, folder, main);
 
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 

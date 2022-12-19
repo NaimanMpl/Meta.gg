@@ -4,6 +4,10 @@ import java.awt.Color;
 
 public class Colors {
 
+    /**
+     * Ensembles de constantes prédéfinis contenant les différentes couleurs utilisés dans l'application
+     */
+
     public final static Color BG_COLOR = Color.decode("#181E27");
     public final static Color BLUE_0 = Color.decode("#577297");
     public final static Color BLUE_1 = Color.decode("#273343");

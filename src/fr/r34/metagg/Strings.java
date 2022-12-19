@@ -4,10 +4,16 @@ import javax.swing.*;
 
 public class Strings {
 
+    /**
+     * Constantes définis au préalables pour simplifier l'affichage des différents composants
+     * du GUI. Cette classe stock aussi les chemins vers les images de l'application
+     */
+
     public final static String APP_TITLE = "Meta.gg";
     public final static String RECENT_FILES_TITLE = "Fichiers récents";
     public final static String SHOW_IMAGES = "Afficher les images";
     public final static String SHOW_HYPERTEXT_LINKS = "Afficher les liens hypertextes";
+    public final static String HIDE_HYPERTEXT_LINKS = "Cacher les liens hypertextes";
     public final static String HYPERTEXT_TITLE = "Liens hypertextes :";
     public final static String RIGHT_PANEL_TITLE = "Métadonnées du fichier";
     public final static String TITLE = "Titre : ";
@@ -21,6 +27,11 @@ public class Strings {
     public final static String SAVE_MODIFICATIONS = "Sauvegarder";
     public final static String OPEN = "Ouvrir";
     public final static String MENU_TITLE = "Fichier";
+    public final static String NO_TITLE = "Pas de titre";
+    public final static String NO_PICTURES = "Ce fichier ne possède pas d'image !";
+    public final static String NO_SUBJECT = "Pas de sujet";
+    public final static String ADD_KEYWORD = "Ajouter un mot-clé";
+    public final static String ENTER_KEYWORD = "Veuillez saisir un mot-clé";
     public final static String ERROR_SPLASH_NOT_LOADED = "File not found : L'image de chargement n'a pas pu être chargé !";
     public final static String ERROR_ODT_ICON_NOT_LOADED = "File not found : L'icone de fichiers n'a pas pu être chargé !";
     public final static String ODT_FILE_PATH = "/odt_file_icon.png";
@@ -31,9 +42,9 @@ public class Strings {
 
     public final static String FILE_BUTTON_ICON_PATH = "/odt_file_icon.png";
     public final static String FILE_BUTTON_ICON_FOLDER_PANEL_PATH = "/odt_file_icon_folder_panel.png";
-
     public final static String FOLDER_ICON_PATH = "/folder_icon.png";
     public final static String MY_FOLDER_ICON_PATH = "/my_folder_icon.png";
+    public final static String RETURN_BUTTON_ICON = "/return_button.png";
     public final static String PARENT_FOLDER_TITLE = ">";
 
 

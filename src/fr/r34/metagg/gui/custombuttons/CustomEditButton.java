@@ -7,11 +7,18 @@ import java.awt.*;
 import java.awt.Dimension;
 
 public class CustomEditButton extends JButton {
-
     private static Color color = new Color(255, 255, 255);
-    private static Color colorSelection = new Color(143, 147, 150);
 
-    public CustomEditButton() throws UnsupportedLookAndFeelException, ClassNotFoundException, InstantiationException, IllegalAccessException {
+    /**
+     * Bouton modifié en fonction du besoin de l'interface.
+     * Ce bouton est personnalisé dans le but de rendre
+     * l'interface graphique plus claire et plus propore
+     * pour l'utilisateur.
+     * Ce bouton sera exclusivement réservé à la fonction
+     * d'édition et de sauvegarde des métadonnées d'un fichier
+     * ouvert par l'utilisateur dans l'application.
+     */
+    public CustomEditButton() {
         super();
         this.setBorderPainted(false);
         this.setFocusPainted(false);
@@ -25,6 +32,7 @@ public class CustomEditButton extends JButton {
         this.setHorizontalTextPosition(AbstractButton.RIGHT);
         this.setIconTextGap(10);
         this.setVisible(true);
+        this.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
     }
 
 }

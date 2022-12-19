@@ -4,6 +4,11 @@ import java.awt.Font;
 
 public class Dimension {
 
+    /**
+     * Constantes prédéfinis contenant la taille et l'espacement
+     * des différents composants de l'application ainsi que la police utilisé.
+     */
+
     public final static int TITLE_SIZE = 20;
 
     public final static int SUBTITLE_SIZE = 16;
@@ -14,7 +19,7 @@ public class Dimension {
 
     public final static int BUTTON_HEIGHT = 35;
 
-    public final static int BUTTON_WIDTH = 150;
+    public final static int BUTTON_WIDTH = 125;
 
     public final static int WINDOW_WIDTH = 1024;
     public final static int WINDOW_HEIGHT = 768;
