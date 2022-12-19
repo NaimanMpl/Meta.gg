@@ -1,7 +1,7 @@
 package fr.r34.metagg.gui.panels.openfolder;
 
 import fr.r34.metagg.gui.Colors;
-import fr.r34.metagg.gui.FolderMenuGUI;
+import fr.r34.metagg.gui.MainMenuGUI;
 import fr.r34.metagg.gui.custombuttons.CustomFolderButton;
 
 import javax.swing.*;
@@ -13,7 +13,7 @@ public class FolderButtonPanel extends JPanel {
 
     private CustomFolderButton customFolderButton1, customFolderButton2;
 
-    private FolderMenuGUI main;
+    private MainMenuGUI main;
 
     /**
      * Cette classe va créer deux JPanels CustomFolderButton en
@@ -28,7 +28,7 @@ public class FolderButtonPanel extends JPanel {
      * @param main      Instance de la Frame principale FolderMenuGUI
      * @throws IOException
      */
-    public FolderButtonPanel(File folder, File folder2, FolderMenuGUI main) throws IOException {
+    public FolderButtonPanel(File folder, File folder2, MainMenuGUI main) throws IOException {
         super();
         this.main = main;
         this.setBackground(Colors.BG_COLOR);

@@ -18,7 +18,7 @@ public class Arborescence {
      * un répertoire (dossier) alors on l'ajoute à notre liste.
      *
      * @param parentFolder      Dossier dont on veut l'arborescence de sous-dossier
-     * @return ArrayList<File>  Liste des sous-dossiers du dossier choisit par l'utilisateur
+     * @return La liste des sous-dossiers du dossier choisit par l'utilisateur
      */
     public ArrayList<File> getArborescence(File parentFolder){
         for (File element : Objects.requireNonNull(parentFolder.listFiles())){

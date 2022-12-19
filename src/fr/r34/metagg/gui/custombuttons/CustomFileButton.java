@@ -49,6 +49,7 @@ public class CustomFileButton extends JButton {
         this.setBackground(color);
         this.setOpaque(true);
         this.setPreferredSize(new Dimension(271, 271));
+        this.metafileNameDisplay = metaFile.getFile().getName();
         double round = (double) Math.round(metaFile.getSize() * 10) / 10;
         if(metaFile.getFile().getName().length() > 10){
             int indexD = 0;

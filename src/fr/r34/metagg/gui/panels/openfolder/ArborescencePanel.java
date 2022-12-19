@@ -3,14 +3,12 @@ package fr.r34.metagg.gui.panels.openfolder;
 import fr.r34.metagg.Strings;
 import fr.r34.metagg.gui.Arborescence;
 import fr.r34.metagg.gui.Colors;
-import fr.r34.metagg.gui.FolderMenuGUI;
+import fr.r34.metagg.gui.MainMenuGUI;
 import fr.r34.metagg.manager.Utils;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
@@ -25,7 +23,7 @@ public class ArborescencePanel extends JPanel {
     private JPanel top;
     private JPanel returnButton;
     private ArrayList<File> folderContent = new ArrayList<>();
-    private FolderMenuGUI main;
+    private MainMenuGUI main;
     private Utils utils;
 
     /**
@@ -57,7 +55,7 @@ public class ArborescencePanel extends JPanel {
      * @param main
      * @throws IOException
      */
-    public ArborescencePanel(File parentFolder, FolderMenuGUI main) throws IOException {
+    public ArborescencePanel(File parentFolder, MainMenuGUI main) throws IOException {
         super();
         this.main = main;
         this.utils = new Utils();

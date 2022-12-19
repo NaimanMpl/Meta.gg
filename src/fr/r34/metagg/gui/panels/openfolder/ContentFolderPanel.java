@@ -2,11 +2,10 @@ package fr.r34.metagg.gui.panels.openfolder;
 
 import fr.r34.metagg.Strings;
 import fr.r34.metagg.gui.Colors;
-import fr.r34.metagg.gui.FolderMenuGUI;
+import fr.r34.metagg.gui.MainMenuGUI;
 import fr.r34.metagg.manager.Utils;
 
 import javax.swing.*;
-import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -17,7 +16,7 @@ public class ContentFolderPanel extends JPanel {
     private final JPanel folderContentPanel;
 
     private ImageIcon myFolderIcon;
-    private FolderMenuGUI main;
+    private MainMenuGUI main;
 
     /**
      * JPanel modifié et personnalisé en selon un design prédéfinis
@@ -32,7 +31,7 @@ public class ContentFolderPanel extends JPanel {
      * @param main              Instance de la Frame principale "FolderMenuGUI"
      * @throws IOException
      */
-    public ContentFolderPanel(ArrayList<File> folderContent, File folder, FolderMenuGUI main) throws IOException {
+    public ContentFolderPanel(ArrayList<File> folderContent, File folder, MainMenuGUI main) throws IOException {
         super();
         this.main = main;
         this.setBackground(Colors.BG_COLOR);

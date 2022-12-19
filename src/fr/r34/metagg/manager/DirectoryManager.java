@@ -19,11 +19,10 @@ public class DirectoryManager {
 	 * Gestionnaire de répertoire permettant de repérer et accéder aux différents dossiers, sous dossiers et fichiers
 	 * @version 0.0.2
 	 * @author Andrea PL, Naïman Mpl
-	 * @throws IOException 
-	 * @throws MalformedURLException 
 	 */
 	public ArrayList<File> directoryContent(File folder, ArrayList<File> odtInFolder){
 		try {
+			for(File element : folder.listFiles()) {
 				if(element.isDirectory())
 					directoryContent(element, odtInFolder);
 				else {

@@ -3,16 +3,13 @@ package fr.r34.metagg.gui.custombuttons;
 import fr.r34.metagg.MetaFile;
 import fr.r34.metagg.Strings;
 import fr.r34.metagg.gui.Colors;
-import fr.r34.metagg.gui.FolderMenuGUI;
+import fr.r34.metagg.gui.MainMenuGUI;
 import fr.r34.metagg.manager.Utils;
-import jdk.jshell.execution.Util;
 
 import javax.swing.*;
-import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.io.IOException;
 
 public class CustomFileInFolderButton extends JPanel {
@@ -20,7 +17,7 @@ public class CustomFileInFolderButton extends JPanel {
     private static JLabel metafileNameLabel, metafileSizeLabel, metafileDateLabel, fileIcon;
     private double round;
     private Utils utils;
-    private FolderMenuGUI main;
+    private MainMenuGUI main;
 
     /**
      * JPanel modifié pour correspondre à un bouton cliquable.
@@ -36,7 +33,7 @@ public class CustomFileInFolderButton extends JPanel {
      * @param main      Instance de la Frame principale FolderMenuGUI à laquelle ce bouton est rattaché.
      * @throws IOException
      */
-    public CustomFileInFolderButton(MetaFile metaFile, FolderMenuGUI main) throws IOException {
+    public CustomFileInFolderButton(MetaFile metaFile, MainMenuGUI main) throws IOException {
         super();
         this.main = main;
         this.setBackground(Colors.BLUE_1);
@@ -53,7 +50,7 @@ public class CustomFileInFolderButton extends JPanel {
         metafileSizeLabel.setForeground(Colors.BLUE_0);
         metafileSizeLabel.setFont(new Font(fr.r34.metagg.gui.Dimension.FONT, Font.PLAIN, fr.r34.metagg.gui.Dimension.PARAGRAPH_SIZE));
         metafileDateLabel = new JLabel();
-        metafileDateLabel.setText("" + metaFile.getCreationDate());
+        metafileDateLabel.setText("" + metaFile.getCreationDate().substring(0, 10));
         metafileDateLabel.setForeground(Colors.BLUE_0);
         metafileDateLabel.setFont(new Font(fr.r34.metagg.gui.Dimension.FONT, Font.PLAIN, fr.r34.metagg.gui.Dimension.PARAGRAPH_SIZE));
         fileIcon = new JLabel(utils.getImageFromResource(Strings.FILE_BUTTON_ICON_FOLDER_PANEL_PATH));
@@ -71,7 +68,7 @@ public class CustomFileInFolderButton extends JPanel {
             @Override
             public void mouseClicked(MouseEvent e) {
                 try {
-                    main.updateFolderRightPanel(metaFile);
+                    main.updateRightPanel(metaFile);
                 } catch (UnsupportedLookAndFeelException | IllegalAccessException | InstantiationException |
                          ClassNotFoundException | IOException ex) {
                     throw new RuntimeException(ex);
@@ -89,7 +86,7 @@ public class CustomFileInFolderButton extends JPanel {
      * dossier parent est strictement inférieur à 4 (nombre de case du JPanel
      * parent arbitrairement définit pour une question de design).
      */
-    public CustomFileInFolderButton(){
+    public CustomFileInFolderButton() {
         super();
         this.setBackground(Colors.BLUE_1);
         this.setOpaque(true);

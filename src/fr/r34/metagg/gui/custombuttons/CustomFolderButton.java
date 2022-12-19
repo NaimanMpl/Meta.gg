@@ -2,7 +2,7 @@ package fr.r34.metagg.gui.custombuttons;
 
 import fr.r34.metagg.Strings;
 import fr.r34.metagg.gui.Colors;
-import fr.r34.metagg.gui.FolderMenuGUI;
+import fr.r34.metagg.gui.MainMenuGUI;
 import fr.r34.metagg.manager.DirectoryManager;
 import fr.r34.metagg.manager.Utils;
 
@@ -22,7 +22,7 @@ public class CustomFolderButton extends JPanel {
     private ArrayList<File> folderContent = new ArrayList<>();
     private int numberOdtInFolder;
     private Utils utils;
-    private FolderMenuGUI main;
+    private MainMenuGUI main;
 
     /**
      * JPanel modifié et personnalisé selon un design prédifinis et pour
@@ -44,7 +44,7 @@ public class CustomFolderButton extends JPanel {
      * @param main      Instance de la Frame principale FolderMenuGUI à laquelle ce bouton est rattaché.
      * @throws IOException
      */
-    public CustomFolderButton(File folder, FolderMenuGUI main) throws IOException {
+    public CustomFolderButton(File folder, MainMenuGUI main) throws IOException {
         super();
         this.utils = new Utils();
         this.main = main;

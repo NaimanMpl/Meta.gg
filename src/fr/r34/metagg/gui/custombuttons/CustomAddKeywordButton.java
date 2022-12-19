@@ -21,6 +21,7 @@ public class CustomAddKeywordButton extends JButton {
     public CustomAddKeywordButton(MainMenuGUI main, MetaFile metaFile) {
         super();
         this.setText(Strings.ADD_KEYWORD);
+        this.setOpaque(true);
         this.setBackground(Colors.WHITE);
         this.setHorizontalTextPosition(AbstractButton.RIGHT);
         this.setPreferredSize(new Dimension(fr.r34.metagg.gui.Dimension.BUTTON_WIDTH, fr.r34.metagg.gui.Dimension.BUTTON_HEIGHT));

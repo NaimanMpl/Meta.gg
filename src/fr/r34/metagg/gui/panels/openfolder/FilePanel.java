@@ -3,7 +3,7 @@ package fr.r34.metagg.gui.panels.openfolder;
 import fr.r34.metagg.MetaFile;
 import fr.r34.metagg.gui.Colors;
 import fr.r34.metagg.gui.Dimension;
-import fr.r34.metagg.gui.FolderMenuGUI;
+import fr.r34.metagg.gui.MainMenuGUI;
 import fr.r34.metagg.gui.custombuttons.CustomFileInFolderButton;
 
 import javax.swing.*;
@@ -16,7 +16,7 @@ public class FilePanel extends JPanel {
     private JPanel mainList;
     private JScrollPane scrollPane;
     private ArrayList<File> folderContent;
-    private FolderMenuGUI main;
+    private MainMenuGUI main;
 
     /**
      * JPanel personnalisé selon un design prédéfinis.
@@ -32,7 +32,7 @@ public class FilePanel extends JPanel {
      * @param main              Instance de la Frame principale FolderMenuGUI
      * @throws IOException
      */
-    public FilePanel(ArrayList<File> folderContent, FolderMenuGUI main) throws IOException {
+    public FilePanel(ArrayList<File> folderContent, MainMenuGUI main) throws IOException {
         this.main = main;
         this.folderContent = folderContent;
         setLayout(new BorderLayout());
@@ -68,7 +68,7 @@ public class FilePanel extends JPanel {
      * @param main              Instance de la Frame principale FolderMenuGUI
      * @throws IOException
      */
-    public void initFilePanel(ArrayList<File> folderContent, FolderMenuGUI main) throws IOException {
+    public void initFilePanel(ArrayList<File> folderContent, MainMenuGUI main) throws IOException {
         for(File odtFile : folderContent){
             MetaFile metaFile = new MetaFile(odtFile);
             CustomFileInFolderButton customFileInFolderButton = new CustomFileInFolderButton(metaFile, main);

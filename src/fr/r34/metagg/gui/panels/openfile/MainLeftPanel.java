@@ -130,7 +130,6 @@ public class MainLeftPanel extends JPanel {
             Element pathElement = (Element) pathNode;
             String path = pathElement.getTextContent();
             File file = new File(path);
-            System.out.println("Recent file " + path + ":" + path);
             MetaFile metaFile = new MetaFile(file);
             CustomFileButton fileBtn = new CustomFileButton(metaFile);
             if (!main.getMetaFilesOpened().contains(metaFile)) main.getMetaFilesOpened().add(metaFile);

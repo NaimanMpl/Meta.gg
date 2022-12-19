@@ -69,7 +69,7 @@ public class FileManager {
                     line = br.readLine();
                     int indexD = line.indexOf(lineToFound);
                     int indexF;
-                    while (indexD > -1){
+                    while (indexD > -1) {
                         lineCut = line.substring(indexD + 20);
                         indexF = lineCut.indexOf('"');
                         hyperTxtWeb = line.substring(indexD + 20, indexD + 20 + indexF);
@@ -82,6 +82,7 @@ public class FileManager {
                     for (String weblink : hyperTxtWbList){
                         metaFile.getHyperTextWebList().add(weblink);
                     }
+                    br.close();
                     this.readPictureMetaData(metaFile);
                     this.readThumbnail(metaFile);
                 }
@@ -381,7 +382,7 @@ public class FileManager {
        zos.close();
     }
 
-    /**
+    /** Permet de changer l'extension d'un fichier quelconque en une nouvelle extension.
      * @param file Le fichier dont on souhaite changer l'extension
      * @param newExtension L'extension que l'on souhaite utiliser
      * @return Le nouveau fichier dont l'extension a été modifié

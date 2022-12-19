@@ -3,7 +3,7 @@ package fr.r34.metagg.gui.panels.openfolder;
 import fr.r34.metagg.Strings;
 import fr.r34.metagg.gui.Colors;
 import fr.r34.metagg.gui.Dimension;
-import fr.r34.metagg.gui.FolderMenuGUI;
+import fr.r34.metagg.gui.MainMenuGUI;
 import fr.r34.metagg.manager.DirectoryManager;
 
 import javax.swing.*;
@@ -12,7 +12,6 @@ import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Stack;
 
 
 public class FolderLeftPanel extends JPanel {
@@ -28,7 +27,7 @@ public class FolderLeftPanel extends JPanel {
 
     private final String initArborescencePathText = "";
 
-    private final FolderMenuGUI main;
+    private final MainMenuGUI main;
 
 
     /**
@@ -46,7 +45,7 @@ public class FolderLeftPanel extends JPanel {
      * @param main      Instance de la Frame principale FolderMenuGUI.
      * @throws IOException
      */
-    public FolderLeftPanel(File folder, FolderMenuGUI main) throws IOException {
+    public FolderLeftPanel(File folder, MainMenuGUI main) throws IOException {
         this.main = main;
         this.folder = folder;
         DirectoryManager directoryManager = new DirectoryManager();

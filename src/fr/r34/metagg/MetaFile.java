@@ -282,4 +282,18 @@ public class MetaFile {
             case WORD_COUNT -> { this.setWordAmount(Integer.parseInt(content)); }
         }
     }
+
+    /**
+     * Fonction qui permet de comparer deux objets de types "MetaFile" entre eux en se basant sur leur chemin absolu.
+     * Si les deux MetaFile ont le même chemin absolu, alors ils sont égaux.
+     * @param  object L'objet que l'on souhaite comparer
+     * @return Le résultat booléen de la comparaison des deux chemins absolus.
+     */
+    @Override
+    public boolean equals(Object object) {
+        if (object == this) return true;
+        if (!(object instanceof MetaFile)) return false;
+        MetaFile m = (MetaFile) object;
+        return this.getFile().getAbsolutePath().equalsIgnoreCase(m.getFile().getAbsolutePath());
+    }
 }
