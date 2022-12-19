@@ -16,9 +16,22 @@ public class ContentFolderPanel extends JPanel {
     private final JLabel myFolder;
     private final JPanel folderContentPanel;
 
-    private ImageIcon myFolderIcon = new ImageIcon();
+    private ImageIcon myFolderIcon;
     private FolderMenuGUI main;
 
+    /**
+     * JPanel modifié et personnalisé en selon un design prédéfinis
+     * Ce JPanel a pour fonction de structurer la partie inférieur
+     * de la partie gauche du FolderPanel. Ce JPanel va contenir
+     * une scrollbar des fichiers ODT présent dans le dossier ouvert
+     * et un JLabel avec une icône définit selon un design et le nom
+     * du dossier actuellement ouvert et choisit par l'utilisateur.
+     *
+     * @param folderContent     Liste des fichiers ODT présents dans le dossier ouvert par l'utilisateur.
+     * @param folder            Dossier choisit et ouvert par l'utilisateur.
+     * @param main              Instance de la Frame principale "FolderMenuGUI"
+     * @throws IOException
+     */
     public ContentFolderPanel(ArrayList<File> folderContent, File folder, FolderMenuGUI main) throws IOException {
         super();
         this.main = main;

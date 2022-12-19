@@ -15,9 +15,23 @@ import java.util.ArrayList;
 public class FilePanel extends JPanel {
     private JPanel mainList;
     private JScrollPane scrollPane;
-    private ArrayList<File> folderContent = new ArrayList<File>();
+    private ArrayList<File> folderContent;
     private FolderMenuGUI main;
 
+    /**
+     * JPanel personnalisé selon un design prédéfinis.
+     * Le JPanel "FilePanel" a pour but de créer une scrollbar composé
+     * uniquement de JPanel "CustomFileInFolderButton". Il est donc constitué
+     * d'un JPanel principale, d'une JScrollPane verticale et d'une liste
+     * à laquelle on ajouetera les "CustomFileInFolderButton". Si la taille de la
+     * liste des fichiers ODT présents dans le dossier est strictement inférieur à 4
+     * alors on ajoute 4 CustomFileInFolderButton de type vide pour garder une
+     * strcuture identique à si la taille de la liste était supérieur à 4.
+     *
+     * @param folderContent     Liste des fichiers ODT présent dans le dossier sélectionné
+     * @param main              Instance de la Frame principale FolderMenuGUI
+     * @throws IOException
+     */
     public FilePanel(ArrayList<File> folderContent, FolderMenuGUI main) throws IOException {
         this.main = main;
         this.folderContent = folderContent;
@@ -42,6 +56,18 @@ public class FilePanel extends JPanel {
         }
         initFilePanel(folderContent, main);
     }
+
+    /**
+     * Méthode d'initialisation des FilePanel, cette méthode va
+     * parcourir les fichiers ODT de la liste "folderContent",
+     * créer des metaFiles de chaque fichier ODT, créer des nouveaux
+     * CustomFileInFolderButton en fonction de ces metaFiles et ajouter
+     * ces bouttons les un après les autres dans la liste de JPanel
+     *
+     * @param folderContent     Liste des fichiers ODT présent dans le dossier sélectionné
+     * @param main              Instance de la Frame principale FolderMenuGUI
+     * @throws IOException
+     */
     public void initFilePanel(ArrayList<File> folderContent, FolderMenuGUI main) throws IOException {
         for(File odtFile : folderContent){
             MetaFile metaFile = new MetaFile(odtFile);
@@ -57,6 +83,18 @@ public class FilePanel extends JPanel {
         }
     }
 
+    /**
+     * Cette méthode va d'initialisation de FilePanel va ajouter
+     * des CustomFileInFolder de type vide un nombre de fois déterminé.
+     * Ce nombre de répétition est calculé en fonction de la taille
+     * de la liste en paramètre. On soustrait 4 (choix arbitraire fait
+     * en fonction du design prédéfinis) à la taille de la liste pour
+     * qu'au final on est 4 CustomFileInFolderButton (de type vide ou
+     * lié à un metaFile).
+     * On ajoute les JPanels de la même manière que la méthode ci-dessus.
+     *
+     * @param folderContent
+     */
     public void initFilePanelNull(ArrayList<File> folderContent) {
         for (int i = 0; i < (4 - folderContent.size());i++){
             CustomFileInFolderButton customFileInFolderButton = new CustomFileInFolderButton();

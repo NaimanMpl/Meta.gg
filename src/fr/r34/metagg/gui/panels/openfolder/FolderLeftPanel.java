@@ -31,6 +31,21 @@ public class FolderLeftPanel extends JPanel {
     private final FolderMenuGUI main;
 
 
+    /**
+     * JPanel modifié et personnalisé en fonction d'un design
+     * prédéfini. Ce JPanel a pour but de rassembler les différents
+     * sous panel de la partie gauche de l'interface. Ce panel est
+     * composé de :
+     * - un JPanel "header" qui contiendra le nom de l'application
+     * - un JPanel pour la partie arborescence du dossier passé en paramètre.
+     * - un JPanel pour la partie des fichiers ODT du dossier passé en paramètre.
+     * La partie arborescence fait seulement appel à la classe ArborescencePanel.
+     * La partie fichier du dossier fait seulement appel à la classe ContentFolderPanel.
+     *
+     * @param folder    Dossier choisit et ouvert par l'utilisateur pour parcours ses différents sous-dossier et fichiers ODT.
+     * @param main      Instance de la Frame principale FolderMenuGUI.
+     * @throws IOException
+     */
     public FolderLeftPanel(File folder, FolderMenuGUI main) throws IOException {
         this.main = main;
         this.folder = folder;

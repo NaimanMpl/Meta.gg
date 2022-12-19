@@ -9,6 +9,15 @@ import java.awt.Dimension;
 public class CustomEditButton extends JButton {
     private static Color color = new Color(255, 255, 255);
 
+    /**
+     * Bouton modifié en fonction du besoin de l'interface.
+     * Ce bouton est personnalisé dans le but de rendre
+     * l'interface graphique plus claire et plus propore
+     * pour l'utilisateur.
+     * Ce bouton sera exclusivement réservé à la fonction
+     * d'édition et de sauvegarde des métadonnées d'un fichier
+     * ouvert par l'utilisateur dans l'application.
+     */
     public CustomEditButton() {
         super();
         this.setBorderPainted(false);

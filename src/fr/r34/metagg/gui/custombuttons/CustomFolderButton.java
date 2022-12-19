@@ -24,6 +24,26 @@ public class CustomFolderButton extends JPanel {
     private Utils utils;
     private FolderMenuGUI main;
 
+    /**
+     * JPanel modifié et personnalisé selon un design prédifinis et pour
+     * rendre l'interface plus claire et plus propre. Ce JPanel a été
+     * modifié dans le but d'être une bouton cliquable correspondant
+     * à un dossier dit "fille" du dossier ouvert par l'utilisateur.
+     * Ce bouton affiche les informations suivantes :
+     * - Nom du dossier
+     * - Nombre de fichier ODT que contient ce dossier
+     * Ce bouton a pour fonction de d'ajouter son dossier correspondant
+     * à la liste "listFile" de dossier qui modélise l'arborescence. Une fois ce
+     * JPanel cliqué, le dossier lié est ajouté à la liste, son nom
+     * est ajouté à la liste des noms de dossier de l'arborescence "listFileName"
+     * (qui sera utilisé pour affiché à l'utilisateur l'arborescence)
+     * puis va lancer la fonction de mise à jour du FolderLeftPanel
+     * pour correspondre à la nouvelle interface en fonction du dossié lié.
+     *
+     * @param folder    Dossier que l'on veut lier à notre bouton personnalisé.
+     * @param main      Instance de la Frame principale FolderMenuGUI à laquelle ce bouton est rattaché.
+     * @throws IOException
+     */
     public CustomFolderButton(File folder, FolderMenuGUI main) throws IOException {
         super();
         this.utils = new Utils();
@@ -73,6 +93,14 @@ public class CustomFolderButton extends JPanel {
         });
     }
 
+    /**
+     * JPanel modifié selon le même design que le constructeur ci-dessus.
+     * La fonction de ce JPanel n'est pas d'être un bouton cliquable mais
+     * un bouton vide non cliquable, non lié à un dossier et sans
+     * information dans le but combler le vide dans le JPanel parent.
+     * Ce bouton sera généré si le dossier "fille" présent dans le
+     * dossier parent est nul.
+     */
     public CustomFolderButton(){
         super();
         this.setBackground(Colors.BLUE_1);

@@ -16,10 +16,12 @@ import java.util.Objects;
 public class DirectoryManager {
 
 	/**
-	 * Gestionnaire de répertoire permettant de reprérer et accéder aux différents dossier, sous dossiers et fichiers
+	 * Gestionnaire de répertoire permettant de repérer et accéder aux différents dossiers, sous dossiers et fichiers
 	 * @version 0.0.2
 	 * @author Andrea PL, Naïman Mpl
-	 * @return odtInFolder La liste des fichiers .odt contu dans le dossier passé en paramètre et ses sous dossiers
+	 * @param folder Dossier dont on veut parcours les éléments.
+	 * @param odtInFolder Liste des fichiers ODT repérés.
+	 * @return odtInFolder La liste des fichiers .odt contenu dans le dossier passé en paramètre et ses sous dossiers.
 	 * @throws IOException 
 	 * @throws MalformedURLException 
 	 */
@@ -41,6 +43,18 @@ public class DirectoryManager {
 		}
 		return null;
 	}
+
+	/**
+	 * Méthode permettant de lister tous les fichiers
+	 * de type ODT présent dans un dossier.
+	 * La méthode parcourt tous les éléments du dossier
+	 * passé en paramètre et vérifie si le mime type de
+	 * l'élément traité correspond à celui des fichiers ODT.
+	 * Si c'est le cas on l'ajoute à la liste.
+	 *
+	 * @param folder	Dossier dont on veut récupérer la liste de ses fichiers ODT.
+	 * @return	La liste des fichiers ODT appartenant au dossier en paramètre.
+	 */
 	public ArrayList<File> odtInDirectory(File folder) {
 		ArrayList<File> odtInFolder = new ArrayList<>();
 		try {

@@ -17,6 +17,14 @@ public class SplashScreen {
     private JLabel bgContainer;
     private BufferedImage splashImg;
 
+    /**
+     * Ouvre un page de chargement le temps que le menu principal
+     * charge et se lance. Une fois que le menu principal est lancé,
+     * la page de chargement se ferme automatiquement.
+     * L'image a été choisie arbitrairement selon un design précis.
+     *
+     * @throws IOException
+     */
     public SplashScreen() throws IOException {
         window = new JWindow();
         URL splashUrl = this.getClass().getResource(Strings.SPLASH_SCREEN_FILE_PATH);

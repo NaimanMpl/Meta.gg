@@ -23,12 +23,40 @@ public class ArborescencePanel extends JPanel {
 
     private JLabel arborescencePath, returnButtonIcon;
     private JPanel top;
-
     private JPanel returnButton;
     private ArrayList<File> folderContent = new ArrayList<>();
-    public String arborescencePathText = "";
     private FolderMenuGUI main;
     private Utils utils;
+
+    /**
+     * JPanel modifié selon un design prédéfinis pour rendre l'interface
+     * plus claire et plus ergonomique pour l'utilisateur.
+     * Ce JPanel est un panel qui se compose des éléments qui vont représenter
+     * l'arborescence d'un dossier ouvert par l'utilisateur avec :
+     * - Les dossiers présents dans le dossier "parent" sous forme de CustomFolderButton
+     * - Les fichiers ODT présnents dans le dossier "parent" sous forme de
+     * CustomFileInFolder
+     * - Un texte représentant le chemin du dossier ouvert initialement
+     * vers  le dossier ouvert actuellement (grand-parent > parent > fille)
+     * - Un JPanel personnalisé comme bouton selon un design prédéfinis et
+     * qui a pour but de retourner une fois par clique en arrière dans
+     * l'arborescence.
+     *
+     * Le texte d'arborescence est généré et mis à jour grâce la liste "listeFileName",
+     * à chaque fois qu'un dossier est ajouté ou retiré de la liste "ListeFile" le texte
+     * est modifié en fonction des éléments présents dans la liste "listeFileName" et
+     * chaque élément est séparé pour un caractère spéciale (ici '>') pour mieux illustrer
+     * le chemin d'arborescence.
+     *
+     * Une fois ce bouton "retour" cliqué, si et seulement si la taille de la
+     * liste de dossier "listeFile" est strictement supérieur à 1 alors on
+     * détermine et on efface le dernier élément de "listeFile" et "listFileName".
+     * On détermine ensuite le nouveau dernier élément et on met à jour le JPanel
+     * "FolderLeftPanel" avec ce dernier élément qui est lui aussi un dossier.
+     * @param parentFolder
+     * @param main
+     * @throws IOException
+     */
     public ArborescencePanel(File parentFolder, FolderMenuGUI main) throws IOException {
         super();
         this.main = main;
