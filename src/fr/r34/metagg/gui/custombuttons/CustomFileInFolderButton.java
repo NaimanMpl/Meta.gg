@@ -3,6 +3,7 @@ package fr.r34.metagg.gui.custombuttons;
 import fr.r34.metagg.MetaFile;
 import fr.r34.metagg.Strings;
 import fr.r34.metagg.gui.Colors;
+import fr.r34.metagg.gui.FolderMenuGUI;
 import fr.r34.metagg.manager.Utils;
 import jdk.jshell.execution.Util;
 
@@ -19,9 +20,25 @@ public class CustomFileInFolderButton extends JPanel {
     private static JLabel metafileNameLabel, metafileSizeLabel, metafileDateLabel, fileIcon;
     private double round;
     private Utils utils;
-    private MouseListener mouseListener;
-    public CustomFileInFolderButton(MetaFile metaFile) throws IOException {
+    private FolderMenuGUI main;
+
+    /**
+     * JPanel modifié pour correspondre à un bouton cliquable.
+     * Ce JPanel a été modifié et personnalisé dans le but
+     * de rendre l'interface plus claire et pour afficher
+     * des informations d'un fichier étudié présent dans
+     * un dossier ouvert et choisit par l'utilisateur.
+     * Les informations affichées sont les suivantes :
+     * - Le nom du fichier
+     * - Le poids (en Ko) du fichier
+     * - La date de création du fichier
+     * @param metaFile  Le fichier dont on affiche les informations et que l'on veut rendre accessible grâce au boutton.
+     * @param main      Instance de la Frame principale FolderMenuGUI à laquelle ce bouton est rattaché.
+     * @throws IOException
+     */
+    public CustomFileInFolderButton(MetaFile metaFile, FolderMenuGUI main) throws IOException {
         super();
+        this.main = main;
         this.setBackground(Colors.BLUE_1);
         this.setOpaque(true);
         this.utils = new Utils();
@@ -49,7 +66,29 @@ public class CustomFileInFolderButton extends JPanel {
         this.add(metafileDateLabel);
         this.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
         this.setVisible(true);
+
+        this.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                try {
+                    main.updateFolderRightPanel(metaFile);
+                } catch (UnsupportedLookAndFeelException | IllegalAccessException | InstantiationException |
+                         ClassNotFoundException | IOException ex) {
+                    throw new RuntimeException(ex);
+                }
+            }
+        });
     }
+
+    /**
+     * JPanel modifié selon le même design que le constructeur ci-dessus.
+     * La fonction de ce JPanel n'est pas d'être un bouton cliquable mais
+     * un bouton vide non cliquable, non lié à un fichier ODT et sans
+     * information pour combler le vide dans le JPanel parent.
+     * Ce bouton sera généré si le nombre de fichier ODT présent dans le
+     * dossier parent est strictement inférieur à 4 (nombre de case du JPanel
+     * parent arbitrairement définit pour une question de design).
+     */
     public CustomFileInFolderButton(){
         super();
         this.setBackground(Colors.BLUE_1);
