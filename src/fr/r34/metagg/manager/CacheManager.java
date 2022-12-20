@@ -5,6 +5,7 @@ import fr.r34.metagg.Strings;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -72,7 +73,14 @@ public class CacheManager {
             doc.getDocumentElement().normalize();
             Node filesContainer = doc.getElementsByTagName("cache").item(0);
             if (filesContainer.getNodeType() == Node.ELEMENT_NODE) {
+
                 Element recentFiles = (Element) filesContainer;
+
+                if (checkIfFileInCache(recentFiles.getElementsByTagName("file"), metaFile)) {
+                    System.out.println("Le fichier " + metaFile.getFile().getName() + " est déjà dans le cache !");
+                    return;
+                }
+
                 Element fileChild = doc.createElement("file");
                 Element name = doc.createElement("name");
                 Element path = doc.createElement("path");
@@ -94,5 +102,19 @@ public class CacheManager {
         } catch (SAXException | IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private boolean checkIfFileInCache(NodeList recentFilesList, MetaFile metaFile) {
+        for (int i = 0; i < recentFilesList.getLength(); i++) {
+            Node recentFileNode = recentFilesList.item(i);
+            if (recentFileNode.getNodeType() == Node.ELEMENT_NODE) {
+                Element recentFile = (Element) recentFileNode;
+                String path = recentFile.getElementsByTagName("path").item(0).getTextContent();
+                if (path.equalsIgnoreCase(metaFile.getFile().getAbsolutePath())) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 }

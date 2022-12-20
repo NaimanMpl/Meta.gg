@@ -130,25 +130,7 @@ public class MainLeftPanel extends JPanel {
             Element pathElement = (Element) pathNode;
             String path = pathElement.getTextContent();
             File file = new File(path);
-            MetaFile metaFile = new MetaFile(file);
-            CustomFileButton fileBtn = new CustomFileButton(metaFile);
-            if (!main.getMetaFilesOpened().contains(metaFile)) main.getMetaFilesOpened().add(metaFile);
-            /*
-            Si jamais on clique sur un fichier récemment ouvert, il faut charger ses données puis
-            les afficher sur le panneau de droite de l'application. Ce qui implique que l'on doit mettre
-            à jour l'affichage lorsque l'on appuie sur ce bouton.
-             */
-            fileBtn.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    try {
-                        main.updateRightPanel(metaFile);
-                    } catch (UnsupportedLookAndFeelException | IllegalAccessException | InstantiationException |
-                             ClassNotFoundException | IOException ex) {
-                        ex.printStackTrace();
-                    }
-                }
-            });
+            CustomFileButton fileBtn = new CustomFileButton(main, file);
             filesContainer.add(fileBtn);
         }
     }

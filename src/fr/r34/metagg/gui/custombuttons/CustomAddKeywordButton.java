@@ -31,6 +31,7 @@ public class CustomAddKeywordButton extends JButton {
             String keyword = JOptionPane.showInputDialog(Strings.ENTER_KEYWORD);
             if (keyword == null || keyword.isEmpty()) return;
             metaFile.getKeywords().add(keyword);
+            metaFile.save();
             try {
                 main.updateRightPanel(metaFile);
             } catch (UnsupportedLookAndFeelException | ClassNotFoundException | InstantiationException | IOException |
