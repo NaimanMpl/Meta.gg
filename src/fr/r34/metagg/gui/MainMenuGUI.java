@@ -127,7 +127,10 @@ public class MainMenuGUI {
             int response = fileChoose.showOpenDialog(null);
             if (response == JFileChooser.APPROVE_OPTION) {
                 File file = fileChoose.getSelectedFile();
-                if (!metaFilesOpened.isEmpty()) saveAllFiles();
+                if (!metaFilesOpened.isEmpty()) {
+                    saveAllFiles();
+                    metaFilesOpened.clear();
+                }
                 if (file.isDirectory()) {
                     // new FolderMenuGUI(main, file);
                     try {
