@@ -1,13 +1,13 @@
 package fr.r34.metagg.gui.custombuttons;
 
 import fr.r34.metagg.Strings;
+import fr.r34.metagg.gui.Colors;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.Dimension;
 
 public class CustomEditButton extends JButton {
-    private static Color color = new Color(255, 255, 255);
 
     /**
      * Bouton modifié en fonction du besoin de l'interface.
@@ -22,7 +22,7 @@ public class CustomEditButton extends JButton {
         super();
         this.setBorderPainted(false);
         this.setFocusPainted(false);
-        this.setBackground(color);
+        this.setBackground(Colors.WHITE);
         this.setOpaque(true);
         this.setPreferredSize(new Dimension(fr.r34.metagg.gui.Dimension.BUTTON_WIDTH, fr.r34.metagg.gui.Dimension.BUTTON_HEIGHT));
         this.setText(Strings.EDIT);

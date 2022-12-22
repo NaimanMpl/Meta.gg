@@ -6,14 +6,17 @@ import fr.r34.metagg.gui.panels.openfile.MainLeftPanel;
 import fr.r34.metagg.gui.panels.openfile.MainRightPanel;
 import fr.r34.metagg.gui.panels.openfolder.FolderLeftPanel;
 import fr.r34.metagg.manager.CacheManager;
+<<<<<<< Updated upstream
 import fr.r34.metagg.manager.DirectoryManager;
+=======
+import fr.r34.metagg.manager.Utils;
+>>>>>>> Stashed changes
 import org.xml.sax.SAXException;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.xml.parsers.ParserConfigurationException;
-import java.awt.BorderLayout;
-import java.awt.Container;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
@@ -40,6 +43,8 @@ public class MainMenuGUI {
     private MetaFile currentFile;
     private ArrayList<File> listFile = new ArrayList<>();
     private ArrayList<String> listFileName = new ArrayList<>();
+    private Utils utils;
+    private ImageIcon logoIcon;
 
     /**
      * Frame principale de l'application c'est elle qui affiche les fichiers récents (panneau de gauche)
@@ -55,6 +60,7 @@ public class MainMenuGUI {
     public MainMenuGUI() throws UnsupportedLookAndFeelException, ClassNotFoundException, InstantiationException, IllegalAccessException, IOException, ParserConfigurationException, SAXException {
 
         main = this;
+        this.utils = new Utils();
         this.currentFile = new MetaFile();
         this.metaFilesOpened = new ArrayList<>();
         this.cacheFile = new File("./cache.xml");
@@ -68,6 +74,7 @@ public class MainMenuGUI {
         menu = new JMenu(Strings.MENU_TITLE);
         openFile = new JMenuItem(Strings.OPEN);
         saveFile = new JMenuItem(Strings.SAVE_MODIFICATIONS);
+        logoIcon = utils.getImageFromResource(Strings.LOGO_ICON);
 
         fileChoose = new JFileChooser();
         fileChoose.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
@@ -91,6 +98,7 @@ public class MainMenuGUI {
 
         frame.pack();
         frame.setJMenuBar(menuBar);
+        frame.setIconImage(logoIcon.getImage());
         frame.setSize(Dimension.WINDOW_WIDTH, Dimension.WINDOW_HEIGHT);
         frame.setResizable(false);
         frame.setVisible(true);

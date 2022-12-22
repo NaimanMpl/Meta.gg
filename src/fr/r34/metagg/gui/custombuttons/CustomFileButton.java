@@ -20,8 +20,11 @@ import java.text.DecimalFormat;
 
 public class CustomFileButton extends JButton {
 
+<<<<<<< Updated upstream
     private JTextArea jTextArea;
     private BufferedImage odtIcon = null;
+=======
+>>>>>>> Stashed changes
     private String metafileNameDisplay;
     private Utils utils;
     private final static int BUFFER_SIZE = 1024;
@@ -100,7 +103,11 @@ public class CustomFileButton extends JButton {
     public CustomFileButton() {
         super();
         this.setBorderPainted(false);
+<<<<<<< Updated upstream
         this.setBackground(Colors.BLUE_1);
+=======
+        this.setBackground(Colors.BG_COLOR);
+>>>>>>> Stashed changes
         this.setFocusPainted(false);
         this.setOpaque(true);
         this.setPreferredSize(new Dimension(271, 271));
