@@ -22,7 +22,6 @@ public class SplashScreen {
      * charge et se lance. Une fois que le menu principal est lancé,
      * la page de chargement se ferme automatiquement.
      * L'image a été choisie arbitrairement selon un design précis.
-     *
      * @throws IOException
      */
     public SplashScreen() throws IOException {

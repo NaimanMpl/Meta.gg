@@ -6,6 +6,7 @@ import fr.r34.metagg.gui.panels.openfile.MainLeftPanel;
 import fr.r34.metagg.gui.panels.openfile.MainRightPanel;
 import fr.r34.metagg.gui.panels.openfolder.FolderLeftPanel;
 import fr.r34.metagg.manager.CacheManager;
+import fr.r34.metagg.manager.DirectoryManager;
 import org.xml.sax.SAXException;
 
 import javax.swing.*;
@@ -124,13 +125,10 @@ public class MainMenuGUI {
 
         @Override
         public void actionPerformed(ActionEvent e) {
+            saveAllFiles();
             int response = fileChoose.showOpenDialog(null);
             if (response == JFileChooser.APPROVE_OPTION) {
                 File file = fileChoose.getSelectedFile();
-                if (!metaFilesOpened.isEmpty()) {
-                    saveAllFiles();
-                    metaFilesOpened.clear();
-                }
                 if (file.isDirectory()) {
                     // new FolderMenuGUI(main, file);
                     try {
@@ -145,6 +143,7 @@ public class MainMenuGUI {
                     return;
                 }
                 MetaFile metaFile = new MetaFile(file);
+                System.out.println(metaFile.getTitle());
                 try {
                     updateRightPanel(metaFile);
                     updateLeftPanel();
@@ -177,15 +176,14 @@ public class MainMenuGUI {
      * contenant les modifications effectuées.
      */
     private void saveAllFiles() {
-        metaFilesOpened.forEach(f -> System.out.print(f.getFile().getName() + ", "));
         for (MetaFile metaFile : metaFilesOpened) {
             File metaXML = new File(metaFile.getDestDir().getAbsolutePath() + "/meta.xml");
             if (metaXML.exists()) {
-                System.out.println("Je sauvegarde " + metaFile.getFile().getName());
                 metaFile.save();
             }
             metaFile.deleteTempFolder();
         }
+        metaFilesOpened.clear();
     }
 
     public static void main(String[] args) throws UnsupportedLookAndFeelException, ClassNotFoundException, InstantiationException, IllegalAccessException, IOException, ParserConfigurationException, SAXException {
@@ -249,6 +247,7 @@ public class MainMenuGUI {
         container.repaint();
         if (metaFile.getFile().getName().equalsIgnoreCase("unknown")) return;
         if (!metaFilesOpened.contains(metaFile)) {
+            System.out.println("J'ajoute " + metaFile.getFile().getName() + " aux fichiers ouverts !");
             main.getMetaFilesOpened().add(metaFile);
             cacheManager.addFileToCache(metaFile);
         }

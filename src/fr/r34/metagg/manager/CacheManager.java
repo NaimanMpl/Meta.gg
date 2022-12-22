@@ -92,8 +92,10 @@ public class CacheManager {
                 fileChild.appendChild(path);
 
                 recentFiles.insertBefore(fileChild, recentFiles.getFirstChild());
-                try (FileOutputStream fos = new FileOutputStream(Strings.CACHE_PATH)) {
+                try {
+                    FileOutputStream fos = new FileOutputStream(Strings.CACHE_PATH);
                     new FileManager().writeXml(doc, fos);
+                    fos.close();
                 } catch (TransformerException e) {
                     e.printStackTrace();
                 }

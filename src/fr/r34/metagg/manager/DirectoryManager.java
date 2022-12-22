@@ -4,9 +4,11 @@
 package fr.r34.metagg.manager;
 
 import java.io.File;
+import java.io.FilenameFilter;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Objects;
 
 /**
@@ -20,7 +22,7 @@ public class DirectoryManager {
 	 * @version 0.0.2
 	 * @author Andrea PL, Naïman Mpl
 	 */
-	public ArrayList<File> directoryContent(File folder, ArrayList<File> odtInFolder){
+	public ArrayList<File> directoryContent(File folder, ArrayList<File> odtInFolder) {
 		try {
 			for(File element : folder.listFiles()) {
 				if(element.isDirectory())
@@ -37,6 +39,24 @@ public class DirectoryManager {
 			e.printStackTrace();
 		}
 		return null;
+	}
+
+	public ArrayList<File> listODTFiles(File dir) {
+		File[] files = dir.listFiles(new FilenameFilter() {
+			@Override
+			public boolean accept(File dir, String name) {
+				return name.endsWith(".odt");
+			}
+		});
+
+		for (File file : files) {
+			if (file.isDirectory()) {
+				listODTFiles(file);
+			} else {
+				System.out.println(file.getAbsolutePath());
+			}
+		}
+		return new ArrayList<>(Arrays.asList(files));
 	}
 
 	/**

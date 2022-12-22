@@ -294,9 +294,11 @@ public class FileManager {
                 }
                 System.out.println("Sauvegarde des métas données effectuée ! ✨");
             }
-            try (FileOutputStream fos = new FileOutputStream(metaFile.getDestDir() + "/meta.xml")) {
+            try {
+                FileOutputStream fos = new FileOutputStream(metaFile.getDestDir() + "/meta.xml");
                 // Une fois le fichier XML mis à jour il faut le sauvegarder en le re-écrivant
                 writeXml(doc, fos);
+                fos.close();
             } catch (TransformerException e) {
                 e.printStackTrace();
             }

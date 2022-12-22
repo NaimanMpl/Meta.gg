@@ -285,6 +285,7 @@ public class MainRightPanel extends JPanel {
             } else {
                 editButton.setText(Strings.EDIT);
                 metaFile.setTitle(titleField.getText());
+                System.out.println("Titre : " + metaFile.getTitle());
                 metaFile.setSubject(subjectField.getText());
                 metaFile.getKeywords().clear();
                 for (JTextField keywordField : keywordsFieldsList) {

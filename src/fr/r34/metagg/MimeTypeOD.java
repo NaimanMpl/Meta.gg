@@ -1,6 +1,7 @@
 package fr.r34.metagg;
 
 public enum MimeTypeOD {
+
     ODT("application/vnd.oasis.opendocument.text", "ODT"),
     ODS("application/vnd.oasis.opendocument.spreadsheet", "ODS"),
     ODP("application/vnd.oasis.opendocument.presentation","ODP"),

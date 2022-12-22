@@ -49,7 +49,7 @@ public class FolderLeftPanel extends JPanel {
         this.main = main;
         this.folder = folder;
         DirectoryManager directoryManager = new DirectoryManager();
-        folderContent = directoryManager.odtInDirectory(folder);
+        folderContent = directoryManager.listODTFiles(folder);
 
         header = new JPanel();
         appTitle = new JLabel(Strings.APP_TITLE);
