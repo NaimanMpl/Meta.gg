@@ -246,10 +246,15 @@ public class MainMenuGUI {
         container.revalidate();
         container.repaint();
         if (metaFile.getFile().getName().equalsIgnoreCase("unknown")) return;
-        if (!metaFilesOpened.contains(metaFile)) {
-            System.out.println("J'ajoute " + metaFile.getFile().getName() + " aux fichiers ouverts !");
-            main.getMetaFilesOpened().add(metaFile);
+        if (metaFilesOpened.contains(metaFile)) {
+            for (int i = 0; i < metaFilesOpened.size(); i++) {
+                if (metaFilesOpened.get(i).equals(metaFile)) {
+                    metaFilesOpened.set(i, metaFile);
+                }
+            }
             cacheManager.addFileToCache(metaFile);
+        } else {
+            main.getMetaFilesOpened().add(metaFile);
         }
     }
 
