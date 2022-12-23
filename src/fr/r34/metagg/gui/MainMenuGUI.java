@@ -6,13 +6,13 @@ import fr.r34.metagg.gui.panels.openfile.MainLeftPanel;
 import fr.r34.metagg.gui.panels.openfile.MainRightPanel;
 import fr.r34.metagg.gui.panels.openfolder.FolderLeftPanel;
 import fr.r34.metagg.manager.CacheManager;
+import fr.r34.metagg.manager.Utils;
 import org.xml.sax.SAXException;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.xml.parsers.ParserConfigurationException;
-import java.awt.BorderLayout;
-import java.awt.Container;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
@@ -20,7 +20,6 @@ import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Iterator;
 
 public class MainMenuGUI {
 
@@ -39,6 +38,8 @@ public class MainMenuGUI {
     private MetaFile currentFile;
     private ArrayList<File> listFile = new ArrayList<>();
     private ArrayList<String> listFileName = new ArrayList<>();
+    private Utils utils;
+    private ImageIcon logoIcon;
 
     /**
      * Frame principale de l'application c'est elle qui affiche les fichiers récents (panneau de gauche)
@@ -54,6 +55,7 @@ public class MainMenuGUI {
     public MainMenuGUI() throws UnsupportedLookAndFeelException, ClassNotFoundException, InstantiationException, IllegalAccessException, IOException, ParserConfigurationException, SAXException {
 
         main = this;
+        this.utils = new Utils();
         this.currentFile = new MetaFile();
         this.metaFilesOpened = new ArrayList<>();
         this.cacheFile = new File("./cache.xml");
@@ -67,10 +69,13 @@ public class MainMenuGUI {
         menu = new JMenu(Strings.MENU_TITLE);
         openFile = new JMenuItem(Strings.OPEN);
         saveFile = new JMenuItem(Strings.SAVE_MODIFICATIONS);
+        logoIcon = utils.getImageFromResource(Strings.LOGO_ICON);
 
         fileChoose = new JFileChooser();
         fileChoose.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
         fileChoose.addChoosableFileFilter(new FileNameExtensionFilter("Fichier ODT (*.odt)", "odt"));
+        fileChoose.addChoosableFileFilter(new FileNameExtensionFilter("Fichier ODT (*.odp)", "odp"));
+        fileChoose.addChoosableFileFilter(new FileNameExtensionFilter("Fichier ODT (*.ods)", "ods"));
         fileChoose.setAcceptAllFileFilterUsed(false);
 
         openFile.addActionListener(new OpenFileAction());
@@ -90,6 +95,7 @@ public class MainMenuGUI {
 
         frame.pack();
         frame.setJMenuBar(menuBar);
+        frame.setIconImage(logoIcon.getImage());
         frame.setSize(Dimension.WINDOW_WIDTH, Dimension.WINDOW_HEIGHT);
         frame.setResizable(false);
         frame.setVisible(true);
@@ -124,6 +130,7 @@ public class MainMenuGUI {
 
         @Override
         public void actionPerformed(ActionEvent e) {
+            saveAllFiles();
             int response = fileChoose.showOpenDialog(null);
             if (response == JFileChooser.APPROVE_OPTION) {
                 File file = fileChoose.getSelectedFile();
@@ -140,7 +147,13 @@ public class MainMenuGUI {
                     }
                     return;
                 }
-                MetaFile metaFile = new MetaFile(file);
+                MetaFile metaFile = null;
+                try {
+                    metaFile = new MetaFile(file);
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
+                }
+                System.out.println(metaFile.getTitle());
                 try {
                     updateRightPanel(metaFile);
                     updateLeftPanel();
@@ -173,15 +186,14 @@ public class MainMenuGUI {
      * contenant les modifications effectuées.
      */
     private void saveAllFiles() {
-        metaFilesOpened.forEach(f -> System.out.print(f.getFile().getName() + ", "));
         for (MetaFile metaFile : metaFilesOpened) {
             File metaXML = new File(metaFile.getDestDir().getAbsolutePath() + "/meta.xml");
             if (metaXML.exists()) {
-                System.out.println("Je sauvegarde " + metaFile.getFile().getName());
                 metaFile.save();
             }
             metaFile.deleteTempFolder();
         }
+        metaFilesOpened.clear();
     }
 
     public static void main(String[] args) throws UnsupportedLookAndFeelException, ClassNotFoundException, InstantiationException, IllegalAccessException, IOException, ParserConfigurationException, SAXException {
@@ -244,9 +256,15 @@ public class MainMenuGUI {
         container.revalidate();
         container.repaint();
         if (metaFile.getFile().getName().equalsIgnoreCase("unknown")) return;
-        if (!metaFilesOpened.contains(metaFile)) {
-            main.getMetaFilesOpened().add(metaFile);
+        if (metaFilesOpened.contains(metaFile)) {
+            for (int i = 0; i < metaFilesOpened.size(); i++) {
+                if (metaFilesOpened.get(i).equals(metaFile)) {
+                    metaFilesOpened.set(i, metaFile);
+                }
+            }
             cacheManager.addFileToCache(metaFile);
+        } else {
+            main.getMetaFilesOpened().add(metaFile);
         }
     }
 

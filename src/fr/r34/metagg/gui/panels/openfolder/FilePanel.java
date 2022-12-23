@@ -71,6 +71,7 @@ public class FilePanel extends JPanel {
     public void initFilePanel(ArrayList<File> folderContent, MainMenuGUI main) throws IOException {
         for(File odtFile : folderContent){
             MetaFile metaFile = new MetaFile(odtFile);
+            System.out.println("-Initialisation panneau de droite, Titre : " + metaFile.getTitle());
             CustomFileInFolderButton customFileInFolderButton = new CustomFileInFolderButton(metaFile, main);
             GridBagConstraints gbc2 = new GridBagConstraints();
             gbc2.gridwidth = GridBagConstraints.REMAINDER;

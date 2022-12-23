@@ -140,7 +140,7 @@ public class MainRightPanel extends JPanel {
          */
         try {
             ImageIcon imgIcon;
-            String miniaturePath = Strings.ODT_FILE_PATH;
+            String miniaturePath = utils.getIconPathFromType(metaFile);
             if (metaFile.getThumbnail() != null) {
                 // Chargement de l'image de la miniature
                 BufferedImage miniatureImg = ImageIO.read(new File(metaFile.getThumbnail().getAbsolutePath()));
@@ -285,6 +285,7 @@ public class MainRightPanel extends JPanel {
             } else {
                 editButton.setText(Strings.EDIT);
                 metaFile.setTitle(titleField.getText());
+                System.out.println("Titre : " + metaFile.getTitle());
                 metaFile.setSubject(subjectField.getText());
                 metaFile.getKeywords().clear();
                 for (JTextField keywordField : keywordsFieldsList) {

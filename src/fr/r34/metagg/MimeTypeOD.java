@@ -1,10 +1,11 @@
 package fr.r34.metagg;
 
 public enum MimeTypeOD {
+
     ODT("application/vnd.oasis.opendocument.text", "ODT"),
     ODS("application/vnd.oasis.opendocument.spreadsheet", "ODS"),
-    ODP("application/vnd.oasis.opendocument.presentation","ODP"),
-    ODG("application/vnd.oasis.opendocument.graphics","ODG");
+    ODG("application/vnd.oasis.opendocument.graphics","ODG"),
+    ODP("application/vnd.oasis.opendocument.presentation","ODP");
 
     String mimetype, title;
 
@@ -16,7 +17,6 @@ public enum MimeTypeOD {
     public String getMimetype() {
         return mimetype;
     }
-
     public String getTitle() {
         return title;
     }

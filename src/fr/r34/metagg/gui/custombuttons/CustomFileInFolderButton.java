@@ -18,6 +18,7 @@ public class CustomFileInFolderButton extends JPanel {
     private double round;
     private Utils utils;
     private MainMenuGUI main;
+    private String path = Strings.FILE_BUTTON_ICON_FOLDER_PANEL_PATH;
 
     /**
      * JPanel modifié pour correspondre à un bouton cliquable.
@@ -53,7 +54,9 @@ public class CustomFileInFolderButton extends JPanel {
         metafileDateLabel.setText("" + metaFile.getCreationDate().substring(0, 10));
         metafileDateLabel.setForeground(Colors.BLUE_0);
         metafileDateLabel.setFont(new Font(fr.r34.metagg.gui.Dimension.FONT, Font.PLAIN, fr.r34.metagg.gui.Dimension.PARAGRAPH_SIZE));
-        fileIcon = new JLabel(utils.getImageFromResource(Strings.FILE_BUTTON_ICON_FOLDER_PANEL_PATH));
+        path = utils.getIconFolderPanelPathFromType(metaFile);
+        System.out.println("PATH = " + path);
+        fileIcon = new JLabel(utils.getImageFromResource(path));
 
         this.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         this.setLayout(new GridLayout(1, 3, 30, 0));
@@ -71,7 +74,7 @@ public class CustomFileInFolderButton extends JPanel {
                     main.updateRightPanel(metaFile);
                 } catch (UnsupportedLookAndFeelException | IllegalAccessException | InstantiationException |
                          ClassNotFoundException | IOException ex) {
-                    throw new RuntimeException(ex);
+                    ex.printStackTrace();
                 }
             }
         });
@@ -79,11 +82,11 @@ public class CustomFileInFolderButton extends JPanel {
 
     /**
      * JPanel modifié selon le même design que le constructeur ci-dessus.
-     * La fonction de ce JPanel n'est pas d'être un bouton cliquable mais
+     * La fonction de ce JPanel n'est pas d'être un bouton cliquable, mais
      * un bouton vide non cliquable, non lié à un fichier ODT et sans
      * information pour combler le vide dans le JPanel parent.
-     * Ce bouton sera généré si le nombre de fichier ODT présent dans le
-     * dossier parent est strictement inférieur à 4 (nombre de case du JPanel
+     * Ce bouton sera généré si le nombre de fichiers ODT présent dans le
+     * dossier parent est strictement inférieur à 4 (nombre de cases du JPanel
      * parent arbitrairement définit pour une question de design).
      */
     public CustomFileInFolderButton() {

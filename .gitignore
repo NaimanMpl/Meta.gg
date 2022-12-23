@@ -11,5 +11,7 @@ meta.xml
 .classpath
 /sujet/
 /ParcoursODT/
+/ParcoursODP/
 cache.xml
 /javadoc/
+diagram.png

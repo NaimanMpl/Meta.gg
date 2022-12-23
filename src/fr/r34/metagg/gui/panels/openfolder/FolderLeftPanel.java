@@ -24,9 +24,7 @@ public class FolderLeftPanel extends JPanel {
     private ArrayList<File> folderContent = new ArrayList<>();
     private static int LABEL_WIDTH = (int) (0.7* Dimension.WINDOW_WIDTH);
     private static int LABEL_HEIGHT = Dimension.WINDOW_HEIGHT;
-
     private final String initArborescencePathText = "";
-
     private final MainMenuGUI main;
 
 
@@ -39,9 +37,9 @@ public class FolderLeftPanel extends JPanel {
      * - un JPanel pour la partie arborescence du dossier passé en paramètre.
      * - un JPanel pour la partie des fichiers ODT du dossier passé en paramètre.
      * La partie arborescence fait seulement appel à la classe ArborescencePanel.
-     * La partie fichier du dossier fait seulement appel à la classe ContentFolderPanel.
+     * La partie fichier du dossier fait uniquement appel à la classe ContentFolderPanel.
      *
-     * @param folder    Dossier choisit et ouvert par l'utilisateur pour parcours ses différents sous-dossier et fichiers ODT.
+     * @param folder    Dossier choisit et ouvert par l'utilisateur pour parcours ses différents sous-dossiers et fichiers ODT.
      * @param main      Instance de la Frame principale FolderMenuGUI.
      * @throws IOException
      */

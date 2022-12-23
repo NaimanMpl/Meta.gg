@@ -3,10 +3,14 @@
  */
 package fr.r34.metagg.manager;
 
+import fr.r34.metagg.MimeTypeOD;
+
 import java.io.File;
+import java.io.FilenameFilter;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Objects;
 
 /**
@@ -20,15 +24,17 @@ public class DirectoryManager {
 	 * @version 0.0.2
 	 * @author Andrea PL, Naïman Mpl
 	 */
-	public ArrayList<File> directoryContent(File folder, ArrayList<File> odtInFolder){
+	public ArrayList<File> directoryContent(File folder, ArrayList<File> odtInFolder) {
 		try {
 			for(File element : folder.listFiles()) {
 				if(element.isDirectory())
 					directoryContent(element, odtInFolder);
 				else {
 					String mimetype = element.toURL().openConnection().getContentType();
-					if (Objects.equals(mimetype, "application/vnd.oasis.opendocument.text")) {
-						odtInFolder.add(element);
+					for (MimeTypeOD m : MimeTypeOD.values()){
+						if (m.getMimetype().equals(mimetype)) {
+							odtInFolder.add(element);
+						}
 					}
 				}
 			}
@@ -37,6 +43,24 @@ public class DirectoryManager {
 			e.printStackTrace();
 		}
 		return null;
+	}
+
+	public ArrayList<File> listODTFiles(File dir) {
+		File[] files = dir.listFiles(new FilenameFilter() {
+			@Override
+			public boolean accept(File dir, String name) {
+				return name.endsWith(".odt");
+			}
+		});
+
+		for (File file : files) {
+			if (file.isDirectory()) {
+				listODTFiles(file);
+			} else {
+				System.out.println(file.getAbsolutePath());
+			}
+		}
+		return new ArrayList<>(Arrays.asList(files));
 	}
 
 	/**
@@ -55,8 +79,11 @@ public class DirectoryManager {
 		try {
 			for (File element : folder.listFiles()) {
 				String mimetype = element.toURL().openConnection().getContentType();
-				if (Objects.equals(mimetype, "application/vnd.oasis.opendocument.text")) {
-					odtInFolder.add(element);
+				for (MimeTypeOD m : MimeTypeOD.values()){
+					if(m.getMimetype().equals(mimetype)){
+						odtInFolder.add(element);
+
+					}
 				}
 			}
 		} catch (IOException e) {

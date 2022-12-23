@@ -4,16 +4,12 @@ import fr.r34.metagg.manager.DirectoryManager;
 import fr.r34.metagg.manager.FileManager;
 
 import java.io.*;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 
 public class Main {
 
-    public static void main(String[] args) throws ParseException {
+    public static void main(String[] args) throws ParseException, IOException {
         FileManager fileM = new FileManager();
         DirectoryManager directoryM = new DirectoryManager();
 

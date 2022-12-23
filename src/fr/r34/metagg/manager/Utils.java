@@ -1,9 +1,10 @@
 package fr.r34.metagg.manager;
 
+import fr.r34.metagg.MetaFile;
 import fr.r34.metagg.Strings;
 
 import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
+import javax.swing.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.URL;
@@ -25,4 +26,30 @@ public class Utils {
         return new ImageIcon(fileImg);
     }
 
+    public String getIconFolderPanelPathFromType(MetaFile metaFile){
+        String path = Strings.FILE_BUTTON_ICON_FOLDER_PANEL_PATH;
+        switch (metaFile.getMimeTypeOD()) {
+            case ODP -> path = Strings.ODP_BUTTON_ICON_FOLDER_PANEL_PATH;
+            case ODS -> path = Strings.ODS_BUTTON_ICON_FOLDER_PANEL_PATH;
+        }
+        return path;
+    }
+
+    public String getIconPathFromType(MetaFile metaFile){
+        String path = Strings.FILE_BUTTON_ICON_PATH;
+        if(metaFile.getMimeTypeOD() != null) {
+            switch (metaFile.getMimeTypeOD()) {
+                case ODP -> path = Strings.ODP_BUTTON_ICON_PATH;
+                case ODS -> path = Strings.ODS_BUTTON_ICON_PATH;
+            }
+        }
+        return path;
+    }
+
+    public String shortenText(String name){
+        String shortName = "";
+        shortName = name.substring(0, 8);
+        shortName += "...";
+        return shortName;
+    }
 }
