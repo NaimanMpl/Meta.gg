@@ -71,7 +71,7 @@ public class CustomFileInFolderButton extends JPanel {
                     main.updateRightPanel(metaFile);
                 } catch (UnsupportedLookAndFeelException | IllegalAccessException | InstantiationException |
                          ClassNotFoundException | IOException ex) {
-                    throw new RuntimeException(ex);
+                    ex.printStackTrace();
                 }
             }
         });
