@@ -1,6 +1,7 @@
 package fr.r34.metagg.gui.custombuttons;
 
 import fr.r34.metagg.MetaFile;
+import fr.r34.metagg.MimeTypeOD;
 import fr.r34.metagg.Strings;
 import fr.r34.metagg.gui.Colors;
 import fr.r34.metagg.gui.MainMenuGUI;
@@ -20,12 +21,9 @@ import java.text.DecimalFormat;
 
 public class CustomFileButton extends JButton {
 
-<<<<<<< Updated upstream
     private JTextArea jTextArea;
     private BufferedImage odtIcon = null;
-=======
->>>>>>> Stashed changes
-    private String metafileNameDisplay;
+    private String metafileNameDisplay, mimeType, path = Strings.FILE_BUTTON_ICON_PATH;
     private Utils utils;
     private final static int BUFFER_SIZE = 1024;
 
@@ -68,7 +66,18 @@ public class CustomFileButton extends JButton {
         this.setText("<html><p style=\"margin-right: 150px\">" + metafileNameDisplay + "<br><br>Taille : <br>" + "<font color=#577297>" + df.format(size) + "Ko</html>");
         this.setFont(new Font(fr.r34.metagg.gui.Dimension.FONT, Font.PLAIN, fr.r34.metagg.gui.Dimension.PARAGRAPH_SIZE));
         this.setForeground(Colors.WHITE);
-        this.setIcon(utils.getImageFromResource(Strings.FILE_BUTTON_ICON_PATH));
+
+        mimeType = file.toURL().openConnection().getContentType();
+        for (MimeTypeOD m : MimeTypeOD.values()){
+            if(m.getMimetype().equals(mimeType)){
+                switch (m){
+                    case ODP -> path = Strings.ODP_BUTTON_ICON_PATH;
+                    case ODS -> path = Strings.ODS_BUTTON_ICON_PATH;
+                }
+            }
+        }
+
+        this.setIcon(utils.getImageFromResource(path));
         this.setVerticalTextPosition(AbstractButton.BOTTOM);
         this.setHorizontalTextPosition(AbstractButton.CENTER);
         this.setIconTextGap(10);
@@ -103,11 +112,7 @@ public class CustomFileButton extends JButton {
     public CustomFileButton() {
         super();
         this.setBorderPainted(false);
-<<<<<<< Updated upstream
         this.setBackground(Colors.BLUE_1);
-=======
-        this.setBackground(Colors.BG_COLOR);
->>>>>>> Stashed changes
         this.setFocusPainted(false);
         this.setOpaque(true);
         this.setPreferredSize(new Dimension(271, 271));

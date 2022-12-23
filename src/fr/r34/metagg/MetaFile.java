@@ -4,13 +4,11 @@ import fr.r34.metagg.manager.FileManager;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class MetaFile {
 
@@ -20,6 +18,7 @@ public class MetaFile {
     private FileManager fileM;
     private int pagesAmount, paragraphAmount, wordAmount, characterAmount;
     private String creationDate;
+    private MimeTypeOD mimeTypeOD;
     private float size;
     private final ArrayList<String> keywords;
     private final HashMap<String, ArrayList<String>> media;
@@ -37,7 +36,7 @@ public class MetaFile {
      * Cet objet a pour but de simplifier l'affichage des métadonnées ainsi que leur stockage.
      * @param file Le fichier dont on souhaite charger les métadonnées
      */
-    public MetaFile(File file) {
+    public MetaFile(File file) throws IOException {
         this.file = file;
         this.thumbnail = null;
         this.title = "";
@@ -54,6 +53,7 @@ public class MetaFile {
         this.fileM = new FileManager();
         this.pictures = new HashMap<>();
         this.destDir = new File(file.getAbsolutePath().substring(0, file.getAbsolutePath().lastIndexOf(".")));
+        this.mimeTypeOD = setMimeTypeOD(file);
         fileM.readMetaData(this);
     }
 
@@ -295,5 +295,19 @@ public class MetaFile {
         if (!(object instanceof MetaFile)) return false;
         MetaFile m = (MetaFile) object;
         return this.getFile().getAbsolutePath().equalsIgnoreCase(m.getFile().getAbsolutePath());
+    }
+
+    private MimeTypeOD setMimeTypeOD(File file) throws IOException {
+        String mimetype = file.toURL().openConnection().getContentType();
+        for (MimeTypeOD m : MimeTypeOD.values()){
+            if(m.getMimetype().equals(mimetype)){
+                return m;
+            }
+        }
+        return null;
+    }
+
+    public MimeTypeOD getMimeTypeOD() {
+        return mimeTypeOD;
     }
 }

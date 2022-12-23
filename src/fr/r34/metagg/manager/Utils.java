@@ -1,5 +1,6 @@
 package fr.r34.metagg.manager;
 
+import fr.r34.metagg.MetaFile;
 import fr.r34.metagg.Strings;
 
 import javax.imageio.ImageIO;
@@ -25,4 +26,12 @@ public class Utils {
         return new ImageIcon(fileImg);
     }
 
+    public String getIconPathFromType(MetaFile metaFile){
+        String path = Strings.FILE_BUTTON_ICON_FOLDER_PANEL_PATH;
+        switch (metaFile.getMimeTypeOD()) {
+            case ODP -> path = Strings.ODP_BUTTON_ICON_FOLDER_PANEL_PATH;
+            case ODS -> path = Strings.ODS_BUTTON_ICON_FOLDER_PANEL_PATH;
+        }
+        return path;
+    }
 }

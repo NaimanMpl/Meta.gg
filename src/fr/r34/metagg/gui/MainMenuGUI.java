@@ -6,11 +6,7 @@ import fr.r34.metagg.gui.panels.openfile.MainLeftPanel;
 import fr.r34.metagg.gui.panels.openfile.MainRightPanel;
 import fr.r34.metagg.gui.panels.openfolder.FolderLeftPanel;
 import fr.r34.metagg.manager.CacheManager;
-<<<<<<< Updated upstream
-import fr.r34.metagg.manager.DirectoryManager;
-=======
 import fr.r34.metagg.manager.Utils;
->>>>>>> Stashed changes
 import org.xml.sax.SAXException;
 
 import javax.swing.*;
@@ -24,7 +20,6 @@ import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Iterator;
 
 public class MainMenuGUI {
 
@@ -150,7 +145,12 @@ public class MainMenuGUI {
                     }
                     return;
                 }
-                MetaFile metaFile = new MetaFile(file);
+                MetaFile metaFile = null;
+                try {
+                    metaFile = new MetaFile(file);
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
+                }
                 System.out.println(metaFile.getTitle());
                 try {
                     updateRightPanel(metaFile);

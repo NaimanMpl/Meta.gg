@@ -3,6 +3,8 @@
  */
 package fr.r34.metagg.manager;
 
+import fr.r34.metagg.MimeTypeOD;
+
 import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
@@ -29,8 +31,10 @@ public class DirectoryManager {
 					directoryContent(element, odtInFolder);
 				else {
 					String mimetype = element.toURL().openConnection().getContentType();
-					if (Objects.equals(mimetype, "application/vnd.oasis.opendocument.text")) {
-						odtInFolder.add(element);
+					for (MimeTypeOD m : MimeTypeOD.values()){
+						if (m.getMimetype().equals(mimetype)) {
+							odtInFolder.add(element);
+						}
 					}
 				}
 			}
@@ -75,8 +79,11 @@ public class DirectoryManager {
 		try {
 			for (File element : folder.listFiles()) {
 				String mimetype = element.toURL().openConnection().getContentType();
-				if (Objects.equals(mimetype, "application/vnd.oasis.opendocument.text")) {
-					odtInFolder.add(element);
+				for (MimeTypeOD m : MimeTypeOD.values()){
+					if(m.getMimetype().equals(mimetype)){
+						odtInFolder.add(element);
+
+					}
 				}
 			}
 		} catch (IOException e) {

@@ -5,7 +5,7 @@ import javax.swing.*;
 public class Strings {
 
     /**
-     * Constantes définis au préalables pour simplifier l'affichage des différents composants
+     * Constantes définies au préalable pour simplifier l'affichage des différents composants
      * du GUI. Cette classe stock aussi les chemins vers les images de l'application
      */
 
@@ -39,13 +39,15 @@ public class Strings {
     public final static String EDIT_BUTTON_ICON_PATH = "/edit_button.png";
     public final static String SPLASH_SCREEN_FILE_PATH = "/splashscreen.gif";
     public final static String CACHE_PATH = "./cache.xml";
-
     public final static String FILE_BUTTON_ICON_PATH = "/odt_file_icon.png";
     public final static String FILE_BUTTON_ICON_FOLDER_PANEL_PATH = "/odt_file_icon_folder_panel.png";
+    public final static String ODP_BUTTON_ICON_PATH = "/odp_file_icon.png";
+    public final static String ODP_BUTTON_ICON_FOLDER_PANEL_PATH = "/odp_file_icon_folder_panel.png";
+    public final static String ODS_BUTTON_ICON_PATH = "/ods_file_icon.png";
+    public final static String ODS_BUTTON_ICON_FOLDER_PANEL_PATH = "/ods_file_icon_folder_panel.png";
     public final static String FOLDER_ICON_PATH = "/folder_icon.png";
     public final static String MY_FOLDER_ICON_PATH = "/my_folder_icon.png";
     public final static String RETURN_BUTTON_ICON = "/return_button.png";
-    public final static String PARENT_FOLDER_TITLE = ">";
     public final static String LOGO_ICON = "/logo.png";
 
 
