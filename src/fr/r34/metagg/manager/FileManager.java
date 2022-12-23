@@ -3,6 +3,7 @@ package fr.r34.metagg.manager;
 import fr.r34.metagg.MetaAttributes;
 import fr.r34.metagg.MetaFile;
 import fr.r34.metagg.MimeTypeImage;
+import fr.r34.metagg.Strings;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -44,6 +45,7 @@ public class FileManager {
     public void readMetaData(MetaFile metaFile) {
         File file = metaFile.getFile();
         ArrayList<File> metaFiles = this.unzip(file, metaFile.getDestDir());
+        // initMetaXML(metaFile);
         try {
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             DocumentBuilder builder = factory.newDocumentBuilder();
@@ -61,7 +63,8 @@ public class FileManager {
                 }
                 if(f.getName().equalsIgnoreCase("content.xml")) {
                     ArrayList<String> hyperTxtWbList = new ArrayList<>();
-                    BufferedReader br = new BufferedReader(new FileReader(f.getAbsolutePath()));
+                    FileReader fileReader = new FileReader(f.getAbsolutePath());
+                    BufferedReader br = new BufferedReader(fileReader);
                     String lineToFound ="<text:a xlink:href=";
                     String lineCut = "";
                     String hyperTxtWeb = "";
@@ -82,12 +85,37 @@ public class FileManager {
                     for (String weblink : hyperTxtWbList){
                         metaFile.getHyperTextWebList().add(weblink);
                     }
+                    fileReader.close();
                     br.close();
                     this.readPictureMetaData(metaFile);
                     this.readThumbnail(metaFile);
                 }
             }
         } catch (ParserConfigurationException | IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void initMetaXML(MetaFile metaFile) {
+        if (new File(metaFile.getDestDir().getAbsolutePath() + "/meta.xml").exists()) return;
+        try {
+            DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
+            Document doc = docBuilder.newDocument();
+            Element root = doc.createElement("office:document-meta");
+            root.setAttributeNS("http://www.w3.org/2000/xmlns/", "xmlns:office", "urn:oasis:names:tc:opendocument:xmlns:office:1.0");
+            root.setAttributeNS("http://www.w3.org/2000/xmlns/", "xmlns:dc", "http://purl.org/dc/elements/1.1/");
+            root.setAttributeNS("http://www.w3.org/2000/xmlns/", "xmlns:meta", "urn:oasis:names:tc:opendocument:xmlns:meta:1.0");
+            root.setAttributeNS("http://www.w3.org/2000/xmlns/", "xmlns:xlink", "http://www.w3.org/1999/xlink");
+            doc.appendChild(root);
+            root.appendChild(doc.createElement("office:meta"));
+            TransformerFactory transformerFactory = TransformerFactory.newInstance();
+            Transformer transformer = transformerFactory.newTransformer();
+            DOMSource source = new DOMSource(doc);
+            StreamResult res = new StreamResult(new File(metaFile.getDestDir().getAbsolutePath() + "/meta.xml"));
+            transformer.transform(source, res);
+            System.out.println("✅ Le fichier 'meta.xml' a bien été généré !");
+        } catch (TransformerException | ParserConfigurationException e) {
             e.printStackTrace();
         }
     }
@@ -152,6 +180,7 @@ public class FileManager {
                 if (node.getNodeType() == Node.ELEMENT_NODE) {
                     Element metaElement = (Element) node;
                     Node metaItem = metaElement.getElementsByTagName(DOCUMENT_STATISTIC_TAG).item(0);
+                    if (metaItem == null) return;
                     if (metaItem.getAttributes().getLength() == 0) return;
                     if (metaItem.getNodeType() == Node.ELEMENT_NODE) {
                         Element metaItemElement = (Element) metaItem;
@@ -274,6 +303,12 @@ public class FileManager {
                 for (int i = 4; i < MetaAttributes.values().length; i++) {
                     MetaAttributes attribute = MetaAttributes.values()[i];
                     Node metaStatsNode = officeMetaElement.getElementsByTagName(DOCUMENT_STATISTIC_TAG).item(0);
+                    // Créer la balise des statistiques si jamais elle n'existe pas dans le fichier XML.
+                    if (metaStatsNode == null) {
+                        Element statistic = doc.createElement(DOCUMENT_STATISTIC_TAG);
+                        officeMetaElement.appendChild(statistic);
+                        metaStatsNode = officeMetaElement.getElementsByTagName(DOCUMENT_STATISTIC_TAG).item(0);;
+                    }
                     if (officeMetaNode.getNodeType() == Node.ELEMENT_NODE) {
                         Element metaStatsData = (Element) metaStatsNode;
                         switch (attribute) {

@@ -57,6 +57,7 @@ public class MetaFile {
         fileM.readMetaData(this);
     }
 
+
     /**
      * Initialise un fichier vide, un fichier par défaut ne contenant que des informations factices.
      * Ce constructeur a pour but de simplifier l'affichage d'un fichier par défaut dans le GUI.
@@ -255,9 +256,15 @@ public class MetaFile {
         File fileToZip = this.getDestDir();
         String zipFilePath = this.getDestDir().getAbsolutePath();
         File zipFile = new File(zipFilePath + ".zip");
+        String newExtension = ".odt";
+        switch (this.mimeTypeOD) {
+            case ODS -> newExtension = ".ods";
+            case ODG -> newExtension = ".odg";
+            case ODP -> newExtension = ".odp";
+        }
         try {
             fileM.zip(fileToZip.toPath(), zipFile.toPath());
-            fileM.changeExtension(zipFile, ".odt");
+            fileM.changeExtension(zipFile, newExtension);
             fileM.delete(this.getDestDir());
         } catch (IOException e) {
             e.printStackTrace();
