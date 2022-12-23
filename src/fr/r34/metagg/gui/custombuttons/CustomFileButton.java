@@ -37,7 +37,7 @@ public class CustomFileButton extends JButton {
      * Le bouton va permettre à l'utilisateur d'accéder au fichier ODT
      * correspondant en cliquant dessus. Une fois le bouton pressé
      * le fichier lié au bouton va être transmis au MainRightPanel
-     * pour y afficher d'avantage de métadonnées. Les informations
+     * pour y afficher davantage de métadonnées. Les informations
      * sont récupérées grâce au metafile du fichier ODT passé en paramètre.
      *
      * @param file  Metafile qui va correspondre au bouton et dont on va extraire les informations
@@ -58,10 +58,7 @@ public class CustomFileButton extends JButton {
         double size = (float) file.length() / BUFFER_SIZE;
         DecimalFormat df = new DecimalFormat("0.0");
         if(file.getName().length() > 10){
-            int indexD = 0;
-            int indexF = 9;
-            metafileNameDisplay = file.getName().substring(indexD, indexF);
-            metafileNameDisplay += "...";
+            metafileNameDisplay = utils.shortenText(file.getName());
         }
         this.setText("<html><p style=\"margin-right: 150px\">" + metafileNameDisplay + "<br><br>Taille : <br>" + "<font color=#577297>" + df.format(size) + "Ko</html>");
         this.setFont(new Font(fr.r34.metagg.gui.Dimension.FONT, Font.PLAIN, fr.r34.metagg.gui.Dimension.PARAGRAPH_SIZE));

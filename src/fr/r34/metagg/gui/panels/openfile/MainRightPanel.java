@@ -140,7 +140,7 @@ public class MainRightPanel extends JPanel {
          */
         try {
             ImageIcon imgIcon;
-            String miniaturePath = Strings.ODT_FILE_PATH;
+            String miniaturePath = utils.getIconPathFromType(metaFile);
             if (metaFile.getThumbnail() != null) {
                 // Chargement de l'image de la miniature
                 BufferedImage miniatureImg = ImageIO.read(new File(metaFile.getThumbnail().getAbsolutePath()));
