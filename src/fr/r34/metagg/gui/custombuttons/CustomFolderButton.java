@@ -27,7 +27,7 @@ public class CustomFolderButton extends JPanel {
     /**
      * JPanel modifié et personnalisé selon un design prédifinis et pour
      * rendre l'interface plus claire et plus propre. Ce JPanel a été
-     * modifié dans le but d'être une bouton cliquable correspondant
+     * modifié dans le but d'être un bouton cliquable correspondant
      * à un dossier dit "fille" du dossier ouvert par l'utilisateur.
      * Ce bouton affiche les informations suivantes :
      * - Nom du dossier
@@ -36,9 +36,9 @@ public class CustomFolderButton extends JPanel {
      * à la liste "listFile" de dossier qui modélise l'arborescence. Une fois ce
      * JPanel cliqué, le dossier lié est ajouté à la liste, son nom
      * est ajouté à la liste des noms de dossier de l'arborescence "listFileName"
-     * (qui sera utilisé pour affiché à l'utilisateur l'arborescence)
+     * (qui sera utilisé pour afficher à l'utilisateur l'arborescence)
      * puis va lancer la fonction de mise à jour du FolderLeftPanel
-     * pour correspondre à la nouvelle interface en fonction du dossié lié.
+     * pour correspondre à la nouvelle interface en fonction du dossier lié.
      *
      * @param folder    Dossier que l'on veut lier à notre bouton personnalisé.
      * @param main      Instance de la Frame principale FolderMenuGUI à laquelle ce bouton est rattaché.
