@@ -74,6 +74,8 @@ public class MainMenuGUI {
         fileChoose = new JFileChooser();
         fileChoose.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
         fileChoose.addChoosableFileFilter(new FileNameExtensionFilter("Fichier ODT (*.odt)", "odt"));
+        fileChoose.addChoosableFileFilter(new FileNameExtensionFilter("Fichier ODT (*.odp)", "odp"));
+        fileChoose.addChoosableFileFilter(new FileNameExtensionFilter("Fichier ODT (*.ods)", "ods"));
         fileChoose.setAcceptAllFileFilterUsed(false);
 
         openFile.addActionListener(new OpenFileAction());

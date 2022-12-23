@@ -156,7 +156,7 @@ public class FileManager {
                     if (metaItem.getNodeType() == Node.ELEMENT_NODE) {
                         Element metaItemElement = (Element) metaItem;
                         String metaData = metaItemElement.getAttribute(attribute.getTag());
-                        metaFile.updateAttribute(attribute , metaData);
+                        if (!metaData.isBlank()) metaFile.updateAttribute(attribute, metaData);
                     }
                 }
             }

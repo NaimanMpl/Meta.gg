@@ -17,7 +17,7 @@ public class Arborescence {
      * la boucle est un répertoire. Si c'est bien
      * un répertoire (dossier) alors on l'ajoute à notre liste.
      *
-     * @param parentFolder      Dossier dont on veut l'arborescence de sous-dossier
+     * @param parentFolder Dossier dont on veut l'arborescence de sous-dossier
      * @return La liste des sous-dossiers du dossier choisit par l'utilisateur
      */
     public ArrayList<File> getArborescence(File parentFolder){
