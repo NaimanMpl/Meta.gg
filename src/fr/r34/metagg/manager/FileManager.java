@@ -3,7 +3,6 @@ package fr.r34.metagg.manager;
 import fr.r34.metagg.MetaAttributes;
 import fr.r34.metagg.MetaFile;
 import fr.r34.metagg.MimeTypeImage;
-import fr.r34.metagg.Strings;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;

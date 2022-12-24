@@ -4,13 +4,14 @@ import fr.r34.metagg.MetaFile;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
+import java.io.IOException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class MainTest {
 
     @Test
-    public void testModifications() {
+    public void testModifications() throws IOException {
 
         File file = new File("/Users/naiman/Desktop/testODT/partiel.odt");
         MetaFile tmpMetaFile = new MetaFile(file);
@@ -48,7 +49,7 @@ class MainTest {
     }
 
     @Test
-    public void testFolderDelete() {
+    public void testFolderDelete() throws IOException {
         File file = new File("/Users/naiman/Desktop/testODT/partiel.odt");
         MetaFile metaFile = new MetaFile(file);
         metaFile.deleteTempFolder();

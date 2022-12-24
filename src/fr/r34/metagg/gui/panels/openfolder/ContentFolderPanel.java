@@ -1,6 +1,6 @@
 package fr.r34.metagg.gui.panels.openfolder;
 
-import fr.r34.metagg.Strings;
+import fr.r34.metagg.Constants;
 import fr.r34.metagg.gui.Colors;
 import fr.r34.metagg.gui.MainMenuGUI;
 import fr.r34.metagg.manager.Utils;
@@ -35,7 +35,7 @@ public class ContentFolderPanel extends JPanel {
         super();
         this.main = main;
         this.setBackground(Colors.BG_COLOR);
-        myFolderIcon = new Utils().getImageFromResource(Strings.MY_FOLDER_ICON_PATH);
+        myFolderIcon = new Utils().getImageFromResource(Constants.MY_FOLDER_ICON_PATH);
         myFolder = new JLabel(folder.getName(), myFolderIcon, JLabel.LEFT);
         myFolder.setForeground(Colors.WHITE);
         folderContentPanel = new FilePanel(folderContent, main);

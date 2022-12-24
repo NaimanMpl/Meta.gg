@@ -1,6 +1,6 @@
 package fr.r34.metagg.gui.panels.openfolder;
 
-import fr.r34.metagg.Strings;
+import fr.r34.metagg.Constants;
 import fr.r34.metagg.gui.Colors;
 import fr.r34.metagg.gui.Dimension;
 import fr.r34.metagg.gui.MainMenuGUI;
@@ -50,7 +50,7 @@ public class FolderLeftPanel extends JPanel {
         folderContent = directoryManager.odtInDirectory(folder);
 
         header = new JPanel();
-        appTitle = new JLabel(Strings.APP_TITLE);
+        appTitle = new JLabel(Constants.APP_TITLE);
 
         appTitle.setFont(new Font(Dimension.FONT, Font.PLAIN, Dimension.TITLE_SIZE));
         appTitle.setForeground(Colors.WHITE);

@@ -1,7 +1,6 @@
 package fr.r34.metagg.gui.panels.openfile;
 
-import fr.r34.metagg.MetaFile;
-import fr.r34.metagg.Strings;
+import fr.r34.metagg.Constants;
 import fr.r34.metagg.gui.Colors;
 import fr.r34.metagg.gui.custombuttons.CustomFileButton;
 import fr.r34.metagg.gui.Dimension;
@@ -18,8 +17,6 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
 
@@ -52,8 +49,8 @@ public class MainLeftPanel extends JPanel {
         header = new JPanel();
         filesContainer = new JPanel();
 
-        appTitle = new JLabel(Strings.APP_TITLE);
-        recentFiles = new JLabel(Strings.RECENT_FILES_TITLE);
+        appTitle = new JLabel(Constants.APP_TITLE);
+        recentFiles = new JLabel(Constants.RECENT_FILES_TITLE);
 
         appTitle.setFont(new Font(Dimension.FONT, Font.PLAIN, Dimension.TITLE_SIZE));
         appTitle.setForeground(Colors.WHITE);
@@ -111,7 +108,7 @@ public class MainLeftPanel extends JPanel {
     private void loadRecentFiles() throws UnsupportedLookAndFeelException, ClassNotFoundException, InstantiationException, IllegalAccessException, IOException, ParserConfigurationException, SAXException {
         DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
-        Document doc = docBuilder.parse(new File(Strings.CACHE_PATH));
+        Document doc = docBuilder.parse(new File(Constants.CACHE_PATH));
         NodeList recentFilesList = doc.getElementsByTagName("file");
         for (int i = 0; i < Dimension.MAX_RECENT_FILES_SIZE; i++) {
             /*

@@ -1,7 +1,7 @@
 package fr.r34.metagg.manager;
 
 import fr.r34.metagg.MetaFile;
-import fr.r34.metagg.Strings;
+import fr.r34.metagg.Constants;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -47,14 +47,14 @@ public class CacheManager {
      * si ce dernier n'existe pas.
      */
     public void initCache() {
-        if (new File(Strings.CACHE_PATH).exists()) return;
+        if (new File(Constants.CACHE_PATH).exists()) return;
         try {
             Element root = doc.createElement("cache");
             doc.appendChild(root);
             TransformerFactory transformerFactory = TransformerFactory.newInstance();
             Transformer transformer = transformerFactory.newTransformer();
             DOMSource source = new DOMSource(doc);
-            StreamResult res = new StreamResult(new File(Strings.CACHE_PATH));
+            StreamResult res = new StreamResult(new File(Constants.CACHE_PATH));
             transformer.transform(source, res);
             System.out.println("✅ Le fichier de cache a bien été généré !");
         } catch (TransformerException e) {
@@ -93,7 +93,7 @@ public class CacheManager {
 
                 recentFiles.insertBefore(fileChild, recentFiles.getFirstChild());
                 try {
-                    FileOutputStream fos = new FileOutputStream(Strings.CACHE_PATH);
+                    FileOutputStream fos = new FileOutputStream(Constants.CACHE_PATH);
                     new FileManager().writeXml(doc, fos);
                     fos.close();
                 } catch (TransformerException e) {

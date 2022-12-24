@@ -1,8 +1,6 @@
 package fr.r34.metagg;
 
-import javax.swing.*;
-
-public class Strings {
+public class Constants {
 
     /**
      * Constantes définies au préalable pour simplifier l'affichage des différents composants

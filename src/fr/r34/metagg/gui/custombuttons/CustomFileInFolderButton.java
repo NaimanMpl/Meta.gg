@@ -1,7 +1,7 @@
 package fr.r34.metagg.gui.custombuttons;
 
 import fr.r34.metagg.MetaFile;
-import fr.r34.metagg.Strings;
+import fr.r34.metagg.Constants;
 import fr.r34.metagg.gui.Colors;
 import fr.r34.metagg.gui.MainMenuGUI;
 import fr.r34.metagg.manager.Utils;
@@ -18,7 +18,7 @@ public class CustomFileInFolderButton extends JPanel {
     private double round;
     private Utils utils;
     private MainMenuGUI main;
-    private String path = Strings.FILE_BUTTON_ICON_FOLDER_PANEL_PATH;
+    private String path = Constants.FILE_BUTTON_ICON_FOLDER_PANEL_PATH;
 
     /**
      * JPanel modifié pour correspondre à un bouton cliquable.

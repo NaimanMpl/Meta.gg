@@ -47,24 +47,6 @@ public class DirectoryManager {
 		return null;
 	}
 
-	public ArrayList<File> listODTFiles(File dir) {
-		File[] files = dir.listFiles(new FilenameFilter() {
-			@Override
-			public boolean accept(File dir, String name) {
-				return name.endsWith(".odt");
-			}
-		});
-
-		for (File file : files) {
-			if (file.isDirectory()) {
-				listODTFiles(file);
-			} else {
-				System.out.println(file.getAbsolutePath());
-			}
-		}
-		return new ArrayList<>(Arrays.asList(files));
-	}
-
 	/**
 	 * Méthode permettant de lister tous les fichiers
 	 * de type ODT présent dans un dossier.
@@ -72,7 +54,6 @@ public class DirectoryManager {
 	 * passé en paramètre et vérifie si le mime type de
 	 * l'élément traité correspond à celui des fichiers ODT.
 	 * Si c'est le cas on l'ajoute à la liste.
-	 *
 	 * @param folder	Dossier dont on veut récupérer la liste de ses fichiers ODT.
 	 * @return	La liste des fichiers ODT appartenant au dossier en paramètre.
 	 */
@@ -83,7 +64,6 @@ public class DirectoryManager {
 			for (MimeTypeOD m : MimeTypeOD.values()){
 				if(m.getMimetype().equals(mimetype)){
 					odtInFolder.add(element);
-
 				}
 			}
 		}

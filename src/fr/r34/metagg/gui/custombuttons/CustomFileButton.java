@@ -2,12 +2,11 @@ package fr.r34.metagg.gui.custombuttons;
 
 import fr.r34.metagg.MetaFile;
 import fr.r34.metagg.MimeTypeOD;
-import fr.r34.metagg.Strings;
+import fr.r34.metagg.Constants;
 import fr.r34.metagg.gui.Colors;
 import fr.r34.metagg.gui.MainMenuGUI;
 import fr.r34.metagg.manager.Utils;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.Dimension;
@@ -24,7 +23,7 @@ public class CustomFileButton extends JButton {
 
     private JTextArea jTextArea;
     private BufferedImage odtIcon = null;
-    private String metafileNameDisplay, mimeType, path = Strings.FILE_BUTTON_ICON_PATH;
+    private String metafileNameDisplay, mimeType, path = Constants.FILE_BUTTON_ICON_PATH;
     private Utils utils;
     private final static int BUFFER_SIZE = 1024;
 
@@ -41,15 +40,16 @@ public class CustomFileButton extends JButton {
      * pour y afficher davantage de métadonnées. Les informations
      * sont récupérées grâce au metafile du fichier ODT passé en paramètre.
      *
-     * @param file  Metafile qui va correspondre au bouton et dont on va extraire les informations
+     * @param file Fichier qui va correspondre au bouton et dont on va extraire les informations
      *
      * @throws IOException
      */
     public CustomFileButton(MainMenuGUI main, File file) throws IOException {
         super();
+
         this.utils = new Utils();
-        URL odtUrl = this.getClass().getResource(Strings.ODT_FILE_PATH);
-        if (odtUrl == null) throw new IllegalArgumentException(Strings.ERROR_ODT_ICON_NOT_LOADED);
+        URL odtUrl = this.getClass().getResource(Constants.ODT_FILE_PATH);
+        if (odtUrl == null) throw new IllegalArgumentException(Constants.ERROR_ODT_ICON_NOT_LOADED);
         this.setBorderPainted(false);
         this.setFocusPainted(false);
         this.setBackground(Colors.BLUE_1);
@@ -69,8 +69,8 @@ public class CustomFileButton extends JButton {
         for (MimeTypeOD m : MimeTypeOD.values()){
             if(m.getMimetype().equals(mimeType)){
                 switch (m){
-                    case ODP -> path = Strings.ODP_BUTTON_ICON_PATH;
-                    case ODS -> path = Strings.ODS_BUTTON_ICON_PATH;
+                    case ODP -> path = Constants.ODP_BUTTON_ICON_PATH;
+                    case ODS -> path = Constants.ODS_BUTTON_ICON_PATH;
                 }
             }
         }
@@ -84,7 +84,7 @@ public class CustomFileButton extends JButton {
             Si jamais on clique sur un fichier récemment ouvert, il faut charger ses données puis
             les afficher sur le panneau de droite de l'application. Ce qui implique que l'on doit mettre
             à jour l'affichage lorsque l'on appuie sur ce bouton.
-             */
+         */
         this.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {

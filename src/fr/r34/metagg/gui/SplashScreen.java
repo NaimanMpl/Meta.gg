@@ -1,6 +1,6 @@
 package fr.r34.metagg.gui;
 
-import fr.r34.metagg.Strings;
+import fr.r34.metagg.Constants;
 import org.xml.sax.SAXException;
 
 import javax.imageio.ImageIO;
@@ -26,8 +26,8 @@ public class SplashScreen {
      */
     public SplashScreen() throws IOException {
         window = new JWindow();
-        URL splashUrl = this.getClass().getResource(Strings.SPLASH_SCREEN_FILE_PATH);
-        if (splashUrl == null) throw new IllegalArgumentException(Strings.ERROR_SPLASH_NOT_LOADED);
+        URL splashUrl = this.getClass().getResource(Constants.SPLASH_SCREEN_FILE_PATH);
+        if (splashUrl == null) throw new IllegalArgumentException(Constants.ERROR_SPLASH_NOT_LOADED);
         splashImg = ImageIO.read(splashUrl);
         background = new ImageIcon(splashImg);
         bgContainer = new JLabel(background);

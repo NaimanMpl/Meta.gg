@@ -1,7 +1,7 @@
 package fr.r34.metagg.gui.panels.openfile;
 
 import fr.r34.metagg.MetaFile;
-import fr.r34.metagg.Strings;
+import fr.r34.metagg.Constants;
 import fr.r34.metagg.gui.Colors;
 import fr.r34.metagg.manager.Utils;
 
@@ -30,7 +30,7 @@ public class KeywordsPanel extends JPanel {
             mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
             for (String keyword : metaFile.getKeywords()) {
 
-                JLabel closeImg = new JLabel(utils.getImageFromResource(Strings.CLOSE_FILE_PATH));
+                JLabel closeImg = new JLabel(utils.getImageFromResource(Constants.CLOSE_FILE_PATH));
                 closeImg.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
                 JPanel keywordPanel = new JPanel(new GridLayout(1, 2, 10, 10));
