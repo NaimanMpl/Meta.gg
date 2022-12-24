@@ -55,9 +55,7 @@ public class CustomFileInFolderButton extends JPanel {
         metafileDateLabel.setForeground(Colors.BLUE_0);
         metafileDateLabel.setFont(new Font(fr.r34.metagg.gui.Dimension.FONT, Font.PLAIN, fr.r34.metagg.gui.Dimension.PARAGRAPH_SIZE));
         path = utils.getIconFolderPanelPathFromType(metaFile);
-        System.out.println("PATH = " + path);
         fileIcon = new JLabel(utils.getImageFromResource(path));
-
         this.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         this.setLayout(new GridLayout(1, 3, 30, 0));
         this.add(fileIcon);
