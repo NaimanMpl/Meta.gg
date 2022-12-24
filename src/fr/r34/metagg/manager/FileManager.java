@@ -1,8 +1,6 @@
 package fr.r34.metagg.manager;
 
-import fr.r34.metagg.MetaAttributes;
-import fr.r34.metagg.MetaFile;
-import fr.r34.metagg.MimeTypeImage;
+import fr.r34.metagg.*;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -194,9 +192,9 @@ public class FileManager {
         }
     }
 
-    /*
+    /**
      * Récupère la miniature du fichier ODT et l'affiche sous forme de frame
-     * @param file Le dossier dans lequel est stockée la miniature
+     * @param metaFile Le dossier dans lequel est stockée la miniature
      * @return thumbnail Le fichier de la miniature du fichier ODT
      */
     public void readThumbnail(MetaFile metaFile) {
@@ -214,12 +212,19 @@ public class FileManager {
     }
     /**
     * Récupère et affiche les métadonnées (nom/type mime/poids en Ko) des images présentes dans le fichier ODT passé
-    * @param metaFile Le dossier contenant les différentes images (mzdia) du fichier ODT étudié
+    * @param metaFile Le dossier contenant les différentes images (media) du fichier ODT étudié
     */
     public void readPictureMetaData(MetaFile metaFile) {
-        File file = new File(metaFile.getDestDir().getAbsolutePath() + "/media");
+        String folderMediaName = "";
+        MimeTypeOD mimeTypeOD = metaFile.getMimeTypeOD();
+        switch (mimeTypeOD) {
+            case ODT -> folderMediaName = "media";
+            default -> folderMediaName = "Pictures";
+        }
+
+        File file = new File(metaFile.getDestDir().getAbsolutePath() + "/" + folderMediaName);
         try {
-            if (file.getName().equals("media") && file.isDirectory()) {
+            if (file.getName().equals(folderMediaName) && file.isDirectory()) {
                 for(File picture : file.listFiles()) {
                     ArrayList<String> pictureData = new ArrayList<>();
                     for(MimeTypeImage m : MimeTypeImage.values()){

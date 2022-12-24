@@ -83,6 +83,7 @@ public class CustomFolderButton extends JPanel {
             @Override
             public void mouseClicked(MouseEvent e) {
                 try {
+                    main.saveAllFiles();
                     main.getListFile().add(folder);
                     main.getListFileName().add(folder.getName());
                     main.updateFolderLeftPanel(folder);

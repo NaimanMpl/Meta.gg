@@ -80,6 +80,7 @@ public class ArborescencePanel extends JPanel {
         returnButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
+                main.saveAllFiles();
                 if(main.getListFile().size() > 1) {
                     try {
                         int lastElement = main.getListFile().size() - 1;

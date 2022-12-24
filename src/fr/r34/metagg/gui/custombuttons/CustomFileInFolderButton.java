@@ -10,7 +10,10 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.attribute.FileTime;
 
 public class CustomFileInFolderButton extends JPanel {
 
@@ -30,11 +33,11 @@ public class CustomFileInFolderButton extends JPanel {
      * - Le nom du fichier
      * - Le poids (en Ko) du fichier
      * - La date de création du fichier
-     * @param metaFile  Le fichier dont on affiche les informations et que l'on veut rendre accessible grâce au boutton.
+     * @param file  Le fichier dont on affiche les informations et que l'on veut rendre accessible grâce au boutton.
      * @param main      Instance de la Frame principale FolderMenuGUI à laquelle ce bouton est rattaché.
      * @throws IOException
      */
-    public CustomFileInFolderButton(MetaFile metaFile, MainMenuGUI main) throws IOException {
+    public CustomFileInFolderButton(File file, MainMenuGUI main) throws IOException {
         super();
         this.main = main;
         this.setBackground(Colors.BLUE_1);
@@ -42,19 +45,27 @@ public class CustomFileInFolderButton extends JPanel {
         this.utils = new Utils();
         this.setPreferredSize(new Dimension(600, 60));
         metafileNameLabel = new JLabel();
-        metafileNameLabel.setText(metaFile.getFile().getName());
+        metafileNameLabel.setText(file.getName());
         metafileNameLabel.setForeground(Colors.WHITE);
         metafileNameLabel.setFont(new Font(fr.r34.metagg.gui.Dimension.FONT, Font.PLAIN, fr.r34.metagg.gui.Dimension.SUBTITLE_SIZE));
-        round = (double) Math.round(metaFile.getSize() * 10) / 10;
+        round = (double) Math.round(file.length()) / 1000;
         metafileSizeLabel = new JLabel();
         metafileSizeLabel.setText(round + "Ko");
         metafileSizeLabel.setForeground(Colors.BLUE_0);
         metafileSizeLabel.setFont(new Font(fr.r34.metagg.gui.Dimension.FONT, Font.PLAIN, fr.r34.metagg.gui.Dimension.PARAGRAPH_SIZE));
         metafileDateLabel = new JLabel();
-        metafileDateLabel.setText("" + metaFile.getCreationDate().substring(0, 10));
+        String dateDisplay = "";
+        try {
+            FileTime creationTime = (FileTime) Files.getAttribute(file.toPath(), "creationTime");
+            dateDisplay = creationTime.toString().substring(0, 10);
+        } catch (IOException e) {
+            e.printStackTrace();
+            dateDisplay = "1970-01-01";
+        }
+        metafileDateLabel.setText(dateDisplay);
         metafileDateLabel.setForeground(Colors.BLUE_0);
         metafileDateLabel.setFont(new Font(fr.r34.metagg.gui.Dimension.FONT, Font.PLAIN, fr.r34.metagg.gui.Dimension.PARAGRAPH_SIZE));
-        path = utils.getIconFolderPanelPathFromType(metaFile);
+        path = utils.getIconFolderPanelPathFromType(file);
         fileIcon = new JLabel(utils.getImageFromResource(path));
         this.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         this.setLayout(new GridLayout(1, 3, 30, 0));
@@ -69,7 +80,7 @@ public class CustomFileInFolderButton extends JPanel {
             @Override
             public void mouseClicked(MouseEvent e) {
                 try {
-                    main.updateRightPanel(metaFile);
+                    main.updateRightPanel(new MetaFile(file));
                 } catch (UnsupportedLookAndFeelException | IllegalAccessException | InstantiationException |
                          ClassNotFoundException | IOException ex) {
                     ex.printStackTrace();

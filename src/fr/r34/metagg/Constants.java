@@ -31,7 +31,7 @@ public class Constants {
     public final static String ADD_KEYWORD = "Ajouter un mot-clé";
     public final static String ENTER_KEYWORD = "Veuillez saisir un mot-clé";
     public final static String ERROR_SPLASH_NOT_LOADED = "File not found : L'image de chargement n'a pas pu être chargé !";
-    public final static String ERROR_ODT_ICON_NOT_LOADED = "File not found : L'icone de fichiers n'a pas pu être chargé !";
+    public final static String ERROR_ODT_ICON_NOT_LOADED = "File not found : L'icône de fichiers n'a pas pu être chargé !";
     public final static String ODT_FILE_PATH = "/odt_file_icon.png";
     public final static String CLOSE_FILE_PATH = "/close.png";
     public final static String EDIT_BUTTON_ICON_PATH = "/edit_button.png";

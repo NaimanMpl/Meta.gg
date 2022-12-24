@@ -1,13 +1,16 @@
 package fr.r34.metagg.manager;
 
 import fr.r34.metagg.MetaFile;
+import fr.r34.metagg.MimeTypeOD;
 import fr.r34.metagg.Constants;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.nio.file.Files;
 
 public class Utils {
 
@@ -47,6 +50,22 @@ public class Utils {
         }
         return path;
     }
+
+     public String getIconFolderPanelPathFromType(File file) throws IOException {
+        String path = Constants.FILE_BUTTON_ICON_FOLDER_PANEL_PATH;
+        MimeTypeOD mimeTypeOD = MimeTypeOD.ODT;
+        String mimeType = Files.probeContentType(file.toPath());
+        for (MimeTypeOD m : MimeTypeOD.values()) {
+            if(m.getMimetype().equals(mimeType))
+                mimeTypeOD = m;
+        }
+         switch (mimeTypeOD){
+             case ODP -> path = Constants.ODP_BUTTON_ICON_FOLDER_PANEL_PATH;
+             case ODS -> path = Constants.ODS_BUTTON_ICON_FOLDER_PANEL_PATH;
+             case ODG -> path = Constants.ODG_BUTTON_ICON_FOLDER_PANEL_PATH;
+         }
+        return path;
+     }
 
     public String shortenText(String name){
         String shortName = "";

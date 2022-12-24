@@ -71,6 +71,7 @@ public class CustomFileButton extends JButton {
                 switch (m){
                     case ODP -> path = Constants.ODP_BUTTON_ICON_PATH;
                     case ODS -> path = Constants.ODS_BUTTON_ICON_PATH;
+                    case ODG -> path = Constants.ODG_BUTTON_ICON_PATH;
                 }
             }
         }
@@ -100,11 +101,11 @@ public class CustomFileButton extends JButton {
 
     /**
      * JPanel modifié selon le même design que le constructeur ci-dessus.
-     * La fonction de ce JPanel n'est pas d'être un bouton cliquable mais
+     * La fonction de ce JPanel n'est pas d'être un bouton cliquable, mais
      * un bouton vide non cliquable, non lié à un fichier ODT et sans
      * information pour combler le vide dans le JPanel parent.
-     * Ce bouton sera généré si le nombre de fichier récent du JPanel
-     * parent est strictement inférieur à 9 (nombre de case du JPanel
+     * Ce bouton sera généré si le nombre de fichiers récent du JPanel
+     * parent est strictement inférieur à 9 (nombre de cases du JPanel
      * parent arbitrairement définit pour une question de design).
      */
     public CustomFileButton() {

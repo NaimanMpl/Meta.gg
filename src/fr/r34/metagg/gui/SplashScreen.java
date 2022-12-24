@@ -35,8 +35,6 @@ public class SplashScreen {
         window.setSize(720, 512);
         window.setLocationRelativeTo(null);
         window.setVisible(true);
-        UIManager.put("OptionPane.background", Colors.BLUE_1);
-        UIManager.put("Panel.background", Colors.BLUE_1);
         try {
             new MainMenuGUI();
         } catch (UnsupportedLookAndFeelException | IllegalAccessException | InstantiationException |

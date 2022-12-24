@@ -342,12 +342,12 @@ public class MainRightPanel extends JPanel {
             // Création du label contenant l'image ainsi que les boutons de navigation
             JPanel imagePanel = new JPanel();
 
-            imgType.setForeground(Colors.WHITE);
+            imgType.setForeground(Colors.BLACK);
             imgType.setFont(Dimension.SUBTITLE_FONT);
             imgType.setAlignmentX(Component.CENTER_ALIGNMENT);
             img.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-            imagePanel.setBackground(Colors.BLUE_1);
+            imagePanel.setBackground(Colors.LIGHT_GRAY);
             imagePanel.setLayout(new BoxLayout(imagePanel, BoxLayout.Y_AXIS));
             imagePanel.add(img);
             imagePanel.add(imgType);
