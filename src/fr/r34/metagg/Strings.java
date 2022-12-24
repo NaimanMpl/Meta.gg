@@ -45,6 +45,8 @@ public class Strings {
     public final static String ODP_BUTTON_ICON_FOLDER_PANEL_PATH = "/odp_file_icon_folder_panel.png";
     public final static String ODS_BUTTON_ICON_PATH = "/ods_file_icon.png";
     public final static String ODS_BUTTON_ICON_FOLDER_PANEL_PATH = "/ods_file_icon_folder_panel.png";
+    public final static String ODG_BUTTON_ICON_PATH = "/odg_file_icon.png";
+    public final static String ODG_BUTTON_ICON_FOLDER_PANEL_PATH = "/odg_file_icon_folder_panel.png";
     public final static String FOLDER_ICON_PATH = "/folder_icon.png";
     public final static String MY_FOLDER_ICON_PATH = "/my_folder_icon.png";
     public final static String RETURN_BUTTON_ICON = "/return_button.png";

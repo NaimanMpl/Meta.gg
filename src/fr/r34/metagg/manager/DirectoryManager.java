@@ -9,6 +9,8 @@ import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.net.URLConnection;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Objects;
@@ -30,7 +32,7 @@ public class DirectoryManager {
 				if(element.isDirectory())
 					directoryContent(element, odtInFolder);
 				else {
-					String mimetype = element.toURL().openConnection().getContentType();
+					String mimetype = Files.probeContentType(element.toPath());
 					for (MimeTypeOD m : MimeTypeOD.values()){
 						if (m.getMimetype().equals(mimetype)) {
 							odtInFolder.add(element);
@@ -74,20 +76,16 @@ public class DirectoryManager {
 	 * @param folder	Dossier dont on veut récupérer la liste de ses fichiers ODT.
 	 * @return	La liste des fichiers ODT appartenant au dossier en paramètre.
 	 */
-	public ArrayList<File> odtInDirectory(File folder) {
+	public ArrayList<File> odtInDirectory(File folder) throws IOException {
 		ArrayList<File> odtInFolder = new ArrayList<>();
-		try {
-			for (File element : folder.listFiles()) {
-				String mimetype = element.toURL().openConnection().getContentType();
-				for (MimeTypeOD m : MimeTypeOD.values()){
-					if(m.getMimetype().equals(mimetype)){
-						odtInFolder.add(element);
+		for (File element : folder.listFiles()) {
+			String mimetype = Files.probeContentType(element.toPath());
+			for (MimeTypeOD m : MimeTypeOD.values()){
+				if(m.getMimetype().equals(mimetype)){
+					odtInFolder.add(element);
 
-					}
 				}
 			}
-		} catch (IOException e) {
-			throw new RuntimeException(e);
 		}
 		return odtInFolder;
 	}

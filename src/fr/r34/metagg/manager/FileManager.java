@@ -194,7 +194,7 @@ public class FileManager {
                 for(File picture : file.listFiles()) {
                     ArrayList<String> pictureData = new ArrayList<>();
                     for(MimeTypeImage m : MimeTypeImage.values()){
-                        String mimeType = picture.toURL().openConnection().getContentType();
+                        String mimeType = Files.probeContentType(picture.toPath());
                         if (m.getMimetype().equals(mimeType)) {
                             pictureData.add(m.getTitle());
                             metaFile.getPictures().put(picture, m);

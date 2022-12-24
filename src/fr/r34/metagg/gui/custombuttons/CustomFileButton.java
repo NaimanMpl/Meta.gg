@@ -17,6 +17,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.nio.file.Files;
 import java.text.DecimalFormat;
 
 public class CustomFileButton extends JButton {
@@ -67,7 +68,7 @@ public class CustomFileButton extends JButton {
         this.setFont(new Font(fr.r34.metagg.gui.Dimension.FONT, Font.PLAIN, fr.r34.metagg.gui.Dimension.PARAGRAPH_SIZE));
         this.setForeground(Colors.WHITE);
 
-        mimeType = file.toURL().openConnection().getContentType();
+        mimeType = Files.probeContentType(file.toPath());
         for (MimeTypeOD m : MimeTypeOD.values()){
             if(m.getMimetype().equals(mimeType)){
                 switch (m){
