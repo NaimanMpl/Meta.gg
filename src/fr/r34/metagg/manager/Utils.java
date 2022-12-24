@@ -32,9 +32,15 @@ public class Utils {
     public String getIconFolderPanelPathFromType(MetaFile metaFile){
         String path = Constants.FILE_BUTTON_ICON_FOLDER_PANEL_PATH;
         switch (metaFile.getMimeTypeOD()) {
-            case ODP -> path = Constants.ODP_BUTTON_ICON_FOLDER_PANEL_PATH;
-            case ODS -> path = Constants.ODS_BUTTON_ICON_FOLDER_PANEL_PATH;
-            case ODG -> path = Constants.ODG_BUTTON_ICON_FOLDER_PANEL_PATH;
+            case ODP:
+                path = Constants.ODP_BUTTON_ICON_FOLDER_PANEL_PATH;
+                break;
+            case ODS:
+                path = Constants.ODS_BUTTON_ICON_FOLDER_PANEL_PATH;
+                break;
+            case ODG:
+                path = Constants.ODG_BUTTON_ICON_FOLDER_PANEL_PATH;
+                break;
         }
         return path;
     }
@@ -43,9 +49,15 @@ public class Utils {
         String path = Constants.FILE_BUTTON_ICON_PATH;
         if(metaFile.getMimeTypeOD() != null) {
             switch (metaFile.getMimeTypeOD()) {
-                case ODP -> path = Constants.ODP_BUTTON_ICON_PATH;
-                case ODS -> path = Constants.ODS_BUTTON_ICON_PATH;
-                case ODG -> path = Constants.ODG_BUTTON_ICON_PATH;
+                case ODP:
+                    path = Constants.ODP_BUTTON_ICON_PATH;
+                    break;
+                case ODS:
+                    path = Constants.ODS_BUTTON_ICON_PATH;
+                    break;
+                case ODG:
+                    path = Constants.ODG_BUTTON_ICON_PATH;
+                    break;
             }
         }
         return path;
@@ -60,10 +72,16 @@ public class Utils {
                 mimeTypeOD = m;
         }
          switch (mimeTypeOD){
-             case ODP -> path = Constants.ODP_BUTTON_ICON_FOLDER_PANEL_PATH;
-             case ODS -> path = Constants.ODS_BUTTON_ICON_FOLDER_PANEL_PATH;
-             case ODG -> path = Constants.ODG_BUTTON_ICON_FOLDER_PANEL_PATH;
-         }
+             case ODP:
+                 path = Constants.ODP_BUTTON_ICON_FOLDER_PANEL_PATH;
+                 break;
+             case ODS:
+                 path = Constants.ODS_BUTTON_ICON_FOLDER_PANEL_PATH;
+                 break;
+             case ODG:
+                 path = Constants.ODG_BUTTON_ICON_FOLDER_PANEL_PATH;
+                 break;
+        }
         return path;
      }
 

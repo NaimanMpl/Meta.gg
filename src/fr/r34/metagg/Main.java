@@ -1,7 +1,6 @@
 package fr.r34.metagg;
 
 import fr.r34.metagg.manager.DirectoryManager;
-import fr.r34.metagg.manager.FileManager;
 
 import java.io.*;
 import java.text.ParseException;
@@ -46,15 +45,15 @@ public class Main {
                 for (int i = 3; i < args.length; i++) { content.append(args[i] + " "); }
 
                 switch (attribute) {
-                    case "title" -> {
+                    case "title":
                         metaFile.setTitle(content.toString());
-                    }
-                    case "subject" -> {
+                        break;
+                    case "subject":
                         metaFile.setSubject(content.toString());
-                    }
-                    case "keyword" -> {
+                        break;
+                    case "keyword":
                         metaFile.getKeywords().add(content.toString());
-                    }
+                        break;
                 }
                 metaFile.save();
                 metaFile.deleteTempFolder();

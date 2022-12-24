@@ -258,9 +258,15 @@ public class MetaFile {
         File zipFile = new File(zipFilePath + ".zip");
         String newExtension = ".odt";
         switch (this.mimeTypeOD) {
-            case ODS -> newExtension = ".ods";
-            case ODG -> newExtension = ".odg";
-            case ODP -> newExtension = ".odp";
+            case ODS:
+                newExtension = ".ods";
+                break;
+            case ODG:
+                newExtension = ".odg";
+                break;
+            case ODP:
+                newExtension = ".odp";
+                break;
         }
         try {
             fileM.zip(fileToZip.toPath(), zipFile.toPath());
@@ -279,14 +285,30 @@ public class MetaFile {
      */
     public void updateAttribute(MetaAttributes attribute, String content) throws ParseException {
         switch (attribute) {
-            case TITLE -> { this.setTitle(content); }
-            case SUBJECT -> { this.setSubject(content); }
-            case CREATION_DATE -> { this.setCreationDate(content); }
-            case KEYWORD -> { this.getKeywords().add(content); }
-            case PAGE_COUNT -> { this.setPagesAmount(Integer.parseInt(content)); }
-            case CHARACTERS_COUNT -> { this.setCharacterAmount(Integer.parseInt(content)); }
-            case PARAGRAPHS_COUNT -> { this.setParagraphAmount(Integer.parseInt(content)); }
-            case WORD_COUNT -> { this.setWordAmount(Integer.parseInt(content)); }
+            case TITLE:
+                this.setTitle(content);
+                break;
+            case SUBJECT:
+                this.setSubject(content);
+                break;
+            case CREATION_DATE:
+                this.setCreationDate(content);
+                break;
+            case KEYWORD:
+                this.getKeywords().add(content);
+                break;
+            case PAGE_COUNT:
+                this.setPagesAmount(Integer.parseInt(content));
+                break;
+            case CHARACTERS_COUNT:
+                this.setCharacterAmount(Integer.parseInt(content));
+                break;
+            case PARAGRAPHS_COUNT:
+                this.setParagraphAmount(Integer.parseInt(content));
+                break;
+            case WORD_COUNT:
+                this.setWordAmount(Integer.parseInt(content));
+                break;
         }
     }
 

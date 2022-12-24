@@ -380,14 +380,14 @@ public class MainRightPanel extends JPanel {
                         null
                 );
                 switch (choice) {
-                    case JOptionPane.OK_OPTION -> {
+                    case JOptionPane.OK_OPTION:
                         i += 1;
                         currentPicture = getNextPicture(pictures, i);
-                    }
-                    case JOptionPane.NO_OPTION -> {
+                        break;
+                    case JOptionPane.NO_OPTION:
                         i -= 1;
                         currentPicture = getPreviousPicture(pictures, i);
-                    }
+                        break;
                 }
 
             }

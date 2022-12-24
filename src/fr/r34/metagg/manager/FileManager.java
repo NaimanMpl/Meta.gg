@@ -218,8 +218,12 @@ public class FileManager {
         String folderMediaName = "";
         MimeTypeOD mimeTypeOD = metaFile.getMimeTypeOD();
         switch (mimeTypeOD) {
-            case ODT -> folderMediaName = "media";
-            default -> folderMediaName = "Pictures";
+            case ODT:
+                folderMediaName = "media";
+                break;
+            default:
+                folderMediaName = "Pictures";
+                break;
         }
 
         File file = new File(metaFile.getDestDir().getAbsolutePath() + "/" + folderMediaName);
@@ -281,10 +285,16 @@ public class FileManager {
                         metaData = officeMetaElement.getElementsByTagName(attribute.getTag()).item(0);
                     }
                     switch (attribute) {
-                        case TITLE -> { metaData.setTextContent(metaFile.getTitle()); }
-                        case SUBJECT -> { metaData.setTextContent(metaFile.getSubject()); }
-                        case CREATION_DATE -> { metaData.setTextContent(metaFile.getCreationDate()); }
-                        case KEYWORD -> {
+                        case TITLE:
+                            metaData.setTextContent(metaFile.getTitle());
+                            break;
+                        case SUBJECT:
+                            metaData.setTextContent(metaFile.getSubject());
+                            break;
+                        case CREATION_DATE:
+                            metaData.setTextContent(metaFile.getCreationDate());
+                            break;
+                        case KEYWORD:
                             NodeList keywords = officeMetaElement.getElementsByTagName(attribute.getTag());
                             int n = keywords.getLength();
                             for (int k = n-1; k >= 0; k--) {
@@ -298,7 +308,7 @@ public class FileManager {
                                 }
                                 keyword.setTextContent(metaFile.getKeywords().get(j));
                             }
-                        }
+                            break;
                     }
                 }
                 /*
@@ -317,18 +327,18 @@ public class FileManager {
                     if (officeMetaNode.getNodeType() == Node.ELEMENT_NODE) {
                         Element metaStatsData = (Element) metaStatsNode;
                         switch (attribute) {
-                            case PAGE_COUNT -> {
+                            case PAGE_COUNT:
                                 metaStatsData.setAttribute(attribute.getTag(), String.valueOf(metaFile.getPagesAmount()));
-                            }
-                            case CHARACTERS_COUNT -> {
+                                break;
+                            case CHARACTERS_COUNT:
                                 metaStatsData.setAttribute(attribute.getTag(), String.valueOf(metaFile.getCharacterAmount()));
-                            }
-                            case PARAGRAPHS_COUNT -> {
+                                break;
+                            case PARAGRAPHS_COUNT:
                                 metaStatsData.setAttribute(attribute.getTag(), String.valueOf(metaFile.getParagraphAmount()));
-                            }
-                            case WORD_COUNT -> {
+                                break;
+                            case WORD_COUNT:
                                 metaStatsData.setAttribute(attribute.getTag(), String.valueOf(metaFile.getWordAmount()));
-                            }
+                                break;
                         }
                     }
                 }

@@ -68,10 +68,16 @@ public class CustomFileButton extends JButton {
         mimeType = Files.probeContentType(file.toPath());
         for (MimeTypeOD m : MimeTypeOD.values()){
             if(m.getMimetype().equals(mimeType)){
-                switch (m){
-                    case ODP -> path = Constants.ODP_BUTTON_ICON_PATH;
-                    case ODS -> path = Constants.ODS_BUTTON_ICON_PATH;
-                    case ODG -> path = Constants.ODG_BUTTON_ICON_PATH;
+                switch (m) {
+                    case ODP:
+                        path = Constants.ODP_BUTTON_ICON_PATH;
+                        break;
+                    case ODS:
+                        path = Constants.ODS_BUTTON_ICON_PATH;
+                        break;
+                    case ODG:
+                        path = Constants.ODG_BUTTON_ICON_PATH;
+                        break;
                 }
             }
         }
