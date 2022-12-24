@@ -47,24 +47,6 @@ public class DirectoryManager {
 		return null;
 	}
 
-	public ArrayList<File> listODTFiles(File dir) {
-		File[] files = dir.listFiles(new FilenameFilter() {
-			@Override
-			public boolean accept(File dir, String name) {
-				return name.endsWith(".odt");
-			}
-		});
-
-		for (File file : files) {
-			if (file.isDirectory()) {
-				listODTFiles(file);
-			} else {
-				System.out.println(file.getAbsolutePath());
-			}
-		}
-		return new ArrayList<>(Arrays.asList(files));
-	}
-
 	/**
 	 * Méthode permettant de lister tous les fichiers
 	 * de type ODT présent dans un dossier.

@@ -1,7 +1,7 @@
 package fr.r34.metagg.gui;
 
 import fr.r34.metagg.MetaFile;
-import fr.r34.metagg.Strings;
+import fr.r34.metagg.Constants;
 import fr.r34.metagg.gui.panels.openfile.MainLeftPanel;
 import fr.r34.metagg.gui.panels.openfile.MainRightPanel;
 import fr.r34.metagg.gui.panels.openfolder.FolderLeftPanel;
@@ -66,16 +66,17 @@ public class MainMenuGUI {
         leftPanel = new MainLeftPanel(this);
         rightPanel = new MainRightPanel(this, currentFile);
         menuBar = new JMenuBar();
-        menu = new JMenu(Strings.MENU_TITLE);
-        openFile = new JMenuItem(Strings.OPEN);
-        saveFile = new JMenuItem(Strings.SAVE_MODIFICATIONS);
-        logoIcon = utils.getImageFromResource(Strings.LOGO_ICON);
+        menu = new JMenu(Constants.MENU_TITLE);
+        openFile = new JMenuItem(Constants.OPEN);
+        saveFile = new JMenuItem(Constants.SAVE_MODIFICATIONS);
+        logoIcon = utils.getImageFromResource(Constants.LOGO_ICON);
 
         fileChoose = new JFileChooser();
         fileChoose.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
         fileChoose.addChoosableFileFilter(new FileNameExtensionFilter("Fichier ODT (*.odt)", "odt"));
-        fileChoose.addChoosableFileFilter(new FileNameExtensionFilter("Fichier ODT (*.odp)", "odp"));
-        fileChoose.addChoosableFileFilter(new FileNameExtensionFilter("Fichier ODT (*.ods)", "ods"));
+        fileChoose.addChoosableFileFilter(new FileNameExtensionFilter("Fichier ODP (*.odp)", "odp"));
+        fileChoose.addChoosableFileFilter(new FileNameExtensionFilter("Fichier ODS (*.ods)", "ods"));
+        fileChoose.addChoosableFileFilter(new FileNameExtensionFilter("Fichier ODG (*.odg)", "odg"));
         fileChoose.setAcceptAllFileFilterUsed(false);
 
         openFile.addActionListener(new OpenFileAction());
@@ -185,7 +186,7 @@ public class MainMenuGUI {
      * ouverts puis change l'extension du fichier compressé en .odt. On obtient alors un nouveau fichier odt
      * contenant les modifications effectuées.
      */
-    private void saveAllFiles() {
+    public void saveAllFiles() {
         for (MetaFile metaFile : metaFilesOpened) {
             File metaXML = new File(metaFile.getDestDir().getAbsolutePath() + "/meta.xml");
             if (metaXML.exists()) {

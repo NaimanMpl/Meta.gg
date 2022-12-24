@@ -1,7 +1,7 @@
 package fr.r34.metagg.gui.panels.openfile;
 
 import fr.r34.metagg.MetaFile;
-import fr.r34.metagg.Strings;
+import fr.r34.metagg.Constants;
 import fr.r34.metagg.gui.Colors;
 import fr.r34.metagg.gui.Dimension;
 import fr.r34.metagg.gui.MainMenuGUI;
@@ -68,8 +68,8 @@ public class MainRightPanel extends JPanel {
         this.i = 0;
 
         // Si jamais le fichier n'a pas de titre ou de sujet alors le message "Pas de titre" ou "Pas de sujet" est affiché à l'écran
-        titleField = new JTextField(metaFile.getTitle().isEmpty() ? Strings.NO_TITLE : metaFile.getTitle());
-        subjectField = new JTextField(metaFile.getSubject().isEmpty() ? Strings.NO_SUBJECT : metaFile.getSubject());
+        titleField = new JTextField(metaFile.getTitle().isEmpty() ? Constants.NO_TITLE : metaFile.getTitle());
+        subjectField = new JTextField(metaFile.getSubject().isEmpty() ? Constants.NO_SUBJECT : metaFile.getSubject());
 
         initLabel();
 
@@ -198,26 +198,26 @@ public class MainRightPanel extends JPanel {
      * Initialisation des différents textes de l'application et remplissage si nécessaire de ces derniers
      */
     private void initLabel() {
-        panelTitle = new JLabel(Strings.RIGHT_PANEL_TITLE);
+        panelTitle = new JLabel(Constants.RIGHT_PANEL_TITLE);
         picture = new JLabel();
         name = new JLabel(metaFile.getFile().getName());
         double round = (double) Math.round(metaFile.getSize() * 10) / 10;
         size = new JLabel(round + "KB, " + metaFile.getCreationDate().substring(0, 10));
-        title = new JLabel(Strings.TITLE);
-        subject = new JLabel(Strings.SUBJECT);
-        keywords = new JLabel(Strings.KEYWORDS);
-        pagesAmount = new JLabel(Strings.PAGES_AMOUNT + metaFile.getPagesAmount());
-        wordsAmount = new JLabel(Strings.WORDS_AMOUNT + metaFile.getWordAmount());
-        charAmount = new JLabel(Strings.CHARACTER_AMOUNT + metaFile.getCharacterAmount());
-        paragraphsAmount = new JLabel(Strings.PARAGRAPHS_AMOUNT + metaFile.getPagesAmount());
+        title = new JLabel(Constants.TITLE);
+        subject = new JLabel(Constants.SUBJECT);
+        keywords = new JLabel(Constants.KEYWORDS);
+        pagesAmount = new JLabel(Constants.PAGES_AMOUNT + metaFile.getPagesAmount());
+        wordsAmount = new JLabel(Constants.WORDS_AMOUNT + metaFile.getWordAmount());
+        charAmount = new JLabel(Constants.CHARACTER_AMOUNT + metaFile.getCharacterAmount());
+        paragraphsAmount = new JLabel(Constants.PARAGRAPHS_AMOUNT + metaFile.getPagesAmount());
 
-        showImgs = new JLabel(Strings.SHOW_IMAGES, SwingConstants.CENTER);
+        showImgs = new JLabel(Constants.SHOW_IMAGES, SwingConstants.CENTER);
         showImgs.setForeground(Colors.BLUE_0);
         showImgs.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         showImgs.setFont(Dimension.ANNOTATION_FONT);
         showImgs.addMouseListener(new DisplayImagesAction());
 
-        showLinks = new JLabel(Strings.SHOW_HYPERTEXT_LINKS, SwingConstants.CENTER);
+        showLinks = new JLabel(Constants.SHOW_HYPERTEXT_LINKS, SwingConstants.CENTER);
         showLinks.setForeground(Colors.BLUE_0);
         showLinks.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         showLinks.setFont(Dimension.ANNOTATION_FONT);
@@ -281,9 +281,9 @@ public class MainRightPanel extends JPanel {
                 keywordField.setEditable(!keywordField.isEditable());
             }
             if (titleField.isEditable()) {
-                editButton.setText(Strings.SAVE_MODIFICATIONS);
+                editButton.setText(Constants.SAVE_MODIFICATIONS);
             } else {
-                editButton.setText(Strings.EDIT);
+                editButton.setText(Constants.EDIT);
                 metaFile.setTitle(titleField.getText());
                 System.out.println("Titre : " + metaFile.getTitle());
                 metaFile.setSubject(subjectField.getText());
@@ -311,8 +311,8 @@ public class MainRightPanel extends JPanel {
             charAmount.setVisible(!charAmount.isVisible());
             keywords.setVisible(!keywords.isVisible());
             paragraphsAmount.setVisible(!paragraphsAmount.isVisible());
-            if (!linksPanel.isVisible()) showLinks.setText(Strings.HIDE_HYPERTEXT_LINKS);
-            else showLinks.setText(Strings.SHOW_HYPERTEXT_LINKS);
+            if (!linksPanel.isVisible()) showLinks.setText(Constants.HIDE_HYPERTEXT_LINKS);
+            else showLinks.setText(Constants.SHOW_HYPERTEXT_LINKS);
             linksPanel.setVisible(!linksPanel.isVisible());
         }
     }
@@ -325,7 +325,7 @@ public class MainRightPanel extends JPanel {
         @Override
         public void mouseClicked(MouseEvent e) {
             if (pictures.isEmpty()) {
-                JOptionPane.showMessageDialog(null, Strings.NO_PICTURES, "Système", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null, Constants.NO_PICTURES, "Système", JOptionPane.ERROR_MESSAGE);
                 return;
             }
             // Liste des options disponibles
@@ -342,12 +342,12 @@ public class MainRightPanel extends JPanel {
             // Création du label contenant l'image ainsi que les boutons de navigation
             JPanel imagePanel = new JPanel();
 
-            imgType.setForeground(Colors.WHITE);
+            imgType.setForeground(Colors.BLACK);
             imgType.setFont(Dimension.SUBTITLE_FONT);
             imgType.setAlignmentX(Component.CENTER_ALIGNMENT);
             img.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-            imagePanel.setBackground(Colors.BLUE_1);
+            imagePanel.setBackground(Colors.LIGHT_GRAY);
             imagePanel.setLayout(new BoxLayout(imagePanel, BoxLayout.Y_AXIS));
             imagePanel.add(img);
             imagePanel.add(imgType);

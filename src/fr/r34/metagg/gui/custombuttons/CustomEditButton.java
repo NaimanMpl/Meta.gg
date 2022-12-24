@@ -1,6 +1,6 @@
 package fr.r34.metagg.gui.custombuttons;
 
-import fr.r34.metagg.Strings;
+import fr.r34.metagg.Constants;
 import fr.r34.metagg.gui.Colors;
 
 import javax.swing.*;
@@ -25,10 +25,10 @@ public class CustomEditButton extends JButton {
         this.setBackground(Colors.WHITE);
         this.setOpaque(true);
         this.setPreferredSize(new Dimension(fr.r34.metagg.gui.Dimension.BUTTON_WIDTH, fr.r34.metagg.gui.Dimension.BUTTON_HEIGHT));
-        this.setText(Strings.EDIT);
+        this.setText(Constants.EDIT);
         this.setFont((new Font(fr.r34.metagg.gui.Dimension.FONT, Font.PLAIN, fr.r34.metagg.gui.Dimension.SUBTITLE_SIZE)));
         this.setForeground(Color.BLACK);
-        this.setIcon(new ImageIcon(Strings.EDIT_BUTTON_ICON_PATH));
+        this.setIcon(new ImageIcon(Constants.EDIT_BUTTON_ICON_PATH));
         this.setHorizontalTextPosition(AbstractButton.RIGHT);
         this.setIconTextGap(10);
         this.setVisible(true);

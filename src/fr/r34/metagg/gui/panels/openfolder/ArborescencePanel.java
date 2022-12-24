@@ -1,6 +1,6 @@
 package fr.r34.metagg.gui.panels.openfolder;
 
-import fr.r34.metagg.Strings;
+import fr.r34.metagg.Constants;
 import fr.r34.metagg.gui.Arborescence;
 import fr.r34.metagg.gui.Colors;
 import fr.r34.metagg.gui.MainMenuGUI;
@@ -67,7 +67,7 @@ public class ArborescencePanel extends JPanel {
         String arborescencePathText = main.getListFileName().stream().map(Objects::toString).collect(Collectors.joining(">"));
         arborescencePath.setText("<html><font color=#273343>" + arborescencePathText + "</html>");
         arborescencePath.setFont(new Font(fr.r34.metagg.gui.Dimension.FONT, Font.PLAIN, fr.r34.metagg.gui.Dimension.TITLE_SIZE));
-        ImageIcon myFolderIcon = new Utils().getImageFromResource(Strings.MY_FOLDER_ICON_PATH);
+        ImageIcon myFolderIcon = new Utils().getImageFromResource(Constants.MY_FOLDER_ICON_PATH);
         arborescencePath.setIcon(myFolderIcon);
 
         returnButton = new JPanel();
@@ -75,11 +75,12 @@ public class ArborescencePanel extends JPanel {
         returnButton.setOpaque(true);
         returnButton.setVisible(true);
         returnButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-        returnButtonIcon = new JLabel(utils.getImageFromResource(Strings.RETURN_BUTTON_ICON));
+        returnButtonIcon = new JLabel(utils.getImageFromResource(Constants.RETURN_BUTTON_ICON));
         returnButton.add(returnButtonIcon);
         returnButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
+                main.saveAllFiles();
                 if(main.getListFile().size() > 1) {
                     try {
                         int lastElement = main.getListFile().size() - 1;

@@ -1,6 +1,6 @@
 package fr.r34.metagg.gui.custombuttons;
 
-import fr.r34.metagg.Strings;
+import fr.r34.metagg.Constants;
 import fr.r34.metagg.gui.Colors;
 import fr.r34.metagg.gui.MainMenuGUI;
 import fr.r34.metagg.manager.DirectoryManager;
@@ -62,7 +62,7 @@ public class CustomFolderButton extends JPanel {
         numberOdtInFolderLabel.setText(numberOdtInFolder + " Fichiers");
         numberOdtInFolderLabel.setForeground(Colors.BLUE_0);
         numberOdtInFolderLabel.setFont(new Font(fr.r34.metagg.gui.Dimension.FONT, Font.PLAIN, fr.r34.metagg.gui.Dimension.PARAGRAPH_SIZE));
-        folderIcon = new JLabel(utils.getImageFromResource(Strings.FOLDER_ICON_PATH));
+        folderIcon = new JLabel(utils.getImageFromResource(Constants.FOLDER_ICON_PATH));
         spacePanel = new JPanel();
         spacePanel.setBackground(Colors.BLUE_1);
         spacePanel.setOpaque(true);
@@ -83,6 +83,7 @@ public class CustomFolderButton extends JPanel {
             @Override
             public void mouseClicked(MouseEvent e) {
                 try {
+                    main.saveAllFiles();
                     main.getListFile().add(folder);
                     main.getListFileName().add(folder.getName());
                     main.updateFolderLeftPanel(folder);

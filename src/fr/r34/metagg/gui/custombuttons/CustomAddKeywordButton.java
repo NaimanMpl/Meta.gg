@@ -1,7 +1,7 @@
 package fr.r34.metagg.gui.custombuttons;
 
 import fr.r34.metagg.MetaFile;
-import fr.r34.metagg.Strings;
+import fr.r34.metagg.Constants;
 import fr.r34.metagg.gui.Colors;
 import fr.r34.metagg.gui.MainMenuGUI;
 
@@ -20,7 +20,7 @@ public class CustomAddKeywordButton extends JButton {
      */
     public CustomAddKeywordButton(MainMenuGUI main, MetaFile metaFile) {
         super();
-        this.setText(Strings.ADD_KEYWORD);
+        this.setText(Constants.ADD_KEYWORD);
         this.setOpaque(true);
         this.setBackground(Colors.WHITE);
         this.setHorizontalTextPosition(AbstractButton.RIGHT);
@@ -28,7 +28,7 @@ public class CustomAddKeywordButton extends JButton {
         this.setFont((new Font(fr.r34.metagg.gui.Dimension.FONT, Font.PLAIN, fr.r34.metagg.gui.Dimension.SUBTITLE_SIZE)));
         // Gestion de l'ajout du mot-clé
         this.addActionListener(e -> {
-            String keyword = JOptionPane.showInputDialog(Strings.ENTER_KEYWORD);
+            String keyword = JOptionPane.showInputDialog(Constants.ENTER_KEYWORD);
             if (keyword == null || keyword.isEmpty()) return;
             metaFile.getKeywords().add(keyword);
             metaFile.save();

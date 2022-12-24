@@ -2,12 +2,11 @@ package fr.r34.metagg.gui.custombuttons;
 
 import fr.r34.metagg.MetaFile;
 import fr.r34.metagg.MimeTypeOD;
-import fr.r34.metagg.Strings;
+import fr.r34.metagg.Constants;
 import fr.r34.metagg.gui.Colors;
 import fr.r34.metagg.gui.MainMenuGUI;
 import fr.r34.metagg.manager.Utils;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.Dimension;
@@ -24,7 +23,7 @@ public class CustomFileButton extends JButton {
 
     private JTextArea jTextArea;
     private BufferedImage odtIcon = null;
-    private String metafileNameDisplay, mimeType, path = Strings.FILE_BUTTON_ICON_PATH;
+    private String metafileNameDisplay, mimeType, path = Constants.FILE_BUTTON_ICON_PATH;
     private Utils utils;
     private final static int BUFFER_SIZE = 1024;
 
@@ -48,8 +47,8 @@ public class CustomFileButton extends JButton {
     public CustomFileButton(MainMenuGUI main, File file) throws IOException {
         super();
         this.utils = new Utils();
-        URL odtUrl = this.getClass().getResource(Strings.ODT_FILE_PATH);
-        if (odtUrl == null) throw new IllegalArgumentException(Strings.ERROR_ODT_ICON_NOT_LOADED);
+        URL odtUrl = this.getClass().getResource(Constants.ODT_FILE_PATH);
+        if (odtUrl == null) throw new IllegalArgumentException(Constants.ERROR_ODT_ICON_NOT_LOADED);
         this.setBorderPainted(false);
         this.setFocusPainted(false);
         this.setBackground(Colors.BLUE_1);
@@ -69,8 +68,9 @@ public class CustomFileButton extends JButton {
         for (MimeTypeOD m : MimeTypeOD.values()){
             if(m.getMimetype().equals(mimeType)){
                 switch (m){
-                    case ODP -> path = Strings.ODP_BUTTON_ICON_PATH;
-                    case ODS -> path = Strings.ODS_BUTTON_ICON_PATH;
+                    case ODP -> path = Constants.ODP_BUTTON_ICON_PATH;
+                    case ODS -> path = Constants.ODS_BUTTON_ICON_PATH;
+                    case ODG -> path = Constants.ODG_BUTTON_ICON_PATH;
                 }
             }
         }
@@ -100,11 +100,11 @@ public class CustomFileButton extends JButton {
 
     /**
      * JPanel modifié selon le même design que le constructeur ci-dessus.
-     * La fonction de ce JPanel n'est pas d'être un bouton cliquable mais
+     * La fonction de ce JPanel n'est pas d'être un bouton cliquable, mais
      * un bouton vide non cliquable, non lié à un fichier ODT et sans
      * information pour combler le vide dans le JPanel parent.
-     * Ce bouton sera généré si le nombre de fichier récent du JPanel
-     * parent est strictement inférieur à 9 (nombre de case du JPanel
+     * Ce bouton sera généré si le nombre de fichiers récent du JPanel
+     * parent est strictement inférieur à 9 (nombre de cases du JPanel
      * parent arbitrairement définit pour une question de design).
      */
     public CustomFileButton() {
