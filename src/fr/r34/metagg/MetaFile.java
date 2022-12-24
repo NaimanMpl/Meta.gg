@@ -305,7 +305,7 @@ public class MetaFile {
     }
 
     private MimeTypeOD setMimeTypeOD(File file) throws IOException {
-        String mimetype = file.toURL().openConnection().getContentType();
+        String mimetype = Files.probeContentType(file.toPath());
         for (MimeTypeOD m : MimeTypeOD.values()){
             if(m.getMimetype().equals(mimetype)){
                 return m;

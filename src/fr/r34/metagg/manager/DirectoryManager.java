@@ -9,6 +9,7 @@ import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Objects;
@@ -30,7 +31,7 @@ public class DirectoryManager {
 				if(element.isDirectory())
 					directoryContent(element, odtInFolder);
 				else {
-					String mimetype = element.toURL().openConnection().getContentType();
+					String mimetype = Files.probeContentType(element.toPath());
 					for (MimeTypeOD m : MimeTypeOD.values()){
 						if (m.getMimetype().equals(mimetype)) {
 							odtInFolder.add(element);
@@ -78,7 +79,7 @@ public class DirectoryManager {
 		ArrayList<File> odtInFolder = new ArrayList<>();
 		try {
 			for (File element : folder.listFiles()) {
-				String mimetype = element.toURL().openConnection().getContentType();
+				String mimetype = Files.probeContentType(element.toPath());
 				for (MimeTypeOD m : MimeTypeOD.values()){
 					if(m.getMimetype().equals(mimetype)){
 						odtInFolder.add(element);

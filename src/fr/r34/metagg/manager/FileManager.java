@@ -45,8 +45,9 @@ public class FileManager {
     public void readMetaData(MetaFile metaFile) {
         File file = metaFile.getFile();
         ArrayList<File> metaFiles = this.unzip(file, metaFile.getDestDir());
-        // initMetaXML(metaFile);
+        initMetaXML(metaFile);
         try {
+            Files.setAttribute(metaFile.getDestDir().toPath(), "dos:hidden", true);
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             DocumentBuilder builder = factory.newDocumentBuilder();
             Document doc;
@@ -223,7 +224,7 @@ public class FileManager {
                 for(File picture : file.listFiles()) {
                     ArrayList<String> pictureData = new ArrayList<>();
                     for(MimeTypeImage m : MimeTypeImage.values()){
-                        String mimeType = picture.toURL().openConnection().getContentType();
+                        String mimeType = Files.probeContentType(picture.toPath());
                         if (m.getMimetype().equals(mimeType)) {
                             pictureData.add(m.getTitle());
                             metaFile.getPictures().put(picture, m);
