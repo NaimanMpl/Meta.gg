@@ -57,7 +57,8 @@ public class FolderLeftPanel extends JPanel {
         appTitle.setBorder(new EmptyBorder(Dimension.DEFAULT_MARGIN, Dimension.DEFAULT_MARGIN, 0, 0));
 
         header.add(appTitle);
-        header.setLayout(new BoxLayout(header, BoxLayout.Y_AXIS));
+        //header.setLayout(new BoxLayout(header, BoxLayout.Y_AXIS));
+        header.setLayout(new FlowLayout(FlowLayout.LEFT));
         header.setBackground(Colors.BG_COLOR);
 
         parentsFolderContainer = new ArborescencePanel(folder, main);

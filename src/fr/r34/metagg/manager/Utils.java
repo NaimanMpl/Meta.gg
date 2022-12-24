@@ -31,6 +31,7 @@ public class Utils {
         switch (metaFile.getMimeTypeOD()) {
             case ODP -> path = Strings.ODP_BUTTON_ICON_FOLDER_PANEL_PATH;
             case ODS -> path = Strings.ODS_BUTTON_ICON_FOLDER_PANEL_PATH;
+            case ODG -> path = Strings.ODG_BUTTON_ICON_FOLDER_PANEL_PATH;
         }
         return path;
     }
@@ -41,6 +42,7 @@ public class Utils {
             switch (metaFile.getMimeTypeOD()) {
                 case ODP -> path = Strings.ODP_BUTTON_ICON_PATH;
                 case ODS -> path = Strings.ODS_BUTTON_ICON_PATH;
+                case ODG -> path = Strings.ODG_BUTTON_ICON_PATH;
             }
         }
         return path;

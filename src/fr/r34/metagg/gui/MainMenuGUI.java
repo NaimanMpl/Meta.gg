@@ -262,9 +262,9 @@ public class MainMenuGUI {
                     metaFilesOpened.set(i, metaFile);
                 }
             }
-            cacheManager.addFileToCache(metaFile);
         } else {
             main.getMetaFilesOpened().add(metaFile);
+            cacheManager.addFileToCache(metaFile);
         }
     }
 
