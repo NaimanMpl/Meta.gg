@@ -64,6 +64,7 @@ public class Main {
         } else if (args.length == 1 && Arrays.asList("-h", "-help").contains(args[0])) {
             displayHelp();
         } else {
+            System.out.println("Commande inconnue. Veuillez réessayer");
             displayHelp();
         }
     }
