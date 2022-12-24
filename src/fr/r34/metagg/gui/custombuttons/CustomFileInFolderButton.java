@@ -80,6 +80,7 @@ public class CustomFileInFolderButton extends JPanel {
             @Override
             public void mouseClicked(MouseEvent e) {
                 try {
+                    main.saveAllFiles();
                     main.updateRightPanel(new MetaFile(file));
                 } catch (UnsupportedLookAndFeelException | IllegalAccessException | InstantiationException |
                          ClassNotFoundException | IOException ex) {

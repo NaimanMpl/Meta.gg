@@ -5,6 +5,7 @@ public enum MetaAttributes {
     TITLE("dc:title", "Titre"),
     SUBJECT("dc:subject", "Sujet"),
     KEYWORD("meta:keyword", "Mots-clés"),
+    AUTHOR("meta:initial-creator", "Auteur"),
     CREATION_DATE("meta:creation-date", "Date de création"),
     PAGE_COUNT("meta:page-count", "Nombre de pages"),
     CHARACTERS_COUNT("meta:character-count", "Nombre de caractères"),

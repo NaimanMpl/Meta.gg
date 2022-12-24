@@ -12,7 +12,7 @@ import java.util.*;
 
 public class MetaFile {
 
-    private String title, subject;
+    private String title, subject, author;
     private File file, destDir;
     private File thumbnail;
     private FileManager fileM;
@@ -40,6 +40,7 @@ public class MetaFile {
         this.file = file;
         this.thumbnail = null;
         this.title = "";
+        this.author = "";
         this.subject = "";
         this.pagesAmount = 0;
         this.paragraphAmount = 0;
@@ -66,6 +67,7 @@ public class MetaFile {
         this.file = new File("unknown");
         this.thumbnail = null;
         this.title = "";
+        this.author = "";
         this.subject = "";
         this.pagesAmount = 0;
         this.paragraphAmount = 0;
@@ -101,6 +103,14 @@ public class MetaFile {
      */
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public String getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(String author) {
+        this.author = author;
     }
 
     public String getSubject() {
@@ -223,6 +233,7 @@ public class MetaFile {
         System.out.println("Données principales :");
         System.out.println("\tTitre : " + title);
         System.out.println("\tSujet : " + subject);
+        System.out.println("\tAuteur : " + author);
         System.out.println("\tDate de création : " + creationDate);
         System.out.println("\tMots-clés : " + keywords);
         System.out.println("\tNombre d'images : " + this.getMediasLength());
@@ -290,6 +301,9 @@ public class MetaFile {
                 break;
             case SUBJECT:
                 this.setSubject(content);
+                break;
+            case AUTHOR:
+                this.setAuthor(content);
                 break;
             case CREATION_DATE:
                 this.setCreationDate(content);

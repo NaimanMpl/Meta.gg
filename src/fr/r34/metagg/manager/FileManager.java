@@ -44,7 +44,7 @@ public class FileManager {
         ArrayList<File> metaFiles = this.unzip(file, metaFile.getDestDir());
         initMetaXML(metaFile);
         try {
-            Files.setAttribute(metaFile.getDestDir().toPath(), "dos:hidden", true);
+            // Files.setAttribute(metaFile.getDestDir().toPath(), "dos:hidden", true);
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             DocumentBuilder builder = factory.newDocumentBuilder();
             Document doc;
@@ -52,6 +52,7 @@ public class FileManager {
                 if (f.getName().endsWith(".xml") && f.getName().equalsIgnoreCase("meta.xml")) {
                     this.readAttribute(metaFile, f, MetaAttributes.TITLE);
                     this.readAttribute(metaFile, f, MetaAttributes.SUBJECT);
+                    this.readAttribute(metaFile, f, MetaAttributes.AUTHOR);
                     this.readAttribute(metaFile, f, MetaAttributes.CREATION_DATE);
                     this.readAttribute(metaFile, f, MetaAttributes.KEYWORD);
                     this.readDiverseData(metaFile, f, MetaAttributes.PAGE_COUNT);
@@ -275,7 +276,7 @@ public class FileManager {
                 Mis à jour dans le fichier XML des métadonnées principales.
                 (Titre, Sujet, Date de création, Mots-clés)
                  */
-                for (int i = 0; i < MetaAttributes.values().length - 4; i++) {
+                for (int i = 0; i < MetaAttributes.values().length - 3; i++) {
                     MetaAttributes attribute = MetaAttributes.values()[i];
                     Node metaData = officeMetaElement.getElementsByTagName(attribute.getTag()).item(0);
                     // Créer la balise de l'attribut si jamais elle n'existe pas dans le fichier XML.
@@ -290,6 +291,9 @@ public class FileManager {
                             break;
                         case SUBJECT:
                             metaData.setTextContent(metaFile.getSubject());
+                            break;
+                        case AUTHOR:
+                            metaData.setTextContent(metaFile.getAuthor());
                             break;
                         case CREATION_DATE:
                             metaData.setTextContent(metaFile.getCreationDate());

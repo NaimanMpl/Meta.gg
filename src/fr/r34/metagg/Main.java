@@ -54,6 +54,9 @@ public class Main {
                     case "keyword":
                         metaFile.getKeywords().add(content.toString());
                         break;
+                    case "author":
+                        metaFile.setAuthor(content.toString());
+                        break;
                 }
                 metaFile.save();
                 metaFile.deleteTempFolder();

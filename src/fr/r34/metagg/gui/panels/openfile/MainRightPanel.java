@@ -29,6 +29,7 @@ public class MainRightPanel extends JPanel {
     private JLabel name;
     private JLabel size;
     private JLabel title;
+    private JLabel author;
     private JLabel subject;
     private JLabel pagesAmount;
     private JLabel wordsAmount;
@@ -38,7 +39,7 @@ public class MainRightPanel extends JPanel {
     private JLabel showLinks;
     private JLabel panelTitle;
     private JLabel keywords;
-    private final JTextField titleField, subjectField;
+    private final JTextField titleField, subjectField, authorField;
     private final MetaFile metaFile;
     private final ArrayList<JTextField> keywordsFieldsList;
     private final CustomEditButton editButton;
@@ -70,11 +71,13 @@ public class MainRightPanel extends JPanel {
         // Si jamais le fichier n'a pas de titre ou de sujet alors le message "Pas de titre" ou "Pas de sujet" est affiché à l'écran
         titleField = new JTextField(metaFile.getTitle().isEmpty() ? Constants.NO_TITLE : metaFile.getTitle());
         subjectField = new JTextField(metaFile.getSubject().isEmpty() ? Constants.NO_SUBJECT : metaFile.getSubject());
+        authorField = new JTextField(metaFile.getAuthor().isEmpty() ? Constants.NO_AUTHOR : metaFile.getAuthor());
 
         initLabel();
 
         JPanel titlePanel = new JPanel();
         JPanel subjectPanel = new JPanel();
+        JPanel authorPanel = new JPanel();
         JPanel showPanel = new JPanel();
         this.showLinksPanel = new JPanel();
         this.keywordsPanel = new KeywordsPanel(metaFile, keywordsFieldsList);
@@ -93,6 +96,12 @@ public class MainRightPanel extends JPanel {
 
         buttonsPanel.add(editButton);
         buttonsPanel.add(addKeywordButton);
+
+        authorField.setBackground(null);
+        authorField.setBorder(null);
+        authorField.setForeground(Colors.WHITE);
+        authorField.setEditable(false);
+        authorField.setPreferredSize(new java.awt.Dimension((int) (0.25*Dimension.WINDOW_WIDTH), 20));
 
         titleField.setBackground(null);
         titleField.setBorder(null);
@@ -113,10 +122,18 @@ public class MainRightPanel extends JPanel {
         titlePanel.setBackground(null);
         titlePanel.setBorder(null);
 
+        authorPanel.setLayout(new BoxLayout(authorPanel, BoxLayout.Y_AXIS));
+        authorPanel.setBackground(null);
+        authorPanel.setBorder(null);
+
         subjectPanel.setBackground(null);
         subjectPanel.setBorder(null);
 
         subjectPanel.setLayout(new BoxLayout(subjectPanel, BoxLayout.Y_AXIS));
+
+        authorPanel.add(author);
+        authorPanel.add(authorField);
+
         titlePanel.add(title);
         titlePanel.add(titleField);
 
@@ -168,7 +185,7 @@ public class MainRightPanel extends JPanel {
             // Création de la liste des composants du panneau de droite dans l'ordre où ils sont censés apparaître
             List<JComponent> components = Arrays.asList(
                     panelTitle, picturePanel, name, size,
-                    titlePanel, subjectPanel, linksPanel, keywords,
+                    titlePanel, subjectPanel, authorPanel, linksPanel, keywords,
                     keywordsPanel, pagesAmount, wordsAmount, charAmount,
                     paragraphsAmount, showPanel, buttonsPanel
             );
@@ -204,6 +221,7 @@ public class MainRightPanel extends JPanel {
         double round = (double) Math.round(metaFile.getSize() * 10) / 10;
         size = new JLabel(round + "KB, " + metaFile.getCreationDate().substring(0, 10));
         title = new JLabel(Constants.TITLE);
+        author = new JLabel(Constants.AUTHOR);
         subject = new JLabel(Constants.SUBJECT);
         keywords = new JLabel(Constants.KEYWORDS);
         pagesAmount = new JLabel(Constants.PAGES_AMOUNT + metaFile.getPagesAmount());
@@ -230,10 +248,12 @@ public class MainRightPanel extends JPanel {
     private void initColor() {
         titleField.setForeground(Colors.WHITE);
         subjectField.setForeground(Colors.WHITE);
+        authorField.setForeground(Colors.WHITE);
         panelTitle.setForeground(Colors.WHITE);
         name.setForeground(Colors.WHITE);
         size.setForeground(Colors.BLUE_0);
         title.setForeground(Colors.WHITE);
+        author.setForeground(Colors.WHITE);
         subject.setForeground(Colors.WHITE);
         pagesAmount.setForeground(Colors.WHITE);
         wordsAmount.setForeground(Colors.WHITE);
@@ -248,10 +268,12 @@ public class MainRightPanel extends JPanel {
     public void initFont() {
         titleField.setFont(Dimension.PARAGRAPH_FONT);
         subjectField.setFont(Dimension.PARAGRAPH_FONT);
+        authorField.setFont(Dimension.PARAGRAPH_FONT);
         panelTitle.setFont(Dimension.TITLE_FONT);
         name.setFont(Dimension.SUBTITLE_FONT);
         size.setFont(Dimension.SUBTITLE_FONT);
         title.setFont(Dimension.SUBTITLE_FONT);
+        author.setFont(Dimension.SUBTITLE_FONT);
         subject.setFont(Dimension.SUBTITLE_FONT);
         keywords.setFont(Dimension.SUBTITLE_FONT);
         pagesAmount.setFont(Dimension.SUBTITLE_FONT);
@@ -277,6 +299,7 @@ public class MainRightPanel extends JPanel {
         private void updateTextField() {
             titleField.setEditable(!titleField.isEditable());
             subjectField.setEditable(!subjectField.isEditable());
+            authorField.setEditable(!authorField.isEditable());
             for (JTextField keywordField : keywordsFieldsList) {
                 keywordField.setEditable(!keywordField.isEditable());
             }
@@ -285,8 +308,8 @@ public class MainRightPanel extends JPanel {
             } else {
                 editButton.setText(Constants.EDIT);
                 metaFile.setTitle(titleField.getText());
-                System.out.println("Titre : " + metaFile.getTitle());
                 metaFile.setSubject(subjectField.getText());
+                metaFile.setAuthor(authorField.getText());
                 metaFile.getKeywords().clear();
                 for (JTextField keywordField : keywordsFieldsList) {
                     metaFile.getKeywords().add(keywordField.getText());

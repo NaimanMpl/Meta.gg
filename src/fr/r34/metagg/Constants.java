@@ -15,6 +15,7 @@ public class Constants {
     public final static String HYPERTEXT_TITLE = "Liens hypertextes :";
     public final static String RIGHT_PANEL_TITLE = "Métadonnées du fichier";
     public final static String TITLE = "Titre : ";
+    public final static String AUTHOR = "Auteur : ";
     public final static String SUBJECT = "Sujet : ";
     public final static String KEYWORDS = "Mots-clés : ";
     public final static String PAGES_AMOUNT = "Nombre de pages : ";
@@ -28,6 +29,7 @@ public class Constants {
     public final static String NO_TITLE = "Pas de titre";
     public final static String NO_PICTURES = "Ce fichier ne possède pas d'image !";
     public final static String NO_SUBJECT = "Pas de sujet";
+    public final static String NO_AUTHOR = "Pas d'auteur";
     public final static String ADD_KEYWORD = "Ajouter un mot-clé";
     public final static String ENTER_KEYWORD = "Veuillez saisir un mot-clé";
     public final static String ERROR_SPLASH_NOT_LOADED = "File not found : L'image de chargement n'a pas pu être chargé !";

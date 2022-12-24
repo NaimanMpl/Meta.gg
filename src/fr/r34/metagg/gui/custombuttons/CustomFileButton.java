@@ -81,7 +81,6 @@ public class CustomFileButton extends JButton {
                 }
             }
         }
-
         this.setIcon(utils.getImageFromResource(path));
         this.setVerticalTextPosition(AbstractButton.BOTTOM);
         this.setHorizontalTextPosition(AbstractButton.CENTER);
@@ -96,6 +95,7 @@ public class CustomFileButton extends JButton {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
+                    main.saveAllFiles();
                     main.updateRightPanel(new MetaFile(file));
                 } catch (UnsupportedLookAndFeelException | IllegalAccessException | InstantiationException |
                          ClassNotFoundException | IOException ex) {
