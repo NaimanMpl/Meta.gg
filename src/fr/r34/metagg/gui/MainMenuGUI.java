@@ -72,6 +72,7 @@ public class MainMenuGUI {
         logoIcon = utils.getImageFromResource(Constants.LOGO_ICON);
         Taskbar taskbar = Taskbar.getTaskbar();
         try {
+            // Modification de l'icone de l'application dans la barre des tâches
             taskbar.setIconImage(logoIcon.getImage());
         } catch (final UnsupportedOperationException e) {
             System.out.println("Le système d'exploitation ne supporte pas le changement de l'icone dans la barre des tâches.");
@@ -79,6 +80,7 @@ public class MainMenuGUI {
             System.out.println("Impossible de changer l'icone dans la barre des tâches, il y'a un problème de sécurité.");
         }
 
+        // Filtrage des fichiers que l'on peut ouvrir
         fileChoose = new JFileChooser();
         fileChoose.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
         fileChoose.addChoosableFileFilter(new FileNameExtensionFilter("Fichier ODT (*.odt)", "odt"));
@@ -139,16 +141,18 @@ public class MainMenuGUI {
 
         @Override
         public void actionPerformed(ActionEvent e) {
+            // Sauvegarde de tous les fichiers ouverts au cours du lancement de l'application
             saveAllFiles();
             int response = fileChoose.showOpenDialog(null);
             if (response == JFileChooser.APPROVE_OPTION) {
                 File file = fileChoose.getSelectedFile();
                 if (file.isDirectory()) {
-                    // new FolderMenuGUI(main, file);
                     try {
                         listFile.add(file);
                         listFileName.add(file.getName());
+                        // Mis à jour du panneau de gauche, pour y insérer le fichier récemment ouvert
                         updateFolderLeftPanel(file);
+                        // Mis à jour du panneau de droite pour laisser place aux métadonnées du fichier ouvert
                         updateRightPanel(new MetaFile());
                     } catch (IOException | UnsupportedLookAndFeelException | ClassNotFoundException |
                              InstantiationException | IllegalAccessException ex) {
@@ -162,9 +166,10 @@ public class MainMenuGUI {
                 } catch (IOException ex) {
                     throw new RuntimeException(ex);
                 }
-                System.out.println(metaFile.getTitle());
                 try {
+                    // Mis à jour du panneau de droite pour laisser place aux métadonnées du fichier ouvert
                     updateRightPanel(metaFile);
+                    // Mis à jour du panneau de gauche, pour y insérer le fichier récemment ouvert
                     updateLeftPanel();
                 } catch (UnsupportedLookAndFeelException | IllegalAccessException | InstantiationException |
                          ClassNotFoundException | IOException | ParserConfigurationException | SAXException ex) {
@@ -175,33 +180,40 @@ public class MainMenuGUI {
     }
 
     /**
-     * Sauvegarde les métadonnées de tout les fichiers récemments ouverts dans le fichier "meta.xml"
+     * Sauvegarde les métadonnées de tous les fichiers récemments ouverts dans le fichier "meta.xml"
      * (Mais le fichier .odt reste inchangé!)
      */
     class SaveFileAction implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
+            // Parcours des fichiers ouverts
             for (MetaFile metaFile : metaFilesOpened) {
                 File metaXML = new File(metaFile.getDestDir() + "/meta.xml");
                 if (!metaXML.exists()) continue;
+                // Sauvegarde des métadonnées dans le fichier XML
                 metaFile.save();
             }
         }
     }
 
     /**
-     * Sauvegarde les métadonnées de tout les fichiers récemments ouverts, extrait leurs dossiers temporairement
+     * Sauvegarde les métadonnées de tous les fichiers récemments ouverts, extrait leurs dossiers temporairement
      * ouverts puis change l'extension du fichier compressé en .odt. On obtient alors un nouveau fichier odt
      * contenant les modifications effectuées.
      */
     public void saveAllFiles() {
+        // Parcours des fichiers récemments ouverts
         for (MetaFile metaFile : metaFilesOpened) {
+            // Localisation du fichier "meta.xml"
             File metaXML = new File(metaFile.getDestDir().getAbsolutePath() + "/meta.xml");
             if (metaXML.exists()) {
+                // Sauvegarde des métadonnées du fichier
                 metaFile.save();
             }
+            // Supression du dossier temporairement extrait pour y lire les métadonnées suite à l'appel du constructeur de MetaFile
             metaFile.deleteTempFolder();
         }
+        // Vide la liste des fichiers ouverts puisqu'ils ont tous été sauvegardés
         metaFilesOpened.clear();
     }
 
@@ -264,7 +276,9 @@ public class MainMenuGUI {
         container.add(rightPanel, BorderLayout.EAST);
         container.revalidate();
         container.repaint();
+        // Fichier par défaut ouvert lorsque l'on ouvre pour la première fois l'application, ce dernier est fictif.
         if (metaFile.getFile().getName().equalsIgnoreCase("unknown")) return;
+        // Au cours de l'éxécution un fichier peut avoir deux références différentes, il est important de sauvegarder le bon
         if (metaFilesOpened.contains(metaFile)) {
             for (int i = 0; i < metaFilesOpened.size(); i++) {
                 if (metaFilesOpened.get(i).equals(metaFile)) {
@@ -272,6 +286,7 @@ public class MainMenuGUI {
                 }
             }
         } else {
+            // Ajout à la liste des fichiers ouverts et au cache
             main.getMetaFilesOpened().add(metaFile);
             cacheManager.addFileToCache(metaFile);
         }
@@ -287,7 +302,7 @@ public class MainMenuGUI {
 
     /**
      * Renvoi la liste des dossiers parcourus par l'utilisateur.
-     * @return  La liste des dossiers parcourus par l'utilisateur
+     * @return La liste des dossiers parcourus par l'utilisateur
      */
     public ArrayList<File> getListFile() {
         return listFile;

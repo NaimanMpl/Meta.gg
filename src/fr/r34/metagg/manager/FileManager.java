@@ -41,6 +41,7 @@ public class FileManager {
      */
     public void readMetaData(MetaFile metaFile) {
         File file = metaFile.getFile();
+        // Extraction du fichier puis récupération des fichiers "meta.xml" et "content.xml"
         ArrayList<File> metaFiles = this.unzip(file, metaFile.getDestDir());
         initMetaXML(metaFile);
         try {
@@ -95,6 +96,10 @@ public class FileManager {
         }
     }
 
+    /**
+     * Génère un fichier "meta.xml" dans le cas ou le fichier renseigné en paramètre ne dispose pas de métadonnées.
+     * @param metaFile Le fichier dont on souhaite lire les métadonnées
+     */
     private void initMetaXML(MetaFile metaFile) {
         if (new File(metaFile.getDestDir().getAbsolutePath() + "/meta.xml").exists()) return;
         try {
@@ -102,12 +107,17 @@ public class FileManager {
             DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
             Document doc = docBuilder.newDocument();
             Element root = doc.createElement("office:document-meta");
+            /*
+            Attribution des namespaces "meta", "dc", "office" et "xlink", nécessaire pour
+            formaliser le fichier XML et permettre la création des balises pour les métadonnées.
+             */
             root.setAttributeNS("http://www.w3.org/2000/xmlns/", "xmlns:office", "urn:oasis:names:tc:opendocument:xmlns:office:1.0");
             root.setAttributeNS("http://www.w3.org/2000/xmlns/", "xmlns:dc", "http://purl.org/dc/elements/1.1/");
             root.setAttributeNS("http://www.w3.org/2000/xmlns/", "xmlns:meta", "urn:oasis:names:tc:opendocument:xmlns:meta:1.0");
             root.setAttributeNS("http://www.w3.org/2000/xmlns/", "xmlns:xlink", "http://www.w3.org/1999/xlink");
             doc.appendChild(root);
             root.appendChild(doc.createElement("office:meta"));
+            // Ecriture du fichier "meta.xml" dans le dossier de destination
             TransformerFactory transformerFactory = TransformerFactory.newInstance();
             Transformer transformer = transformerFactory.newTransformer();
             DOMSource source = new DOMSource(doc);
@@ -133,16 +143,21 @@ public class FileManager {
             if (xmlFile.getName().equalsIgnoreCase("meta.xml")) {
                 doc = builder.parse(xmlFile);
                 doc.getDocumentElement().normalize();
+                // Chargement de la liste des métadonnées
                 NodeList metaDatasList = doc.getElementsByTagName(OFFICE_META_TAG);
+                // Parcours de la liste des métadonnées
                 for (int i = 0; i < metaDatasList.getLength(); i++) {
                     Node node = metaDatasList.item(i);
                     if (node.getNodeType() == Node.ELEMENT_NODE) {
                         Element metaElement = (Element) node;
                         String tag = attribute.getTag();
+                        // Les mots clés ont un comportement spécial, il faut les lire un par un.
                         if (attribute == MetaAttributes.KEYWORD) {
+                            // Chargement de la liste des mots clés
                             NodeList keywordsList = metaElement.getElementsByTagName(attribute.getTag());
                             for (int j = 0; j < keywordsList.getLength(); j++) {
                                 Node keyword = keywordsList.item(j);
+                                // Attribution dans la liste des mots clés de notre objet
                                 metaFile.getKeywords().add(keyword.getTextContent());
                             }
                             continue;
@@ -150,6 +165,7 @@ public class FileManager {
                         Node metaItem = metaElement.getElementsByTagName(tag).item(0);
                         if (metaItem == null) continue;
                         String metaData = metaItem.getTextContent();
+                        // Affectation de la métadonnée dans les attributs de notre objet
                         metaFile.updateAttribute(attribute, metaData);
                     }
                 }
@@ -174,16 +190,19 @@ public class FileManager {
             if (xmlFile.getName().equalsIgnoreCase("meta.xml")) {
                 doc = builder.parse(xmlFile);
                 doc.getDocumentElement().normalize();
+                // Chargement de la liste des métadonnées
                 NodeList metaDatasList = doc.getElementsByTagName(OFFICE_META_TAG);
                 Node node = metaDatasList.item(0);
                 if (node.getNodeType() == Node.ELEMENT_NODE) {
                     Element metaElement = (Element) node;
                     Node metaItem = metaElement.getElementsByTagName(DOCUMENT_STATISTIC_TAG).item(0);
+                    // Si les données diverses n'existe pas, inutile de continuer
                     if (metaItem == null) return;
                     if (metaItem.getAttributes().getLength() == 0) return;
                     if (metaItem.getNodeType() == Node.ELEMENT_NODE) {
                         Element metaItemElement = (Element) metaItem;
                         String metaData = metaItemElement.getAttribute(attribute.getTag());
+                        // Affectation de la métadonnée dans les attributs de notre objet
                         if (!metaData.isBlank()) metaFile.updateAttribute(attribute, metaData);
                     }
                 }
@@ -203,9 +222,11 @@ public class FileManager {
         File file = new File(metaFile.getDestDir().getPath() + "/Thumbnails");
         if (!file.exists()) return;
     	if(file.getName().equalsIgnoreCase("thumbnails")) {
+            // Parcours de la liste des images, dans le dossier thumbnails
     		for (File fileOfThumbnails : file.listFiles()) {
     			if (fileOfThumbnails.getName().equalsIgnoreCase("thumbnail.png")) {
                     thumbnail = fileOfThumbnails;
+                    // Affectation de la miniature à l'objet
                     metaFile.setThumbnail(thumbnail);
                 }
     		}
@@ -216,6 +237,7 @@ public class FileManager {
     * @param metaFile Le dossier contenant les différentes images (media) du fichier ODT étudié
     */
     public void readPictureMetaData(MetaFile metaFile) {
+        // Attribution du nom de dossier contenant les images
         String folderMediaName = "";
         MimeTypeOD mimeTypeOD = metaFile.getMimeTypeOD();
         switch (mimeTypeOD) {
@@ -229,19 +251,26 @@ public class FileManager {
 
         File file = new File(metaFile.getDestDir().getAbsolutePath() + "/" + folderMediaName);
         try {
+            // Lecture du dossier contenant les images
             if (file.getName().equals(folderMediaName) && file.isDirectory()) {
-                for(File picture : file.listFiles()) {
+                // Parcours des images
+                for (File picture : file.listFiles()) {
                     ArrayList<String> pictureData = new ArrayList<>();
+                    // Affectation du MIME de l'image
                     for(MimeTypeImage m : MimeTypeImage.values()){
+                        // Lecture du MIME de l'image
                         String mimeType = Files.probeContentType(picture.toPath());
                         if (m.getMimetype().equals(mimeType)) {
                             pictureData.add(m.getTitle());
+                            // Affection du MIME dans l'objet
                             metaFile.getPictures().put(picture, m);
                         }
                     }
+                    // Formalisation de la taille de l'image en ne retenant que la première virgule
                     DecimalFormat df = new DecimalFormat("0.0");
                     float bytes = (float) picture.length() / BUFFER_SIZE;
                     pictureData.add(String.valueOf(df.format(bytes)) + "Ko");
+                    // Ajout de l'image dans la liste des images de l'objet en n'oubliant pas la taille
                     metaFile.getMedia().put(picture.getName(), pictureData);
                 }
             }
@@ -274,7 +303,7 @@ public class FileManager {
 
                 /*
                 Mis à jour dans le fichier XML des métadonnées principales.
-                (Titre, Sujet, Date de création, Mots-clés)
+                (Titre, Sujet, Date de création, Mots-clés et Auteur)
                  */
                 for (int i = 0; i < MetaAttributes.values().length - 3; i++) {
                     MetaAttributes attribute = MetaAttributes.values()[i];
@@ -285,6 +314,7 @@ public class FileManager {
                         officeMetaElement.appendChild(newElement);
                         metaData = officeMetaElement.getElementsByTagName(attribute.getTag()).item(0);
                     }
+                    // Affectation dans l'objet selon l'attribut
                     switch (attribute) {
                         case TITLE:
                             metaData.setTextContent(metaFile.getTitle());
@@ -299,11 +329,14 @@ public class FileManager {
                             metaData.setTextContent(metaFile.getCreationDate());
                             break;
                         case KEYWORD:
+                            // Les mots clés ont un comportement spécial, il faut tous les supprimer avant de sauvegarder
                             NodeList keywords = officeMetaElement.getElementsByTagName(attribute.getTag());
                             int n = keywords.getLength();
+                            // Supression des mots clés existants
                             for (int k = n-1; k >= 0; k--) {
                                 officeMetaElement.removeChild(keywords.item(k));
                             }
+                            // Ajout des mots clés
                             for (int j = 0; j < metaFile.getKeywords().size(); j++) {
                                 Node keyword = keywords.item(j);
                                 if (keyword == null) {
@@ -330,6 +363,7 @@ public class FileManager {
                     }
                     if (officeMetaNode.getNodeType() == Node.ELEMENT_NODE) {
                         Element metaStatsData = (Element) metaStatsNode;
+                        // Affectation de la métadonnée dans le fichier XML selon l'attribut
                         switch (attribute) {
                             case PAGE_COUNT:
                                 metaStatsData.setAttribute(attribute.getTag(), String.valueOf(metaFile.getPagesAmount()));
@@ -444,10 +478,13 @@ public class FileManager {
      * @return Le nouveau fichier dont l'extension a été modifié
      */
     public File changeExtension(File file, String newExtension) {
+        // Récupération du nom du fichier en excluant son extension
         int i = file.getName().lastIndexOf('.');
         String name = file.getName().substring(0, i);
+        // Création du nouveau fichier renommé avec la nouvelle extension
         File newFile = new File(file.getParent(), name + newExtension);
         try {
+            // Modification du fichier source
             Files.move(
                     file.toPath(),
                     newFile.toPath().resolveSibling(newFile.getName()),
