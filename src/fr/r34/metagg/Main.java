@@ -57,6 +57,9 @@ public class Main {
                     case "author":
                         metaFile.setAuthor(content.toString());
                         break;
+                    default:
+                        displayHelp();
+                        break;
                 }
                 metaFile.save();
                 metaFile.deleteTempFolder();
@@ -76,6 +79,7 @@ public class Main {
         System.out.println("\t-f <argument> : Affiche les métadonnées du fichier renseigné en argument.");
         System.out.println("\t-f <argument> --title <titre>: Permet de modifier le titre d'un fichier.");
         System.out.println("\t-f <argument> --subject <subject> : Permet de modifier le sujet d'un fichier.");
+        System.out.println("\t-f <argument> --author <author> : Permet de modifier l'auteur d'un fichier.");
         System.out.println("\t-f <argument> --keyword <keyword> : Permet d'ajouter un mot clé aux métadonnées d'un fichier.");
         System.out.println("\t-d <argument> : Affiche les métadonnées des fichiers présents dans le répertoire.");
         System.out.println("\t-h ou -help : Affiche l'aide");

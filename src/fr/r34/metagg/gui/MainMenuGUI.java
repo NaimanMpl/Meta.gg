@@ -70,6 +70,14 @@ public class MainMenuGUI {
         openFile = new JMenuItem(Constants.OPEN);
         saveFile = new JMenuItem(Constants.SAVE_MODIFICATIONS);
         logoIcon = utils.getImageFromResource(Constants.LOGO_ICON);
+        Taskbar taskbar = Taskbar.getTaskbar();
+        try {
+            taskbar.setIconImage(logoIcon.getImage());
+        } catch (final UnsupportedOperationException e) {
+            System.out.println("Le système d'exploitation ne supporte pas le changement de l'icone dans la barre des tâches.");
+        } catch (final SecurityException e) {
+            System.out.println("Impossible de changer l'icone dans la barre des tâches, il y'a un problème de sécurité.");
+        }
 
         fileChoose = new JFileChooser();
         fileChoose.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
