@@ -12,7 +12,7 @@ public class CustomEditButton extends JButton {
     /**
      * Bouton modifié en fonction du besoin de l'interface.
      * Ce bouton est personnalisé dans le but de rendre
-     * l'interface graphique plus claire et plus propore
+     * l'interface graphique plus claire et plus propre
      * pour l'utilisateur.
      * Ce bouton sera exclusivement réservé à la fonction
      * d'édition et de sauvegarde des métadonnées d'un fichier
