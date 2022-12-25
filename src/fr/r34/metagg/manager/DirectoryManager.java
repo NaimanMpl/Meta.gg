@@ -26,6 +26,15 @@ public class DirectoryManager {
 	 * @version 0.0.2
 	 * @author Andrea PL, Naïman Mpl
 	 */
+	/**
+	 * Méthode permettant de parcourir un répertoire passé
+	 * en paramètre et renvoyer la liste de tous les dossiers
+	 * OpenDocument présent dans ce répertoire et ses
+	 * sous-répertoires.
+	 * @param folder	Répertoire que l'on veut parcourir
+	 * @param odtInFolder	Liste qui contiendra les fichiers OpenDocument du répertoire en paramètre
+	 * @return	odtInFolder
+	 */
 	public ArrayList<File> directoryContent(File folder, ArrayList<File> odtInFolder) {
 		try {
 			for(File element : folder.listFiles()) {
