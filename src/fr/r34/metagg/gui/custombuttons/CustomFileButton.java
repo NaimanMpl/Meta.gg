@@ -90,6 +90,8 @@ public class CustomFileButton extends JButton {
             Si jamais on clique sur un fichier récemment ouvert, il faut charger ses données puis
             les afficher sur le panneau de droite de l'application. Ce qui implique que l'on doit mettre
             à jour l'affichage lorsque l'on appuie sur ce bouton.
+            À chaque fois qu'on appuie sur ce bouton, on sauvegarde tous les fichiers pour éviter d'avoir
+            des modifications non prises en comptes.
          */
         this.addActionListener(new ActionListener() {
             @Override

@@ -82,6 +82,8 @@ public class CustomFolderButton extends JPanel {
             Si jamais on clique sur un dossier, il faut ajouter celui-ci
             à notre liste de dossier qui forme l'arborescence et ensuite
             mettre à jour le panneau de gauche en fonction du dossier choisi.
+            À chaque fois qu'on appuie sur ce bouton, on sauvegarde tous les fichiers pour éviter d'avoir
+            des modifications non prises en comptes.
          */
         this.addMouseListener(new MouseAdapter() {
             @Override
