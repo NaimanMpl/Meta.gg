@@ -33,7 +33,7 @@ public class CustomFileInFolderButton extends JPanel {
      * - Le nom du fichier
      * - Le poids (en Ko) du fichier
      * - La date de création du fichier
-     * @param file  Le fichier dont on affiche les informations et que l'on veut rendre accessible grâce au boutton.
+     * @param file  Le fichier dont on affiche les informations et que l'on veut rendre accessible grâce au bouton.
      * @param main      Instance de la Frame principale FolderMenuGUI à laquelle ce bouton est rattaché.
      * @throws IOException
      */
@@ -76,6 +76,11 @@ public class CustomFileInFolderButton extends JPanel {
         this.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
         this.setVisible(true);
 
+        /*
+            Si jamais on clique sur un fichier, il faut charger ses données puis
+            les afficher sur le panneau de droite de l'application. Ce qui implique que l'on doit mettre
+            à jour l'affichage lorsque l'on appuie sur ce bouton.
+         */
         this.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {

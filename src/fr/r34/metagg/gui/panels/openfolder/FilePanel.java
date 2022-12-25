@@ -19,11 +19,11 @@ public class FilePanel extends JPanel {
     private MainMenuGUI main;
 
     /**
-     * JPanel personnalisé selon un design prédéfinis.
+     * JPanel personnalisé selon un design prédéfini.
      * Le JPanel "FilePanel" a pour but de créer une scrollbar composé
      * uniquement de JPanel "CustomFileInFolderButton". Il est donc constitué
      * d'un JPanel principale, d'une JScrollPane verticale et d'une liste
-     * à laquelle on ajouetera les "CustomFileInFolderButton". Si la taille de la
+     * à laquelle on ajoutera les "CustomFileInFolderButton". Si la taille de la
      * liste des fichiers ODT présents dans le dossier est strictement inférieur à 4
      * alors on ajoute 4 CustomFileInFolderButton de type vide pour garder une
      * strcuture identique à si la taille de la liste était supérieur à 4.
@@ -62,7 +62,7 @@ public class FilePanel extends JPanel {
      * parcourir les fichiers ODT de la liste "folderContent",
      * créer des metaFiles de chaque fichier ODT, créer des nouveaux
      * CustomFileInFolderButton en fonction de ces metaFiles et ajouter
-     * ces bouttons les un après les autres dans la liste de JPanel
+     * ces boutons les un après les autres dans la liste de JPanel
      *
      * @param folderContent     Liste des fichiers ODT présent dans le dossier sélectionné
      * @param main              Instance de la Frame principale FolderMenuGUI
@@ -85,10 +85,10 @@ public class FilePanel extends JPanel {
     /**
      * Cette méthode va d'initialisation de FilePanel va ajouter
      * des CustomFileInFolder de type vide un nombre de fois déterminé.
-     * Ce nombre de répétition est calculé en fonction de la taille
+     * Ce nombre de répétitions est calculé en fonction de la taille
      * de la liste en paramètre. On soustrait 4 (choix arbitraire fait
      * en fonction du design prédéfinis) à la taille de la liste pour
-     * qu'au final on est 4 CustomFileInFolderButton (de type vide ou
+     * que finalement on ait 4 CustomFileInFolderButton (de type vide ou
      * lié à un metaFile).
      * On ajoute les JPanels de la même manière que la méthode ci-dessus.
      *

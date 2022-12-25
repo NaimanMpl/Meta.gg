@@ -29,22 +29,12 @@ public class Utils {
         return new ImageIcon(fileImg);
     }
 
-    public String getIconFolderPanelPathFromType(MetaFile metaFile){
-        String path = Constants.FILE_BUTTON_ICON_FOLDER_PANEL_PATH;
-        switch (metaFile.getMimeTypeOD()) {
-            case ODP:
-                path = Constants.ODP_BUTTON_ICON_FOLDER_PANEL_PATH;
-                break;
-            case ODS:
-                path = Constants.ODS_BUTTON_ICON_FOLDER_PANEL_PATH;
-                break;
-            case ODG:
-                path = Constants.ODG_BUTTON_ICON_FOLDER_PANEL_PATH;
-                break;
-        }
-        return path;
-    }
-
+    /**
+     * Permet de déterminer le chemin de l'icône adaptée au mime type
+     * du metaFile en paramètre.
+     * @param metaFile  metaFile à qui on veut associer une icône.
+     * @return path
+     */
     public String getIconPathFromType(MetaFile metaFile){
         String path = Constants.FILE_BUTTON_ICON_PATH;
         if(metaFile.getMimeTypeOD() != null) {
@@ -63,6 +53,12 @@ public class Utils {
         return path;
     }
 
+    /**
+     * Permet de déterminer le chemin de l'icône adaptée au mime type
+     * du fichier en paramètre.
+     * @param file  Fichier à qui on veut associer une icône.
+     * @return path
+     */
      public String getIconFolderPanelPathFromType(File file) throws IOException {
         String path = Constants.FILE_BUTTON_ICON_FOLDER_PANEL_PATH;
         MimeTypeOD mimeTypeOD = MimeTypeOD.ODT;
@@ -85,6 +81,12 @@ public class Utils {
         return path;
      }
 
+    /**
+     * Permet de raccourcir un texte si trop long par soucis de place
+     * dans l'interface.
+     * @param name  Texte que l'on souhaite raccourcir.
+     * @return
+     */
     public String shortenText(String name){
         String shortName = "";
         shortName = name.substring(0, 8);

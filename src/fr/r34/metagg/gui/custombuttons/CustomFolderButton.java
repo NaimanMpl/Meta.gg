@@ -78,7 +78,11 @@ public class CustomFolderButton extends JPanel {
         this.add(folderNameLabel);
         this.add(numberOdtInFolderLabel);
         this.setVisible(true);
-
+        /*
+            Si jamais on clique sur un dossier, il faut ajouter celui-ci
+            à notre liste de dossier qui forme l'arborescence et ensuite
+            mettre à jour le panneau de gauche en fonction du dossier choisi.
+         */
         this.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -96,7 +100,7 @@ public class CustomFolderButton extends JPanel {
 
     /**
      * JPanel modifié selon le même design que le constructeur ci-dessus.
-     * La fonction de ce JPanel n'est pas d'être un bouton cliquable mais
+     * La fonction de ce JPanel n'est pas d'être un bouton cliquable, mais
      * un bouton vide non cliquable, non lié à un dossier et sans
      * information dans le but combler le vide dans le JPanel parent.
      * Ce bouton sera généré si le dossier "fille" présent dans le

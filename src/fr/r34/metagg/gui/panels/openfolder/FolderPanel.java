@@ -24,8 +24,8 @@ public class FolderPanel extends JPanel {
      * d'un JPanel principale, d'une JScrollPane horizontale et d'une liste
      * à laquelle on ajoutera les "CustomFolderButton". Si la taille de la
      * liste des fichiers ODT présents dans le dossier est strictement inférieur à 6
-     * alors on ajoute le nombre de CustomFolderButton de type vide pour arriver au
-     * final à un panel contenant au moins 6 CustomFolderButton.
+     * alors on ajoute le nombre de CustomFolderButton de type vide pour arriver
+     * finalement à un panel contenant au moins 6 CustomFolderButton.
      * Si la taille de la liste en paramètre n'est pas paire alors on ajoute un dossier nul
      * à cette liste pour garder un nombre de CustomFolderButton paire à l'affichage.
      *
@@ -70,7 +70,7 @@ public class FolderPanel extends JPanel {
      * Méthode d'initialisation des FolderPanel, cette méthode va
      * parcourir les dossiers de la liste "folderContent", créer des nouveaux
      * CustomFolderButton en fonction de ces dossiers et ajouter
-     * ces bouttons les un après les autres par deux dans la liste de JPanel
+     * ces boutons les un après les autres par deux dans la liste de JPanel
      *
      * @param folderContent     Liste des fichiers ODT présent dans le dossier sélectionné
      * @param main              Instance de la Frame principale FolderMenuGUI
@@ -96,7 +96,7 @@ public class FolderPanel extends JPanel {
     /**
      * Cette méthode va d'initialisation de FolderPanel va ajouter
      * des CustomFolderButton de type vide un nombre de fois déterminé.
-     * Ce nombre de répétition est calculé en fonction de la taille
+     * Ce nombre de répétitions est calculé en fonction de la taille
      * de la liste en paramètre. On répète le nombre de fois passé en paramètre
      * l'ajout par deux des CustomFolderButton de type vide de la même manière que
      * la méthode ci-dessus.

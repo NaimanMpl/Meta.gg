@@ -5,8 +5,8 @@ import java.awt.Font;
 public class Dimension {
 
     /**
-     * Constantes prédéfinis contenant la taille et l'espacement
-     * des différents composants de l'application ainsi que la police utilisé.
+     * Constantes prédéfinies contenant la taille et l'espacement
+     * des différents composants de l'application ainsi que la police utilisée.
      */
 
     public final static int TITLE_SIZE = 20;

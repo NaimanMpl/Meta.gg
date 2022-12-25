@@ -19,7 +19,7 @@ public class ContentFolderPanel extends JPanel {
     private MainMenuGUI main;
 
     /**
-     * JPanel modifié et personnalisé en selon un design prédéfinis
+     * JPanel modifié et personnalisé en selon un design prédéfini
      * Ce JPanel a pour fonction de structurer la partie inférieur
      * de la partie gauche du FolderPanel. Ce JPanel va contenir
      * une scrollbar des fichiers ODT présent dans le dossier ouvert

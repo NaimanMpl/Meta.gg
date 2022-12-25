@@ -43,7 +43,7 @@ public class CacheManager {
     }
 
     /**
-     * Créer le fichier cache à la racine de là ou l'utilisateur lance l'application
+     * Créer le fichier cache à la racine de là où l'utilisateur lance l'application
      * si ce dernier n'existe pas.
      */
     public void initCache() {

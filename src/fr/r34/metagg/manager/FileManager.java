@@ -44,7 +44,6 @@ public class FileManager {
         ArrayList<File> metaFiles = this.unzip(file, metaFile.getDestDir());
         initMetaXML(metaFile);
         try {
-            // Files.setAttribute(metaFile.getDestDir().toPath(), "dos:hidden", true);
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             DocumentBuilder builder = factory.newDocumentBuilder();
             Document doc;
@@ -422,7 +421,7 @@ public class FileManager {
     /**
      * Compresse complètement un dossier en un fichier zip
      * @param sourceDirPath Le chemin vers le dossier que l'on souhaite compresser
-     * @param zipPath Le chemin ou l'on souhaite sauvegarder notre dossier compressé
+     * @param zipPath Le chemin où l'on souhaite sauvegarder notre dossier compressé
      * @throws IOException
      */
     public void zip(Path sourceDirPath, Path zipPath) throws IOException {

@@ -16,7 +16,7 @@ public enum MimeTypeImage {
     /**
      * Enumeration qui liste et stock et liste tous
      * les types mimes d'image commun. On utilise
-     * cet énumeration pour déterminer le type d'image
+     * cet enumeration pour déterminer le type d'image
      * que contient notre fichier ODT.
      *
      * @param mimetype  mime type de l'image.

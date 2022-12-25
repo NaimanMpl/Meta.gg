@@ -42,7 +42,7 @@ public class MainMenuGUI {
     private ImageIcon logoIcon;
 
     /**
-     * Frame principale de l'application c'est elle qui affiche les fichiers récents (panneau de gauche)
+     * Frame principale de l'application, c'est elle qui affiche les fichiers récents (panneau de gauche)
      * ainsi que le fichier ouvert (panneau de droite)
      * @throws UnsupportedLookAndFeelException
      * @throws ClassNotFoundException
@@ -129,10 +129,10 @@ public class MainMenuGUI {
 
     /**
      * Cette classe s'occupe de gérer l'ouverture d'un fichier.
-     * Lorsque l'utilisateur a choisit un fichier a ouvrir, on ajoute ce fichier dans les fichiers
+     * Lorsque l'utilisateur a choisi un fichier à ouvrir, on ajoute ce fichier dans les fichiers
      * récemments ouverts et dans le cache puis on met à jour l'affichage du panneau de gauche ainsi
      * que celui de droite (car les informations ne sont plus les mêmes).
-     * Par contre si on ouvre un dossier on fait alors appel à la class "FolderMenuGUI" qui s'occupe
+     * Par contre, si on ouvre un dossier on fait alors appel à la class "FolderMenuGUI" qui s'occupe
      * d'afficher le contenu d'un dossier ainsi que ses fichiers ODT.
      */
     class OpenFileAction implements ActionListener {
@@ -144,7 +144,6 @@ public class MainMenuGUI {
             if (response == JFileChooser.APPROVE_OPTION) {
                 File file = fileChoose.getSelectedFile();
                 if (file.isDirectory()) {
-                    // new FolderMenuGUI(main, file);
                     try {
                         listFile.add(file);
                         listFileName.add(file.getName());
@@ -175,7 +174,7 @@ public class MainMenuGUI {
     }
 
     /**
-     * Sauvegarde les métadonnées de tout les fichiers récemments ouverts dans le fichier "meta.xml"
+     * Sauvegarde les métadonnées de tous les fichiers récemments ouverts dans le fichier "meta.xml"
      * (Mais le fichier .odt reste inchangé!)
      */
     class SaveFileAction implements ActionListener {
@@ -190,7 +189,7 @@ public class MainMenuGUI {
     }
 
     /**
-     * Sauvegarde les métadonnées de tout les fichiers récemments ouverts, extrait leurs dossiers temporairement
+     * Sauvegarde les métadonnées de tous les fichiers récemments ouverts, extrait leurs dossiers temporairement
      * ouverts puis change l'extension du fichier compressé en .odt. On obtient alors un nouveau fichier odt
      * contenant les modifications effectuées.
      */
@@ -278,7 +277,7 @@ public class MainMenuGUI {
     }
 
     /**
-     * Renvoie la liste de tout les fichiers ouverts lors de l'exécution du programme
+     * Renvoie la liste de tous les fichiers ouverts lors de l'exécution du programme
      * @return La liste des fichiers ouverts
      */
     public ArrayList<MetaFile> getMetaFilesOpened() {
