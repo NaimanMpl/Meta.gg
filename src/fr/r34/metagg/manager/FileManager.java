@@ -214,7 +214,6 @@ public class FileManager {
     /**
      * Récupère la miniature du fichier ODT et l'affiche sous forme de frame
      * @param metaFile Le dossier dans lequel est stockée la miniature
-     * @return thumbnail Le fichier de la miniature du fichier ODT
      */
     public void readThumbnail(MetaFile metaFile) {
     	File thumbnail = null;
