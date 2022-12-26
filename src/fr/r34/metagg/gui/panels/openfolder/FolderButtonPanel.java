@@ -25,7 +25,7 @@ public class FolderButtonPanel extends JPanel {
      *
      * @param folder    Dossier que l'on veut lier au bouton
      * @param folder2   Dossier que l'on veut lier au bouton
-     * @param main      Instance de la Frame principale FolderMenuGUI
+     * @param main      Instance de la Frame principale MainMenuGUI
      * @throws IOException
      */
     public FolderButtonPanel(File folder, File folder2, MainMenuGUI main) throws IOException {

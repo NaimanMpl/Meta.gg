@@ -29,7 +29,7 @@ public class FilePanel extends JPanel {
      * strcuture identique à si la taille de la liste était supérieur à 4.
      *
      * @param folderContent     Liste des fichiers ODT présent dans le dossier sélectionné
-     * @param main              Instance de la Frame principale FolderMenuGUI
+     * @param main              Instance de la Frame principale MainMenuGUI
      * @throws IOException
      */
     public FilePanel(ArrayList<File> folderContent, MainMenuGUI main) throws IOException {

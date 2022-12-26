@@ -30,7 +30,7 @@ public class FolderPanel extends JPanel {
      * à cette liste pour garder un nombre de CustomFolderButton paire à l'affichage.
      *
      * @param folderContent Liste des fichiers ODT présent dans le dossier sélectionné
-     * @param main Instance de la Frame principale FolderMenuGUI
+     * @param main Instance de la Frame principale MainMenuGUI
      * @throws IOException
      */
     public FolderPanel(ArrayList<File> folderContent, MainMenuGUI main) throws IOException {

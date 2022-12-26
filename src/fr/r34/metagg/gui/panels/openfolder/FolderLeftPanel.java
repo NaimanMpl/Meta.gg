@@ -40,7 +40,7 @@ public class FolderLeftPanel extends JPanel {
      * La partie fichier du dossier fait uniquement appel à la classe ContentFolderPanel.
      *
      * @param folder    Dossier choisit et ouvert par l'utilisateur pour parcours ses différents sous-dossiers et fichiers ODT.
-     * @param main      Instance de la Frame principale FolderMenuGUI.
+     * @param main      Instance de la Frame principale MainMenuGUI.
      * @throws IOException
      */
     public FolderLeftPanel(File folder, MainMenuGUI main) throws IOException {

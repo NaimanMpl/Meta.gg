@@ -28,7 +28,7 @@ public class ContentFolderPanel extends JPanel {
      *
      * @param folderContent     Liste des fichiers ODT présents dans le dossier ouvert par l'utilisateur.
      * @param folder            Dossier choisit et ouvert par l'utilisateur.
-     * @param main              Instance de la Frame principale "FolderMenuGUI"
+     * @param main              Instance de la Frame principale "MainMenuGUI"
      * @throws IOException
      */
     public ContentFolderPanel(ArrayList<File> folderContent, File folder, MainMenuGUI main) throws IOException {

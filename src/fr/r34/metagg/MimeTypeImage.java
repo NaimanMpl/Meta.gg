@@ -1,6 +1,6 @@
 package fr.r34.metagg;
 
-public enum MimeTypeImage {
+public enum MimeTypeImage implements MimeType {
     AVIF("image/avif", "AVIF"),
     BMP("image/bmp", "BMP"),
     GIF("image/gif", "GIF"),
