@@ -38,6 +38,7 @@ public class MetaFile {
      */
     public MetaFile(File file) throws IOException {
         this.file = file;
+        // Attribution des métadonnées par défaut
         this.thumbnail = null;
         this.title = "";
         this.author = "";
@@ -53,8 +54,13 @@ public class MetaFile {
         this.media = new HashMap<>();
         this.fileM = new FileManager();
         this.pictures = new HashMap<>();
+        /*
+        Dossier de destination, (là ou sera extrait le contenu du fichier renseigné en paramètre)
+        Si le fichier s'appelle "hello.odt" le dossier de destination sera alors "hello"
+         */
         this.destDir = new File(file.getAbsolutePath().substring(0, file.getAbsolutePath().lastIndexOf(".")));
         this.mimeTypeOD = setMimeTypeOD(file);
+        // Lecture des métadonnées, c'est ici que l'on va charger les métadonnées et les renseigner dans les attributs de l'objet
         fileM.readMetaData(this);
     }
 
@@ -105,66 +111,130 @@ public class MetaFile {
         this.title = title;
     }
 
+    /**
+     * Permet de récupérer l'auteur d'un fichier
+     * @return L'auteur du fichier
+     */
     public String getAuthor() {
         return author;
     }
 
+    /**
+     * Permet de modifier l'auteur d'un fichier
+     * @param author Le nouvel auteur que l'on souhaite attribuer au fichier
+     */
     public void setAuthor(String author) {
         this.author = author;
     }
 
+    /**
+     * Permet de récuperer le sujet d'un fichier
+     * @return Le sujet du fichier
+     */
     public String getSubject() {
         return subject;
     }
 
+    /**
+     * Permet de modifier le sujet d'un fichier
+     * @param subject Le nouveau sujet que l'on souhaite attribuer au fichier
+     */
     public void setSubject(String subject) {
         this.subject = subject;
     }
 
+    /**
+     * Permet de récuperer le nombre de pages d'un fichier
+     * @return Le nombre de pages que l'on souhaite attribuer au fichier
+     */
     public int getPagesAmount() {
         return pagesAmount;
     }
 
+    /**
+     * Permet de modifier le nombre de pages d'un fichier
+     * @param pagesAmount Le nouveau nombre de pages que l'on souhaite attribuer au fichier
+     */
     public void setPagesAmount(int pagesAmount) {
         this.pagesAmount = pagesAmount;
     }
 
+    /**
+     * Permet de récuperer le nombre de paragraphes d'un fichier
+     * @return Le nombre de pages du fichier
+     */
     public int getParagraphAmount() {
         return paragraphAmount;
     }
 
+    /**
+     * Permet de modifier le nombre de paragaphes d'un fichier
+     * @param paragraphAmount Le nouveau nompbre de paragraphes que l'on souhaite attribuer au fichier
+     */
     public void setParagraphAmount(int paragraphAmount) {
         this.paragraphAmount = paragraphAmount;
     }
 
+    /**
+     * Permet de récuperer le nombre de mots d'un fichier
+     * @return Le nombre de mots du fichier
+     */
     public int getWordAmount() {
         return wordAmount;
     }
 
+    /**
+     * Permet de modifier le nombre de mots d'un fichier
+     * @param wordAmount Le nombre de mots que l'on souhaite attribuer au fichier
+     */
     public void setWordAmount(int wordAmount) {
         this.wordAmount = wordAmount;
     }
 
+    /**
+     * Permet de récuperer le nombre de caractères d'un fichier
+     * @return Le nombre de caractères du fichier
+     */
     public int getCharacterAmount() {
         return characterAmount;
     }
 
+    /**
+     * Permet de modifier le nombre de caractères d'un fichier
+     * @param characterAmount Le nombre de caractères que l'on souhaite attribuer au fichier
+     */
     public void setCharacterAmount(int characterAmount) {
         this.characterAmount = characterAmount;
     }
 
+    /**
+     * Permet de récuperer la date de création d'un fichier
+     * @return La date de création du fichier
+     */
     public String getCreationDate() {
         return creationDate;
     }
 
+    /**
+     * Permet de modifier la date de création d'un fichier
+     * @param creationDate La date de création que l'on souhaite attribuer au fichier
+     */
     public void setCreationDate(String creationDate) {
         this.creationDate = creationDate;
     }
 
+    /**
+     * Permet de récuperer la taille d'un fichier
+     * @return La taille du fichier
+     */
     public float getSize() {
         return size;
     }
 
+    /**
+     * Permet de modifier la taille d'un fichier
+     * @param size La taille que l'on souhaite attribuer au fichier
+     */
     public void setSize(float size) {
         this.size = size;
     }
@@ -206,6 +276,10 @@ public class MetaFile {
         return destDir;
     }
 
+    /**
+     * Permet de récuperer le nombre d'images présentes dans un fichier
+     * @return Le nombre d'images du fichier
+     */
     public int getMediasLength() { return media.size(); }
 
     /**
@@ -340,6 +414,14 @@ public class MetaFile {
         return this.getFile().getAbsolutePath().equalsIgnoreCase(m.getFile().getAbsolutePath());
     }
 
+    /**
+     * Permet d'attribuer un MIME à l'objet, utile lors du chargement des métadonnées.
+     * Si le MIME du fichier ne se trouve pas parmi l'énumération alors le MIME "null" lui
+     * est attribué.
+     * @param file Le fichier auquel on souhaite attribuer un MIME
+     * @return Le MIME du fichier
+     * @throws IOException
+     */
     private MimeTypeOD setMimeTypeOD(File file) throws IOException {
         String mimetype = Files.probeContentType(file.toPath());
         for (MimeTypeOD m : MimeTypeOD.values()){
@@ -350,6 +432,10 @@ public class MetaFile {
         return null;
     }
 
+    /**
+     * Permet de récuperer le MIME d'un fichier
+     * @return Le MIME du fichier
+     */
     public MimeTypeOD getMimeTypeOD() {
         return mimeTypeOD;
     }

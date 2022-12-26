@@ -26,7 +26,9 @@ public class SplashScreen {
      */
     public SplashScreen() throws IOException {
         window = new JWindow();
+        // Chargement du chemin vers l'image du SplashScreen
         URL splashUrl = this.getClass().getResource(Constants.SPLASH_SCREEN_FILE_PATH);
+        // Si jamais il est impossible de charger l'image un message d'erreur est affiché
         if (splashUrl == null) throw new IllegalArgumentException(Constants.ERROR_SPLASH_NOT_LOADED);
         splashImg = ImageIO.read(splashUrl);
         background = new ImageIcon(splashImg);
@@ -41,7 +43,7 @@ public class SplashScreen {
                  ClassNotFoundException | ParserConfigurationException | SAXException e) {
             e.printStackTrace();
         }
-
+        // Supression du SplashScreen pour laisser place à l'écran principal
         window.dispose();
     }
 

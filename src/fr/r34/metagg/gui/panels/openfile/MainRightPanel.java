@@ -50,7 +50,7 @@ public class MainRightPanel extends JPanel {
     private int i;
 
     /**
-     * Panneau de droite de l'application, contenat toutes les métadonnées du fichier renseigné en paramètre
+     * Panneau de droite de l'application, contenant toutes les métadonnées du fichier renseigné en paramètre
      * affiché en colonne ainsi que de deux boutons l'un permettant l'édition de ces métadonnées ainsi que la sauvegarde
      * et l'autre permettant l'ajout d'un mot-clé.
      * @param main L'instance de la classe principale contenant la frame principale de l'application

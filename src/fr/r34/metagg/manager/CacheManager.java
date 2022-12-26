@@ -49,8 +49,10 @@ public class CacheManager {
     public void initCache() {
         if (new File(Constants.CACHE_PATH).exists()) return;
         try {
+            // Définition de la premiere balise "mère" du fichier cache.xml
             Element root = doc.createElement("cache");
             doc.appendChild(root);
+            // Ecriture du fichier "cache.xml"
             TransformerFactory transformerFactory = TransformerFactory.newInstance();
             Transformer transformer = transformerFactory.newTransformer();
             DOMSource source = new DOMSource(doc);
@@ -71,28 +73,36 @@ public class CacheManager {
         try {
             doc = docBuilder.parse(xmlFile);
             doc.getDocumentElement().normalize();
+            // Chargement de la liste des fichiers présents dans le cache
             Node filesContainer = doc.getElementsByTagName("cache").item(0);
             if (filesContainer.getNodeType() == Node.ELEMENT_NODE) {
 
                 Element recentFiles = (Element) filesContainer;
 
+                // Si le fichier fait déjà partie du cache il est inutile de le traiter
                 if (checkIfFileInCache(recentFiles.getElementsByTagName("file"), metaFile)) {
                     System.out.println("Le fichier " + metaFile.getFile().getName() + " est déjà dans le cache !");
                     return;
                 }
 
+                // Création des balises nécessaires pour le fichier.
+
                 Element fileChild = doc.createElement("file");
                 Element name = doc.createElement("name");
                 Element path = doc.createElement("path");
 
+                // Remplissage des balises
                 name.setTextContent(metaFile.getFile().getName());
                 path.setTextContent(metaFile.getFile().getAbsolutePath());
 
+                // Ajout dans le fichier XML
                 fileChild.appendChild(name);
                 fileChild.appendChild(path);
 
+                // Ajout du fichier en tête de la liste, pour avoir un historique partant du fichier le plus récent au plus vieux
                 recentFiles.insertBefore(fileChild, recentFiles.getFirstChild());
                 try {
+                    // Ecriture du fichier "cache.xml"
                     FileOutputStream fos = new FileOutputStream(Constants.CACHE_PATH);
                     new FileManager().writeXml(doc, fos);
                     fos.close();
@@ -106,12 +116,21 @@ public class CacheManager {
         }
     }
 
+    /**
+     * Permet de vérifier l'existence d'un fichier renseigné en paramètre dans le cache
+     * @param recentFilesList La liste des fichiers présents dans le cache
+     * @param metaFile Le fichier dont on souhaite vérifier l'appatenance
+     * @return Un boolean, si oui ou non le fichier est présent
+     */
     private boolean checkIfFileInCache(NodeList recentFilesList, MetaFile metaFile) {
+        // Parcours de la liste de fichiers présents dans le cache
         for (int i = 0; i < recentFilesList.getLength(); i++) {
             Node recentFileNode = recentFilesList.item(i);
             if (recentFileNode.getNodeType() == Node.ELEMENT_NODE) {
                 Element recentFile = (Element) recentFileNode;
+                // Récupération du chemin absolu vers le fichier
                 String path = recentFile.getElementsByTagName("path").item(0).getTextContent();
+                // Deux fichiers sont égaux s'ils ont le même chemin absolu.
                 if (path.equalsIgnoreCase(metaFile.getFile().getAbsolutePath())) {
                     return true;
                 }
