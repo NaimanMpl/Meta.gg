@@ -64,7 +64,7 @@ public class FileManager {
                     ArrayList<String> hyperTxtWbList = new ArrayList<>();
                     FileReader fileReader = new FileReader(f.getAbsolutePath());
                     BufferedReader br = new BufferedReader(fileReader);
-                    String lineToFound ="<text:a xlink:href=";
+                    String lineToFound ="xlink:href=";
                     String lineCut = "";
                     String hyperTxtWeb = "";
                     String line = br.readLine();
@@ -72,13 +72,13 @@ public class FileManager {
                     int indexD = line.indexOf(lineToFound);
                     int indexF;
                     while (indexD > -1) {
-                        lineCut = line.substring(indexD + 20);
+                        lineCut = line.substring(indexD + 12);
                         indexF = lineCut.indexOf('"');
-                        hyperTxtWeb = line.substring(indexD + 20, indexD + 20 + indexF);
-                        if(!hyperTxtWbList.contains(hyperTxtWeb)){
+                        hyperTxtWeb = line.substring(indexD + 12, indexD + 12 + indexF);
+                        if(!hyperTxtWbList.contains(hyperTxtWeb) && hyperTxtWeb.startsWith("http")){
                             hyperTxtWbList.add(hyperTxtWeb);
                         }
-                        line = line.substring(indexD + 20 + indexF);
+                        line = line.substring(indexD + 12 + indexF);
                         indexD = line.indexOf(lineToFound);
                     }
                     for (String weblink : hyperTxtWbList){
