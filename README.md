@@ -23,3 +23,5 @@ Vous pouvez ensuite placer les options suivantes :
 ## Utilisation de la version graphique
 
 La version graphique de l'application offre les mêmes possibilités. Pour utiliser la version graphique, il est nécessaire de naviguer vers le répertoire ou est situé le fichier `gui.jar`. L'appel de ce dernier se fait par la commande : `java -jar gui.jar`
+
+[MIT License](LICENSE)
